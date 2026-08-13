@@ -541,7 +541,6 @@
       flex-wrap: wrap;
     }
 
-    /* ===== 时段输入区域 ===== */
     .time-segments-area {
       background: var(--input-bg);
       border-radius: var(--radius-md);
@@ -1137,7 +1136,6 @@
       <h3 id="modalDateTitle" style="font-size:0.85rem;margin-bottom:8px;"></h3>
       <select id="modalDayType"><option value="weekday">工作日</option><option value="weekend">休息日</option><option value="holiday">节假日</option></select>
 
-      <!-- 时段输入区域 -->
       <div class="time-segments-area">
         <span class="seg-label">⏱️ 加班时段（可选）</span>
         <div id="timeSegmentsContainer">
@@ -1272,11 +1270,24 @@
       }
 
       function loadCustomItems() {
-        try { customItems = JSON.parse(localStorage.getItem(CUSTOM_ITEMS_KEY)) || []; } catch (e) { customItems = []; }
+        try {
+          var raw = localStorage.getItem(CUSTOM_ITEMS_KEY);
+          customItems = raw ? JSON.parse(raw) : [];
+          // 确保每个项目都有必要字段
+          customItems = customItems.filter(function(item) {
+            return item && typeof item === 'object' && item.name && typeof item.amount === 'number';
+          });
+        } catch (e) {
+          customItems = [];
+        }
       }
 
       function saveCustomItems() {
-        try { localStorage.setItem(CUSTOM_ITEMS_KEY, JSON.stringify(customItems)); } catch (e) {}
+        try {
+          localStorage.setItem(CUSTOM_ITEMS_KEY, JSON.stringify(customItems));
+        } catch (e) {
+          console.error('保存自定义项失败:', e);
+        }
       }
 
       function showToast(msg) {
@@ -1388,6 +1399,22 @@
 
       function calcTotalSpecialDeduction(d) {
         return roundToCent((d.child || 0) + (d.education || 0) + (d.medical || 0) + (d.loan || 0) + (d.rent || 0) + (d.elder || 0) + (d.infant || 0));
+      }
+
+      // ============================================================
+      // ★★★ 核心：自定义项合计计算（增加 - 扣除）★★★
+      // ============================================================
+      function getCustomItemsTotal(items) {
+        if (!items || items.length === 0) return 0;
+        var total = 0;
+        items.forEach(function(item) {
+          if (item.type === 'add') {
+            total = roundToCent(total + (item.amount || 0));
+          } else if (item.type === 'sub') {
+            total = roundToCent(total - (item.amount || 0));
+          }
+        });
+        return total;
       }
 
       function updateDeductTotalDisplay() {
@@ -1532,7 +1559,7 @@
         }
         monthStor[currentMonthKey] = monthParams;
         saveToStorageImmediate('monthParams', monthStor);
-        console.log('✅ 参数已保存:', currentMonthKey);
+        console.log('✅ 参数已保存:', currentMonthKey, '自定义项:', customItems.length);
       }
 
       function loadMonthParams(mk) {
@@ -1551,7 +1578,7 @@
           if ($('deduct_rent')) $('deduct_rent').value = d.rent || 0;
           if ($('deduct_elder')) $('deduct_elder').value = d.elder || 0;
           if ($('deduct_infant')) $('deduct_infant').value = d.infant || 0;
-          if (saved.customItems) {
+          if (saved.customItems && Array.isArray(saved.customItems)) {
             customItems = JSON.parse(JSON.stringify(saved.customItems));
             saveCustomItems();
             renderCustomItems();
@@ -1573,7 +1600,7 @@
             if ($('deduct_rent')) $('deduct_rent').value = d2.rent || 0;
             if ($('deduct_elder')) $('deduct_elder').value = d2.elder || 0;
             if ($('deduct_infant')) $('deduct_infant').value = d2.infant || 0;
-            if (r.customItems) {
+            if (r.customItems && Array.isArray(r.customItems)) {
               customItems = JSON.parse(JSON.stringify(r.customItems));
               saveCustomItems();
               renderCustomItems();
@@ -1582,6 +1609,8 @@
         }
         updateHourlyPreview();
         updateDeductTotalDisplay();
+        // 显示当前自定义项数量
+        console.log('📋 加载自定义项:', customItems.length);
       }
 
       // ---- 加班模态框 ----
@@ -1630,7 +1659,6 @@
           updateTotalHours();
         });
 
-        // 初始计算
         setTimeout(calcSeg, 10);
       }
 
@@ -1646,7 +1674,6 @@
         });
         var input = $('modalDayHours');
         if (input) {
-          // 如果用户没有手动编辑过，自动更新
           if (!input.dataset.userEdited || input.dataset.userEdited === 'false') {
             input.value = Math.round(total * 10) / 10 || 0;
           }
@@ -1683,14 +1710,11 @@
             setupSegmentListeners(div);
           });
         } else {
-          // 默认添加一个空白时段
           addSegment();
         }
 
-        // 延迟计算总小时
         setTimeout(function() {
           updateTotalHours();
-          // 如果item有hours，优先使用存储的值
           if (item.hours > 0 && hoursInput) {
             hoursInput.value = item.hours;
             hoursInput.dataset.userEdited = 'false';
@@ -1720,7 +1744,6 @@
         var type = $('modalDayType').value;
         var totalHours = parseFloat($('modalDayHours').value) || 0;
 
-        // 收集时段
         var segments = [];
         document.querySelectorAll('#timeSegmentsContainer .time-segment').forEach(function(seg) {
           var start = seg.querySelector('.seg-start').value;
@@ -1730,7 +1753,6 @@
           }
         });
 
-        // 如果总小时为0但有时段，从时段计算总小时
         if (totalHours === 0 && segments.length > 0) {
           var segTotal = 0;
           segments.forEach(function(s) {
@@ -1745,7 +1767,6 @@
           totalHours = Math.round(segTotal * 10) / 10;
         }
 
-        // 如果总小时为0且没有时段，清除记录
         if (totalHours === 0 && segments.length === 0) {
           if (currentDayDetails[dk]) {
             delete currentDayDetails[dk];
@@ -1841,14 +1862,16 @@
         var container = $('customItemsList');
         if (!container) return;
         container.innerHTML = '';
-        if (customItems.length === 0) {
+        if (!customItems || customItems.length === 0) {
           container.innerHTML = '<div style="color:var(--text-secondary);font-size:.65rem;padding:2px 0;">暂无自定义项目</div>';
           return;
         }
         customItems.forEach(function(item, idx) {
           var div = document.createElement('div');
           div.className = 'piece-product-row';
-          div.innerHTML = '<span style="flex:1;font-size:0.65rem;">' + escapeHtml(item.name) + '</span><span style="width:60px;text-align:center;color:' + (item.type === 'add' ? 'var(--color-income)' : 'var(--color-expense)') + '">' + (item.type === 'add' ? '+' : '-') + ' ' + item.amount.toFixed(2) + '</span><button class="btn-del" data-idx="' + idx + '">✕</button>';
+          var sign = item.type === 'add' ? '+' : '-';
+          var color = item.type === 'add' ? 'var(--color-income)' : 'var(--color-expense)';
+          div.innerHTML = '<span style="flex:1;font-size:0.65rem;">' + escapeHtml(item.name) + '</span><span style="width:60px;text-align:center;color:' + color + '">' + sign + ' ' + (item.amount || 0).toFixed(2) + '</span><button class="btn-del" data-idx="' + idx + '">✕</button>';
           container.appendChild(div);
         });
         container.querySelectorAll('.btn-del').forEach(function(btn) {
@@ -1859,6 +1882,7 @@
                 customItems.splice(idx, 1);
                 saveCustomItems();
                 renderCustomItems();
+                saveAllParams();
                 showToast('已删除');
               }
             }
@@ -1869,12 +1893,17 @@
       // ---- 工资计算 ----
       function handleCalculate() {
         if (!currentMonthKey) { showToast('请选择月份'); return; }
+
+        // 验证负数
         var negFields = ['baseSalary','otherIncome','socialInsurance','housingFund','otherDeduction'];
         for (var fi = 0; fi < negFields.length; fi++) {
           var fv = parseFloat($(negFields[fi])?.value);
           if (fv < 0) { showToast('⚠️ ' + negFields[fi] + ' 不能为负数'); return; }
         }
+
         var settings = getSettings();
+
+        // 读取参数
         var baseSalary = roundToCent(parseFloat($('baseSalary')?.value) || 0);
         var otherIncome = roundToCent(parseFloat($('otherIncome')?.value) || 0);
         var socialInsurance = roundToCent(parseFloat($('socialInsurance')?.value) || 0);
@@ -1882,12 +1911,20 @@
         var otherDeduction = roundToCent(parseFloat($('otherDeduction')?.value) || 0);
         var deductionsDetail = getSpecialDeductions();
         var specialDeduction = calcTotalSpecialDeduction(deductionsDetail);
+
+        // 加班费
         var ot = getOvertimeHours();
         var hr = getHourlyRate(baseSalary);
         var otPay = isNaN(hr) ? 0 : roundToCent((ot.weekday * settings.multiplierWeekday + ot.weekend * settings.multiplierWeekend + ot.holiday * settings.multiplierHoliday) * hr);
+
+        // ★★★ 核心修复：自定义项合计 ★★★
         var customTotal = getCustomItemsTotal(customItems);
+        console.log('📋 自定义项合计:', customTotal, '项目数:', customItems.length);
+
+        // 应发工资 = 底薪 + 加班费 + 其他收入 + 自定义合计
         var grossPay = roundToCent(baseSalary + otPay + otherIncome + customTotal);
 
+        // 个税
         var thr = settings.taxThreshold;
         var taxable = Math.max(0, grossPay - socialInsurance - housingFund - otherDeduction - specialDeduction - thr);
         var tax = 0;
@@ -1901,8 +1938,10 @@
           else tax = taxable * 0.45 - 181920;
           tax = Math.max(0, roundToCent(tax));
         }
+
         var netPay = roundToCent(grossPay - socialInsurance - housingFund - otherDeduction - tax);
 
+        // 保存历史
         var recs = {};
         for (var key in storage.history || {}) { recs[key] = storage.history[key]; }
         recs[currentMonthKey] = {
@@ -1926,20 +1965,12 @@
         };
         saveToStorageImmediate('history', recs);
 
+        // 同时保存参数
         saveAllParams();
         saveOvertimeData();
 
         updateAnnualSummary();
-        showToast('✅ 工资：实发 ¥' + netPay.toFixed(2) + '，个税 ¥' + tax.toFixed(2));
-      }
-
-      function getCustomItemsTotal(items) {
-        var total = 0;
-        items.forEach(function(item) {
-          if (item.type === 'add') total = roundToCent(total + item.amount);
-          else total = roundToCent(total - item.amount);
-        });
-        return total;
+        showToast('✅ 工资：实发 ¥' + netPay.toFixed(2) + '，个税 ¥' + tax.toFixed(2) + '，自定义 ¥' + customTotal.toFixed(2));
       }
 
       // ---- 年度汇总 ----
@@ -2017,7 +2048,7 @@
         });
       }
 
-      // ---- 加班导出（包含时间段） ----
+      // ---- 加班导出 ----
       function getOvertimeRecordsForMonth() {
         var parsed = parseMonthKey(currentMonthKey);
         if (!parsed) return [];
@@ -2140,6 +2171,7 @@
           '<table><tr><td>底薪</td><td>¥' + (rec.baseSalary || 0).toFixed(2) + '</td></tr>' +
           '<tr><td>加班费</td><td>¥' + (rec.totalOvertimePay || 0).toFixed(2) + '</td></tr>' +
           '<tr><td>其他收入</td><td>¥' + (rec.otherIncome || 0).toFixed(2) + '</td></tr>' +
+          '<tr><td>自定义增减</td><td style="color:var(--color-warning);">¥' + (rec.customTotal || 0).toFixed(2) + '</td></tr>' +
           '<tr style="font-weight:bold;color:#6c5ce7;"><td>应发</td><td>¥' + (rec.grossPay || 0).toFixed(2) + '</td></tr>' +
           '<tr><td>社保</td><td>¥' + (rec.socialInsurance || 0).toFixed(2) + '</td></tr>' +
           '<tr><td>公积金</td><td>¥' + (rec.housingFund || 0).toFixed(2) + '</td></tr>' +
@@ -2161,11 +2193,11 @@
         var rows = '';
         keys.forEach(function(k) {
           var r = recs[k];
-          rows += '<tr><td>' + k.slice(5) + '月</td><td>¥' + (r.baseSalary || 0).toFixed(2) + '</td><td>¥' + (r.totalOvertimePay || 0).toFixed(2) + '</td><td>¥' + (r.grossPay || 0).toFixed(2) + '</td><td style="color:#6c5ce7;">¥' + (r.netPay || 0).toFixed(2) + '</td></tr>';
+          rows += '<tr><td>' + k.slice(5) + '月</td><td>¥' + (r.baseSalary || 0).toFixed(2) + '</td><td>¥' + (r.totalOvertimePay || 0).toFixed(2) + '</td><td>¥' + (r.customTotal || 0).toFixed(2) + '</td><td>¥' + (r.grossPay || 0).toFixed(2) + '</td><td style="color:#6c5ce7;">¥' + (r.netPay || 0).toFixed(2) + '</td></tr>';
         });
         var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>年度报表</title><style>body{font-family:sans-serif;padding:16px;background:#0a0e1a;color:#e8ecf4;}h2{color:#6c5ce7;}table{width:100%;border-collapse:collapse;font-size:12px;}th,td{padding:4px 6px;border-bottom:1px solid rgba(255,255,255,0.05);text-align:center;}th{color:#6c5ce7;}</style></head><body>' +
           '<h2>📊 ' + year + ' 年度报表</h2>' +
-          '<table><tr><th>月份</th><th>底薪</th><th>加班费</th><th>应发</th><th>实发</th></tr>' + rows + '</table></body></html>';
+          '<table><tr><th>月份</th><th>底薪</th><th>加班费</th><th>自定义</th><th>应发</th><th>实发</th></tr>' + rows + '</table></body></html>';
         var w = window.open('', '_blank');
         w.document.write(html);
         w.document.close();
@@ -2190,7 +2222,7 @@
         var recs = storage.history || {};
         var rec = recs[currentMonthKey];
         if (!rec) { showToast('该月暂无计算记录'); return; }
-        var rows = [['项目','金额'], ['月份', rec.month], ['底薪', rec.baseSalary || 0], ['加班费', rec.totalOvertimePay || 0], ['其他收入', rec.otherIncome || 0], ['应发工资', rec.grossPay || 0], ['社保', rec.socialInsurance || 0], ['公积金', rec.housingFund || 0], ['其他扣除', rec.otherDeduction || 0], ['个税', rec.tax || 0], ['实发工资', rec.netPay || 0]];
+        var rows = [['项目','金额'], ['月份', rec.month], ['底薪', rec.baseSalary || 0], ['加班费', rec.totalOvertimePay || 0], ['其他收入', rec.otherIncome || 0], ['自定义增减', rec.customTotal || 0], ['应发工资', rec.grossPay || 0], ['社保', rec.socialInsurance || 0], ['公积金', rec.housingFund || 0], ['其他扣除', rec.otherDeduction || 0], ['个税', rec.tax || 0], ['实发工资', rec.netPay || 0]];
         downloadCSV('工资条_' + currentMonthKey + '.csv', rows);
         showToast('✅ CSV 已导出');
       }
@@ -2204,6 +2236,7 @@
         text += '底薪：¥' + formatNumber(rec.baseSalary || 0) + '\n';
         text += '加班费：¥' + formatNumber(rec.totalOvertimePay || 0) + '\n';
         text += '其他收入：¥' + formatNumber(rec.otherIncome || 0) + '\n';
+        text += '自定义增减：¥' + formatNumber(rec.customTotal || 0) + '\n';
         text += '应发工资：¥' + formatNumber(rec.grossPay || 0) + '\n';
         text += '社保：¥' + formatNumber(rec.socialInsurance || 0) + '\n';
         text += '公积金：¥' + formatNumber(rec.housingFund || 0) + '\n';
@@ -2346,6 +2379,9 @@
             if (!confirm('清空当前月份参数？')) return;
             ['baseSalary','otherIncome','socialInsurance','housingFund','otherDeduction'].forEach(function(id) { var el = $(id); if (el) el.value = ''; });
             ['deduct_child','deduct_education','deduct_medical','deduct_loan','deduct_rent','deduct_elder','deduct_infant'].forEach(function(id) { var el = $(id); if (el) el.value = 0; });
+            customItems = [];
+            saveCustomItems();
+            renderCustomItems();
             currentDayDetails = {};
             if (currentMonthKey) {
               saveOvertimeData();
@@ -2372,7 +2408,7 @@
             saveAllParams();
             if ($('customItemName')) $('customItemName').value = '';
             if ($('customItemAmount')) $('customItemAmount').value = '';
-            showToast('✅ 已添加自定义项目');
+            showToast('✅ 已添加自定义项目: ' + name + ' ' + (type === 'add' ? '+' : '-') + amount.toFixed(2));
           });
         }
 

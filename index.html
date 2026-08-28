@@ -29,13 +29,18 @@
     ::-webkit-scrollbar-thumb:hover {
       background: var(--primary);
     }
+    /* ===== 动态主题色系统 ===== */
     :root {
-      --primary: #6c5ce7;
-      --primary-light: rgba(108, 92, 231, 0.15);
-      --primary-glow: rgba(108, 92, 231, 0.25);
-      --primary-dark: #5a4bd1;
-      --secondary: #00cec9;
-      --accent: #fd79a8;
+      --primary-h: 252; --primary-s: 72%; --primary-l: 62%;
+      --secondary-h: 177; --secondary-s: 100%; --secondary-l: 40%;
+      --accent-h: 340; --accent-s: 100%; --accent-l: 70%;
+
+      --primary: hsl(var(--primary-h), var(--primary-s), var(--primary-l));
+      --primary-light: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.15);
+      --primary-glow: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.25);
+      --primary-dark: hsl(var(--primary-h), var(--primary-s), calc(var(--primary-l) - 12%));
+      --secondary: hsl(var(--secondary-h), var(--secondary-s), var(--secondary-l));
+      --accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
       --bg: #0a0e1a;
       --card-bg: rgba(255, 255, 255, 0.04);
       --card-border: rgba(255, 255, 255, 0.06);
@@ -57,37 +62,50 @@
       --hover-bg: rgba(108, 92, 231, 0.05);
       --modal-bg: rgba(20, 24, 40, 0.95);
       --toast-bg: rgba(0, 0, 0, 0.85);
-      --toast-color: var(--toast-color);
+      --toast-color: #ffffff;
+      --font-scale: 1;
     }
 
+    /* 强调色预设 */
+    [data-accent="purple"] { --primary-h: 252; --primary-s: 72%; --primary-l: 62%; --secondary-h: 177; --secondary-s: 100%; --secondary-l: 40%; --accent-h: 340; --accent-s: 100%; --accent-l: 70%; }
+    [data-accent="cyan"] { --primary-h: 190; --primary-s: 90%; --primary-l: 50%; --secondary-h: 160; --secondary-s: 80%; --secondary-l: 45%; --accent-h: 320; --accent-s: 90%; --accent-l: 65%; }
+    [data-accent="pink"] { --primary-h: 330; --primary-s: 80%; --primary-l: 60%; --secondary-h: 280; --secondary-s: 70%; --secondary-l: 55%; --accent-h: 25; --accent-s: 95%; --accent-l: 60%; }
+    [data-accent="blue"] { --primary-h: 215; --primary-s: 85%; --primary-l: 55%; --secondary-h: 195; --secondary-s: 90%; --secondary-l: 50%; --accent-h: 45; --accent-s: 100%; --accent-l: 65%; }
+    [data-accent="green"] { --primary-h: 145; --primary-s: 70%; --primary-l: 45%; --secondary-h: 170; --secondary-s: 80%; --secondary-l: 40%; --accent-h: 35; --accent-s: 95%; --accent-l: 60%; }
+    [data-accent="orange"] { --primary-h: 25; --primary-s: 95%; --primary-l: 55%; --secondary-h: 45; --secondary-s: 100%; --secondary-l: 55%; --accent-h: 340; --accent-s: 80%; --accent-l: 60%; }
+
     [data-theme="light"] {
-      --primary: #5b4cdb;
-      --primary-light: rgba(91, 76, 219, 0.10);
-      --primary-glow: rgba(91, 76, 219, 0.15);
+      --primary: var(--primary-dark);
+      --primary-light: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.10);
+      --primary-glow: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.15);
       --primary-dark: #4a3ec7;
-      --secondary: #00b5b0;
-      --accent: #e85d8e;
+      --secondary: var(--secondary);
+      --accent: var(--accent);
       --bg: #f5f7fa;
       --card-bg: #ffffff;
       --card-border: rgba(0, 0, 0, 0.06);
       --text-primary: #1a1a2e;
-      --text-secondary: #5a6a8a;
+      --text-secondary: #4a5568;
       --text-muted: #8892b0;
-      --shadow-glow: 0 4px 24px rgba(91, 76, 219, 0.08);
+      --shadow-glow: 0 4px 24px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.08);
       --color-income: #00a884;
       --color-expense: #e74c3c;
       --color-warning: #f39c12;
       --input-bg: #fafbfc;
       --input-border: rgba(0, 0, 0, 0.08);
       --input-focus-bg: #ffffff;
-      --hover-bg: rgba(91, 76, 219, 0.05);
+      --hover-bg: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.05);
       --modal-bg: #ffffff;
       --toast-bg: #1a1a2e;
-      --toast-color: var(--toast-color);
+      --toast-color: #ffffff;
     }
 
     html, body {
       transition: background-color 0.4s ease, color 0.4s ease;
+    }
+    /* 全局过渡 */
+    .card, .btn, input, select, .calendar-day, .modal-box, .time-segment, .annual-summary-item, .history-table-wrap, .history-table th, .history-table td, .salary-card {
+      transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
     }
     body {
       font-family: "Inter", "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
@@ -97,7 +115,7 @@
       color: var(--text-primary);
       overflow-x: hidden;
       position: relative;
-      font-size: 14px;
+      font-size: calc(14px * var(--font-scale));
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
     }
@@ -121,7 +139,7 @@
     .glow-orb.orb1 {
       width: 400px;
       height: 400px;
-      background: rgba(91, 76, 219, 0.08);
+      background: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.08);
       top: -100px;
       right: -100px;
     }
@@ -174,8 +192,11 @@
       left: -50%;
       width: 200%;
       height: 200%;
-      background: conic-gradient(from 0deg, transparent, rgba(91, 76, 219, 0.12), transparent, rgba(0, 181, 176, 0.10), transparent);
+      background: conic-gradient(from 0deg, transparent, hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.12), transparent, rgba(0, 181, 176, 0.10), transparent);
       animation: rotateBg 20s linear infinite;
+    }
+    [data-theme="light"] .app-header::before {
+      opacity: 0.3;
     }
     @keyframes rotateBg {
       0% { transform: rotate(0deg); }
@@ -191,12 +212,13 @@
       font-size: 1.6rem;
       font-weight: 800;
       letter-spacing: 2px;
-      background: linear-gradient(135deg, #6c5ce7, #00cec9, #fd79a8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      background-size: 300% 300%;
-      animation: gradientShift 4s ease-in-out infinite;
+      color: var(--primary);
+      animation: brandColorShift 4s ease-in-out infinite;
+    }
+    @keyframes brandColorShift {
+      0%, 100% { color: var(--primary); filter: drop-shadow(0 0 8px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.3)); }
+      33% { color: var(--secondary); filter: drop-shadow(0 0 8px hsla(var(--secondary-h), var(--secondary-s), var(--secondary-l), 0.3)); }
+      66% { color: var(--accent); filter: drop-shadow(0 0 8px hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.3)); }
     }
     @keyframes gradientShift {
       0%, 100% { background-position: 0% 50%; }
@@ -204,8 +226,8 @@
     }
     .app-header .brand .brand-icon {
       font-size: 1.8rem;
-      -webkit-text-fill-color: initial;
       background: none;
+      color: inherit;
       animation: pulseIcon 2s ease-in-out infinite;
     }
     @keyframes pulseIcon {
@@ -220,6 +242,18 @@
       letter-spacing: 3px;
       margin-top: 2px;
       font-weight: 300;
+    }
+    .app-header .brand .version {
+      font-size: 0.6rem;
+      font-weight: 700;
+      background: var(--primary);
+      color: #fff;
+      padding: 2px 8px;
+      border-radius: var(--radius-xl);
+      letter-spacing: 1px;
+      margin-left: 4px;
+      text-shadow: none;
+      animation: none;
     }
     .bottom-nav {
       display: flex;
@@ -268,7 +302,7 @@
     .bottom-nav .nav-btn.active {
       color: var(--primary);
       border-bottom-color: var(--primary);
-      background: rgba(91, 76, 219, 0.08);
+      background: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.08);
     }
     .bottom-nav .nav-btn.active .tab-icon {
       transform: translateY(-2px) scale(1.08);
@@ -303,7 +337,7 @@
       -webkit-backdrop-filter: blur(20px) saturate(180%);
       border-radius: var(--radius-lg);
       border: 1px solid var(--card-border);
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06), 0 8px 32px rgba(91, 76, 219, 0.04);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06), 0 8px 32px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.04);
       transition: all var(--transition);
       opacity: 0;
       transform: translateY(30px) scale(0.98);
@@ -317,7 +351,7 @@
     .card-header {
       padding: 14px 18px;
       font-weight: 600;
-      font-size: 0.8rem;
+      font-size: 0.95rem;
       display: flex;
       align-items: center;
       flex-wrap: wrap;
@@ -332,7 +366,10 @@
     @media(max-width:640px) {
       .card-body { padding: 12px 14px; }
       .card-header { padding: 12px 14px; font-size: 0.95rem; }
-    }
+    
+      .history-table-wrap { display: none; }
+      .salary-card-list { display: flex; }
+}
     .btn {
       display: inline-flex;
       align-items: center;
@@ -350,7 +387,7 @@
     }
     .btn:active { transform: scale(0.94); }
     .btn-primary {
-      background: linear-gradient(135deg, #6c5ce7, #a29bfe, #6c5ce7);
+      background: linear-gradient(135deg, var(--primary), hsl(var(--primary-h), var(--primary-s), calc(var(--primary-l) + 15%)), var(--primary));
       background-size: 300% 300%;
       color: var(--toast-color);
       animation: btnShimmer 3s ease-in-out infinite;
@@ -371,7 +408,7 @@
     }
     .btn-outline:hover {
       border-color: var(--primary);
-      background: rgba(91, 76, 219, 0.05);
+      background: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.05);
     }
     .btn-ghost {
       background: rgba(0, 0, 0, 0.02);
@@ -383,16 +420,25 @@
       color: var(--text-primary);
     }
     .btn-sm {
-      padding: 4px 10px;
-      font-size: 0.95rem;
-      min-height: 28px;
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      min-height: 36px;
     }
-    .btn-pdf {
+    .btn-export {
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(52, 152, 219, 0.15);
+    }
+    .btn-export:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(52, 152, 219, 0.25);
+    }
+    .btn-danger {
       background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-      color: var(--toast-color);
+      color: #fff;
       box-shadow: 0 4px 16px rgba(255, 107, 107, 0.15);
     }
-    .btn-pdf:hover {
+    .btn-danger:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 24px rgba(255, 107, 107, 0.25);
     }
@@ -417,7 +463,7 @@
       font-size: 0.75rem;
       transition: all 0.3s ease;
       width: 100%;
-      min-height: 40px;
+      min-height: 44px;
       color: var(--text-primary);
       font-family: inherit;
       outline: none;
@@ -425,7 +471,7 @@
     .form-group input:focus,
     .form-group select:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(91, 76, 219, 0.08);
+      box-shadow: 0 0 0 3px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.15);
       background: var(--card-bg);
     }
     .params-grid {
@@ -452,7 +498,7 @@
     .hide { display: none !important; }
     .badge {
       display: inline-block;
-      font-size: 0.45rem;
+      font-size: 0.7rem;
       background: rgba(108, 92, 231, 0.08);
       color: var(--primary);
       padding: 1px 8px;
@@ -523,15 +569,16 @@
       border-radius: var(--radius-xl);
       border: 1px solid rgba(0, 0, 0, 0.08);
       text-align: center;
-      font-size: 0.75rem;
+      font-size: 0.95rem;
       background: var(--input-bg);
+      min-height: 44px;
       color: var(--text-primary);
       outline: none;
     }
     .modal-box input:focus,
     .modal-box select:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(91, 76, 219, 0.08);
+      box-shadow: 0 0 0 3px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.15);
     }
     .modal-actions {
       display: flex;
@@ -582,7 +629,7 @@
     }
     .time-segment input[type="time"]:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(91, 76, 219, 0.08);
+      box-shadow: 0 0 0 3px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.15);
     }
     .time-segment input[type="time"]::-webkit-calendar-picker-indicator {
       filter: invert(0.6);
@@ -610,7 +657,7 @@
       background: rgba(255, 80, 80, 0.15);
     }
     .time-segment label {
-      font-size: 0.6rem;
+      font-size: 0.7rem;
       color: var(--text-secondary);
       font-weight: 500;
     }
@@ -666,7 +713,7 @@
     }
     .modal-hours-input-wrap input[type="number"]:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.15);
+      box-shadow: 0 0 0 4px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.15);
     }
     .modal-hours-input-wrap input[type="number"]::placeholder {
       color: var(--text-muted);
@@ -691,7 +738,7 @@
       flex-wrap: wrap;
       gap: 8px;
       justify-content: center;
-      font-size: 0.75rem;
+      font-size: 0.85rem;
       background: rgba(108, 92, 231, 0.04);
       border-radius: var(--radius-md);
       padding: 4px 10px;
@@ -780,15 +827,16 @@
       justify-content: space-between;
       padding: 3px 0;
       font-weight: 600;
-      font-size: 0.8rem;
+      font-size: 0.95rem;
     }
     .calendar-nav button {
       background: rgba(0, 0, 0, 0.02);
       border: 1px solid rgba(0, 0, 0, 0.02);
       border-radius: var(--radius-xl);
-      padding: 2px 8px;
+      padding: 4px 10px;
       cursor: pointer;
-      font-size: 0.75rem;
+      font-size: 0.85rem;
+      min-height: 32px;
       color: var(--text-primary);
       transition: all 0.2s;
     }
@@ -804,8 +852,8 @@
       margin-bottom: 8px;
     }
     .month-picker button {
-      width: 26px;
-      height: 26px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       border: 1px solid rgba(0, 0, 0, 0.03);
       background: rgba(0, 0, 0, 0.02);
@@ -823,13 +871,13 @@
     }
     .month-picker .display {
       font-weight: 600;
-      font-size: 0.85rem;
-      min-width: 60px;
+      font-size: 0.95rem;
+      min-width: 80px;
       text-align: center;
     }
     .section-title {
       font-weight: 600;
-      font-size: 0.75rem;
+      font-size: 0.9rem;
       margin: 8px 0 4px;
       padding-bottom: 3px;
       border-bottom: 1px solid rgba(0, 0, 0, 0.02);
@@ -845,6 +893,7 @@
       font-size: 0.9rem;
       transition: transform 0.3s ease;
       color: var(--text-secondary);
+      display: inline-block;
     }
     .section-title.collapsed .toggle-icon {
       transform: rotate(-90deg);
@@ -874,7 +923,7 @@
       border-bottom: 1px solid rgba(0, 0, 0, 0.04);
     }
     .history-table th {
-      background: rgba(91, 76, 219, 0.08);
+      background: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.08);
       font-weight: 600;
       color: var(--primary);
       font-size: 0.85rem;
@@ -890,10 +939,11 @@
       background: rgba(255, 80, 80, 0.06);
       border: 1px solid rgba(255, 80, 80, 0.06);
       color: var(--color-expense);
-      padding: 1px 6px;
+      padding: 2px 8px;
       border-radius: var(--radius-xl);
       font-size: 0.85rem;
       cursor: pointer;
+      min-height: 28px;
     }
     .salary-export-group {
       display: flex;
@@ -913,8 +963,20 @@
     }
     .annual-summary-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 4px;
+    }
+    @media(min-width:640px) {
+      .annual-summary-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    @media(min-width:900px) {
+      .annual-summary-grid {
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 700px;
+        margin: 0 auto;
+      }
     }
     .annual-summary-item {
       background: rgba(0, 0, 0, 0.02);
@@ -924,12 +986,12 @@
       border: 1px solid rgba(0, 0, 0, 0.01);
     }
     .annual-summary-item .alabel {
-      font-size: 0.45rem;
+      font-size: 0.7rem;
       color: var(--text-secondary);
     }
     .annual-summary-item .avalue {
       font-weight: 700;
-      font-size: 0.8rem;
+      font-size: 0.95rem;
       margin-top: 1px;
     }
     @media(max-width:640px) {
@@ -937,7 +999,7 @@
       .app-header .brand { font-size: 1.3rem; }
       .bottom-nav .nav-btn { min-height: 40px; padding: 6px 2px 4px; }
       .bottom-nav .nav-btn .tab-icon { font-size: 0.85rem; }
-      .bottom-nav .nav-btn .tab-label { font-size: 0.45rem; }
+      .bottom-nav .nav-btn .tab-label { font-size: 0.7rem; }
       .calendar-day { min-height: 48px; }
       .calendar-day .day-number { font-size: 0.9rem; }
       .overtime-badge { font-size: 0.5rem; padding: 1px 4px; }
@@ -947,16 +1009,938 @@
       .time-segment { gap: 3px; padding: 3px 4px; }
       .time-segment label { font-size: 0.5rem; }
     }
+        @media(min-width:641px) {
+      .salary-card-list { display: none; }
+      .history-table-wrap { display: block; }
+    }
     @media(max-width:440px) {
       .params-grid { grid-template-columns: 1fr; gap: 6px; }
       .bottom-nav .nav-btn .tab-label { display: none; }
-      .bottom-nav .nav-btn { min-height: 44px; }
+      .bottom-nav .nav-btn { min-height: 48px; }
       .bottom-nav .nav-btn .tab-icon { font-size: 1.3rem; }
       .modal-box { padding: 16px; }
-      .time-segment input[type="time"] { width: 65px; font-size: 0.7rem; padding: 3px 4px; }
+      .time-segment input[type="time"] { width: 65px; font-size: 0.75rem; padding: 3px 4px; }
       .calendar-day { min-height: 42px; padding: 2px 1px; }
-      .calendar-day .day-number { font-size: 0.8rem; }
+      .calendar-day .day-number { font-size: 0.85rem; }
+      .custom-item-input-group { flex-direction: column; align-items: stretch; }
+      .custom-item-input-group input[type="text"],
+      .custom-item-input-group input[type="number"],
+      .custom-item-input-group select { width: 100%; }
     }
+
+    /* 自定义项 */
+    .custom-item-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.02);
+    }
+    .custom-item-row:last-child { border-bottom: none; }
+    .custom-item-input-group {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .custom-item-input-group input,
+    .custom-item-input-group select {
+      min-height: 40px;
+      padding: 6px 10px;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--input-border);
+      background: var(--input-bg);
+      color: var(--text-primary);
+      font-size: 0.85rem;
+      outline: none;
+    }
+    .custom-item-input-group input:focus,
+    .custom-item-input-group select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.15);
+    }
+    .custom-item-input-group input[type="text"] { flex: 1; min-width: 80px; }
+    .custom-item-input-group input[type="number"] { width: 80px; }
+    .custom-item-input-group select { width: auto; min-width: 80px; }
+
+    /* 空状态 */
+    .empty-state {
+      text-align: center;
+      padding: 24px 16px;
+      color: var(--text-secondary);
+    }
+    .empty-state .empty-icon {
+      font-size: 2.5rem;
+      margin-bottom: 8px;
+      opacity: 0.5;
+    }
+    .empty-state .empty-text {
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+    }
+    .empty-state .empty-hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* 移动端工资卡片列表 */
+    .salary-card-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .salary-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 6px;
+      align-items: center;
+    }
+    .salary-card .sc-month {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 1rem;
+    }
+    .salary-card .sc-net {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--color-income);
+      text-align: right;
+    }
+    .salary-card .sc-row {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      padding: 2px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.02);
+    }
+    .salary-card .sc-row:last-child { border-bottom: none; }
+    .salary-card .sc-row .sc-label { color: var(--text-muted); }
+    .salary-card .sc-row .sc-value { font-weight: 500; color: var(--text-primary); }
+    .salary-card .sc-row .sc-value.tax { color: var(--color-expense); }
+    .salary-card .sc-actions {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 4px;
+    }
+
+    /* 主题切换按钮 */
+    .theme-toggle-btn {
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      color: var(--text-primary);
+    }
+    .theme-toggle-btn:hover {
+      transform: scale(1.1) rotate(15deg);
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+    .theme-toggle-btn.switching {
+      animation: themeSpin 0.6s ease-in-out;
+    }
+    @keyframes themeSpin {
+      0% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(180deg) scale(0.8); }
+      100% { transform: rotate(360deg) scale(1); }
+    }
+
+    /* 日历类型色点 */
+    .day-type-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin-top: 2px;
+    }
+    .day-type-dot.weekday { background: var(--primary); }
+    .day-type-dot.weekend { background: var(--color-income); }
+    .day-type-dot.holiday { background: var(--color-expense); }
+
+    /* 减少动画 */
+
+    /* ===== 背景纹理层 ===== */
+    .bg-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      background-image: 
+        linear-gradient(rgba(108, 92, 231, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(108, 92, 231, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+      -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+    }
+    [data-theme="light"] .bg-grid {
+      background-image: 
+        linear-gradient(hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.04) 1px, transparent 1px);
+    }
+
+    /* ===== 增强的Glow Orb ===== */
+    .glow-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.6;
+      will-change: transform;
+    }
+    .glow-orb.orb1 {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.15) 0%, transparent 70%);
+      top: -150px;
+      right: -100px;
+      animation: floatOrb1 25s ease-in-out infinite alternate;
+    }
+    .glow-orb.orb2 {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(0, 206, 201, 0.12) 0%, transparent 70%);
+      bottom: -100px;
+      left: -100px;
+      animation: floatOrb2 30s ease-in-out infinite alternate;
+    }
+    .glow-orb.orb3 {
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, rgba(253, 121, 168, 0.1) 0%, transparent 70%);
+      top: 40%;
+      left: 60%;
+      animation: floatOrb3 20s ease-in-out infinite alternate;
+    }
+    @keyframes floatOrb1 {
+      0% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(40px, -60px) scale(1.15); }
+      66% { transform: translate(-30px, 30px) scale(0.9); }
+      100% { transform: translate(20px, -20px) scale(1.05); }
+    }
+    @keyframes floatOrb2 {
+      0% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(-50px, 40px) scale(1.1); }
+      66% { transform: translate(30px, -30px) scale(0.95); }
+      100% { transform: translate(-20px, 20px) scale(1.08); }
+    }
+    @keyframes floatOrb3 {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-40px, -50px) scale(1.2); }
+      100% { transform: translate(30px, 30px) scale(0.9); }
+    }
+
+    /* ===== 主题切换全局过渡 ===== */
+    html.theme-transition,
+    html.theme-transition *,
+    html.theme-transition *::before,
+    html.theme-transition *::after {
+      transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                  color 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                  border-color 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                  box-shadow 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                  fill 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                  stroke 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    /* ===== 优化空状态 ===== */
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--text-secondary);
+      position: relative;
+    }
+    .empty-state .empty-icon {
+      font-size: 4rem;
+      margin-bottom: 16px;
+      opacity: 0.6;
+      display: inline-block;
+      animation: emptyFloat 3s ease-in-out infinite;
+      filter: drop-shadow(0 8px 24px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.15));
+    }
+    .empty-state .empty-text {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .empty-state .empty-hint {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    .empty-state .empty-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 24px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+      border-radius: var(--radius-xl);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 4px 16px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.25);
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+    .empty-state .empty-action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(108, 92, 231, 0.35);
+    }
+    @keyframes emptyFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      25% { transform: translateY(-8px) rotate(2deg); }
+      75% { transform: translateY(-4px) rotate(-2deg); }
+    }
+
+    /* ===== 粒子Canvas增强 ===== */
+    #particleCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.8;
+    }
+
+    /* ===== 修复Light模式下的按钮渐变 ===== */
+    [data-theme="light"] .btn-primary {
+      background: linear-gradient(135deg, var(--primary-dark), hsl(var(--primary-h), var(--primary-s), calc(var(--primary-l) + 10%)), var(--primary-dark));
+      background-size: 300% 300%;
+      color: #ffffff;
+    }
+    /* ===== 优化卡片hover在light模式 ===== */
+    [data-theme="light"] .card:hover {
+      box-shadow: 0 8px 32px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.12), 0 2px 8px rgba(0,0,0,0.06);
+      border-color: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.12);
+    }
+
+    /* ===== 导航按钮active优化 ===== */
+    [data-theme="light"] .bottom-nav .nav-btn.active {
+      background: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.08);
+      color: var(--primary);
+    }
+
+    /* ===== 日历优化 ===== */
+    [data-theme="light"] .calendar-day:hover {
+      background: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.06);
+      border-color: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.15);
+    }
+    [data-theme="light"] .calendar-day.in-range {
+      background: rgba(91, 76, 219, 0.1) !important;
+    }
+
+    /* ===== 模态框light优化 ===== */
+    [data-theme="light"] .modal-overlay {
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    /* ===== 历史表格light优化 ===== */
+    [data-theme="light"] .history-table-wrap {
+      background: #fafbfc;
+      border-color: rgba(0,0,0,0.04);
+    }
+    [data-theme="light"] .history-table th {
+      background: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.06);
+    }
+
+    /* ===== 年度汇总light优化 ===== */
+    [data-theme="light"] .annual-summary-item {
+      background: rgba(0,0,0,0.02);
+      border-color: rgba(0,0,0,0.03);
+    }
+
+    /* ===== 工资卡片light优化 ===== */
+    [data-theme="light"] .salary-card {
+      background: #ffffff;
+      border-color: rgba(0,0,0,0.06);
+    }
+
+    /* ===== 自定义项light优化 ===== */
+    [data-theme="light"] .custom-item-input-group input,
+    [data-theme="light"] .custom-item-input-group select {
+      background: #fafbfc;
+      border-color: rgba(0,0,0,0.08);
+    }
+
+    /* ===== 时间区段light优化 ===== */
+    [data-theme="light"] .time-segments-area {
+      background: #f5f7fa;
+      border-color: rgba(0,0,0,0.06);
+    }
+    [data-theme="light"] .time-segment {
+      background: #ffffff;
+      border-color: rgba(0,0,0,0.06);
+    }
+    [data-theme="light"] .time-segment input[type="time"] {
+      background: #fafbfc;
+      border-color: rgba(0,0,0,0.08);
+    }
+
+    /* ===== 批量模态框light优化 ===== */
+    [data-theme="light"] #batchModalOverlay .modal-box,
+    [data-theme="light"] #importModalOverlay .modal-box {
+      background: #ffffff;
+      border-color: rgba(0,0,0,0.08);
+    }
+
+    /* ===== 导入文件输入light优化 ===== */
+    [data-theme="light"] #importFileInput {
+      background: #fafbfc;
+      border-color: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.15);
+    }
+
+    /* ===== 加班统计light优化 ===== */
+    [data-theme="light"] .overtime-stats,
+    [data-theme="light"] .overtime-multiplier {
+      background: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.03);
+    }
+
+    /* ===== 模态框小时输入light优化 ===== */
+    [data-theme="light"] .modal-hours-input-wrap {
+      background: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.06);
+      border-color: rgba(91, 76, 219, 0.1);
+    }
+    [data-theme="light"] .modal-hours-input-wrap input[type="number"] {
+      background: #ffffff;
+      border-color: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.15);
+    }
+
+    /* ===== 添加时段按钮light优化 ===== */
+    [data-theme="light"] .add-segment-btn {
+      border-color: rgba(0,0,0,0.12);
+      color: var(--text-secondary);
+    }
+    [data-theme="light"] .add-segment-btn:hover {
+      border-color: var(--primary);
+      background: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.05);
+    }
+
+    /* ===== 导航wrapper light优化 ===== */
+    [data-theme="light"] .nav-wrapper {
+      border-color: rgba(0,0,0,0.06);
+    }
+
+    /* ===== 底部导航light优化 ===== */
+    [data-theme="light"] .bottom-nav {
+      border-color: rgba(0,0,0,0.04);
+    }
+
+    /* ===== 主题切换按钮增强 ===== */
+    .theme-toggle-btn {
+      position: relative;
+      overflow: hidden;
+    }
+    .theme-toggle-btn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: var(--primary);
+      opacity: 0.1;
+      transform: translate(-50%, -50%);
+      transition: width 0.4s ease, height 0.4s ease;
+    }
+    .theme-toggle-btn:hover::after {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ===== 页面加载动画 ===== */
+    .main-app {
+      opacity: 0;
+      animation: fadeInApp 0.6s ease forwards;
+      animation-delay: 0.1s;
+    }
+    @keyframes fadeInApp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== 空状态暗色模式优化 ===== */
+    [data-theme="dark"] .empty-state .empty-icon {
+      filter: drop-shadow(0 8px 24px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.25));
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      #particleCanvas { display: none; }
+      .glow-orb { animation: none; }
+    }
+
+    /* ============================================================
+       ===== 主题中心面板样式 =====
+       ============================================================ */
+    .theme-preview-card {
+      background: linear-gradient(135deg, var(--primary-light) 0%, var(--card-bg) 100%);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .theme-preview-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(from 0deg, transparent, var(--primary-glow), transparent, hsla(var(--secondary-h), var(--secondary-s), var(--secondary-l), 0.08), transparent);
+      animation: rotateBg 20s linear infinite;
+      opacity: 0.5;
+    }
+    .theme-preview-card .preview-title {
+      position: relative;
+      z-index: 1;
+      font-size: 1.2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+    .theme-preview-card .preview-sample {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      max-width: 280px;
+      margin: 0 auto;
+    }
+    .preview-sample-item {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 10px 6px;
+      font-size: 0.75rem;
+    }
+    .preview-sample-item .ps-label { color: var(--text-secondary); font-size: 0.65rem; }
+    .preview-sample-item .ps-value { color: var(--primary); font-weight: 700; font-size: 0.9rem; margin-top: 2px; }
+    .preview-sample-item .ps-bar {
+      height: 4px;
+      border-radius: 2px;
+      background: var(--primary-light);
+      margin-top: 6px;
+      overflow: hidden;
+    }
+    .preview-sample-item .ps-bar-inner {
+      height: 100%;
+      width: 60%;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 2px;
+    }
+
+    .theme-mode-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .theme-mode-option {
+      background: var(--input-bg);
+      border: 2px solid transparent;
+      border-radius: var(--radius-md);
+      padding: 14px 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    .theme-mode-option:hover {
+      border-color: var(--primary-glow);
+      transform: translateY(-2px);
+    }
+    .theme-mode-option.active {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      box-shadow: 0 4px 16px var(--primary-glow);
+    }
+    .theme-mode-option .mode-icon {
+      font-size: 1.6rem;
+      margin-bottom: 4px;
+      display: block;
+    }
+    .theme-mode-option .mode-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .theme-mode-option .mode-hint {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .theme-mode-option.active .mode-label { color: var(--primary); }
+
+    .accent-color-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .accent-color-option {
+      background: var(--input-bg);
+      border: 2px solid transparent;
+      border-radius: var(--radius-md);
+      padding: 12px 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    .accent-color-option:hover {
+      transform: translateY(-2px);
+      border-color: var(--card-border);
+    }
+    .accent-color-option.active {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      box-shadow: 0 4px 16px var(--primary-glow);
+    }
+    .accent-color-option .ac-swatch {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--ac-preview);
+      margin: 0 auto 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      transition: transform 0.3s ease;
+      position: relative;
+    }
+    .accent-color-option.active .ac-swatch {
+      transform: scale(1.15);
+      box-shadow: 0 0 0 3px var(--card-bg), 0 0 0 5px var(--primary);
+    }
+    .accent-color-option .ac-swatch::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 700;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .accent-color-option.active .ac-swatch::after {
+      transform: translate(-50%, -50%) scale(1);
+    }
+    .accent-color-option .ac-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      transition: color 0.3s ease;
+    }
+    .accent-color-option.active .ac-label {
+      color: var(--primary);
+    }
+
+    .theme-toggle-list {
+      background: var(--input-bg);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--input-border);
+      padding: 4px 12px;
+      margin-bottom: 16px;
+    }
+    .theme-toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.02);
+    }
+    .theme-toggle-row:last-child { border-bottom: none; }
+    .theme-toggle-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .theme-toggle-info .tt-icon {
+      font-size: 1.3rem;
+      width: 32px;
+      text-align: center;
+    }
+    .theme-toggle-info .tt-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .theme-toggle-info .tt-hint {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .theme-switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 26px;
+      flex-shrink: 0;
+    }
+    .theme-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .theme-switch-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--input-border);
+      transition: 0.3s;
+      border-radius: 26px;
+    }
+    .theme-switch-slider::before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background: var(--card-bg);
+      transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border-radius: 50%;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .theme-switch input:checked + .theme-switch-slider {
+      background: var(--primary);
+    }
+    .theme-switch input:checked + .theme-switch-slider::before {
+      transform: translateX(22px);
+    }
+
+    .font-size-slider-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 0;
+    }
+    .font-size-slider-wrap .fs-label-small {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .font-size-slider-wrap .fs-label-large {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .font-size-slider {
+      flex: 1;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 6px;
+      border-radius: 3px;
+      background: var(--input-border);
+      outline: none;
+      transition: background 0.3s;
+    }
+    .font-size-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--primary);
+      cursor: pointer;
+      box-shadow: 0 2px 8px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.3);
+      transition: transform 0.2s ease;
+    }
+    .font-size-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+    .font-size-slider::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--primary);
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 2px 8px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.3);
+    }
+
+    /* ===== 全局浮动计算按钮 ===== */
+    .fab-calculate {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 100;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: none;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1px;
+      box-shadow: 0 4px 20px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.35);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      animation: fabPulse 2s ease-in-out infinite;
+    }
+    .fab-calculate:hover {
+      transform: scale(1.1) translateY(-2px);
+      box-shadow: 0 8px 32px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.45);
+    }
+    .fab-calculate:active {
+      transform: scale(0.95);
+    }
+    .fab-calculate .fab-icon {
+      font-size: 1.3rem;
+      line-height: 1;
+    }
+    .fab-calculate .fab-label {
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    @keyframes fabPulse {
+      0%, 100% { box-shadow: 0 4px 20px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.35); }
+      50% { box-shadow: 0 4px 24px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.5); }
+    }
+    @media(max-width:640px) {
+      .fab-calculate {
+        bottom: 16px;
+        right: 16px;
+        width: 52px;
+        height: 52px;
+      }
+      .fab-calculate .fab-icon { font-size: 1.1rem; }
+      .fab-calculate .fab-label { font-size: 0.55rem; }
+    }
+    /* ===== 桌面应用骨架 ===== */
+    .app-frame { display: flex; flex-direction: column; height: 100vh; overflow: hidden; position: relative; z-index: 1; }
+    .titlebar { height: 40px; background: var(--card-bg); border-bottom: 1px solid var(--card-border); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; flex-shrink: 0; -webkit-app-region: drag; user-select: none; }
+    .titlebar-left { display: flex; align-items: center; gap: 10px; }
+    .app-logo { font-size: 1.1rem; }
+    .app-name { font-weight: 700; font-size: 0.9rem; color: var(--text-primary); letter-spacing: 1px; }
+    .app-version { font-size: 0.65rem; background: var(--primary); color: #fff; padding: 1px 6px; border-radius: 10px; }
+    .window-controls { display: flex; gap: 8px; }
+    .win-btn { width: 12px; height: 12px; border-radius: 50%; border: none; cursor: pointer; transition: opacity 0.2s; }
+    .win-btn:hover { opacity: 0.8; }
+    .win-btn.minimize { background: #fbbf24; }
+    .win-btn.maximize { background: #34d399; }
+    .win-btn.close { background: #f87171; }
+
+    .menubar { height: 34px; background: var(--card-bg); border-bottom: 1px solid var(--card-border); display: flex; align-items: center; padding: 0 12px; gap: 2px; font-size: 0.8rem; flex-shrink: 0; user-select: none; }
+    .menu-item { position: relative; padding: 4px 12px; border-radius: 4px; cursor: pointer; color: var(--text-secondary); font-size: 0.8rem; transition: all 0.15s; }
+    .menu-item:hover { background: var(--hover-bg); color: var(--text-primary); }
+    .menu-dropdown { display: none; position: absolute; top: 100%; left: 0; background: var(--modal-bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 6px; min-width: 220px; box-shadow: 0 12px 40px rgba(0,0,0,0.3); z-index: 1000; margin-top: 2px; }
+    .menu-item:hover .menu-dropdown { display: block; }
+    .menu-dropdown-item { padding: 8px 12px; border-radius: 6px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--text-primary); gap: 16px; }
+    .menu-dropdown-item:hover { background: var(--hover-bg); }
+    .menu-dropdown-item .shortcut { font-size: 0.7rem; color: var(--text-muted); background: rgba(255,255,255,0.04); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--card-border); }
+    .menu-separator { height: 1px; background: var(--card-border); margin: 6px 0; }
+
+    .app-body { display: flex; flex: 1; overflow: hidden; }
+    .sidebar { width: 210px; flex-shrink: 0; background: var(--card-bg); border-right: 1px solid var(--card-border); display: flex; flex-direction: column; padding: 16px 10px; overflow-y: auto; }
+    .sidebar-header { padding: 0 10px 16px; border-bottom: 1px solid var(--card-border); margin-bottom: 12px; }
+    .sidebar-brand { display: flex; align-items: center; gap: 8px; font-size: 1.1rem; font-weight: 700; color: var(--primary); }
+    .sidebar-version { font-size: 0.6rem; background: var(--primary); color: #fff; padding: 1px 6px; border-radius: 10px; margin-left: 4px; }
+    .sidebar-subtitle { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; letter-spacing: 1px; }
+    .sidebar-nav { display: flex; flex-direction: column; gap: 2px; }
+    .sidebar-nav .nav-btn { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; border: none; background: transparent; color: var(--text-secondary); font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: all 0.2s; font-family: inherit; text-align: left; width: 100%; }
+    .sidebar-nav .nav-btn:hover { background: var(--hover-bg); color: var(--text-primary); }
+    .sidebar-nav .nav-btn.active { background: var(--primary-light); color: var(--primary); }
+    .sidebar-nav .nav-btn .tab-icon { font-size: 1.1rem; width: 22px; text-align: center; }
+    .sidebar-footer { margin-top: auto; padding: 12px 10px 0; border-top: 1px solid var(--card-border); font-size: 0.7rem; color: var(--text-muted); text-align: center; }
+
+    .main-content { flex: 1; overflow-y: auto; padding: 20px 28px; background: var(--bg); }
+    .main-content .main-app { max-width: none; margin: 0; padding-bottom: 20px; }
+
+    .statusbar { height: 28px; background: var(--card-bg); border-top: 1px solid var(--card-border); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; font-size: 0.75rem; color: var(--text-muted); flex-shrink: 0; gap: 16px; }
+    .statusbar-left, .statusbar-right { display: flex; align-items: center; gap: 16px; }
+    .statusbar-separator { width: 1px; height: 14px; background: var(--card-border); }
+
+    .context-menu { position: fixed; background: var(--modal-bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 6px; min-width: 180px; box-shadow: 0 12px 40px rgba(0,0,0,0.3); z-index: 1000; display: none; }
+    .context-menu-item { padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
+    .context-menu-item:hover { background: var(--hover-bg); }
+    .context-menu-separator { height: 1px; background: var(--card-border); margin: 4px 0; }
+
+    .settings-layout { display: grid; grid-template-columns: 1fr 300px; gap: 20px; }
+    .settings-main { min-width: 0; }
+    .settings-preview { position: sticky; top: 0; height: fit-content; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-md); padding: 0; overflow: hidden; }
+    .preview-header { padding: 14px 16px; font-weight: 700; font-size: 0.95rem; border-bottom: 1px solid var(--card-border); background: linear-gradient(135deg, var(--primary-light) 0%, var(--card-bg) 100%); color: var(--primary); }
+    .preview-body { padding: 16px; }
+    .preview-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.03); font-size: 0.85rem; }
+    .preview-row:last-child { border-bottom: none; }
+    .preview-row .pr-label { color: var(--text-secondary); }
+    .preview-row .pr-value { font-weight: 600; color: var(--text-primary); }
+    .preview-row .pr-value.positive { color: var(--color-income); }
+    .preview-row .pr-value.negative { color: var(--color-expense); }
+    .preview-row .pr-value.primary { color: var(--primary); }
+    .preview-total { margin-top: 12px; padding-top: 12px; border-top: 2px solid var(--primary-glow); display: flex; justify-content: space-between; align-items: center; }
+    .preview-total .pt-label { font-size: 1rem; font-weight: 700; color: var(--text-primary); }
+    .preview-total .pt-value { font-size: 1.3rem; font-weight: 800; color: var(--color-income); }
+
+    @media (min-width: 769px) {
+      body { padding: 0; font-size: calc(13px * var(--font-scale)); }
+      .bottom-nav { display: none !important; }
+      .fab-calculate { display: none !important; }
+      .nav-wrapper { display: none; }
+      .card { border-radius: var(--radius-md); box-shadow: none; }
+      .app-header { display: none; }
+      .params-grid { grid-template-columns: repeat(3, 1fr); }
+      .history-table-wrap { display: block !important; }
+      .salary-card-list { display: none !important; }
+    }
+    @media (max-width: 768px) {
+      .app-frame { display: block; height: auto; overflow: visible; }
+      .titlebar, .menubar, .sidebar, .statusbar { display: none !important; }
+      .main-content { padding: 16px; overflow: visible; }
+      .settings-layout { grid-template-columns: 1fr; }
+      .settings-preview { display: none; }
+      .main-content .main-app { max-width: 1000px; margin: 0 auto; }
+    }
+    @media (min-width: 1024px) {
+      .params-grid { grid-template-columns: repeat(4, 1fr); }
+      .settings-layout { grid-template-columns: 1fr 340px; }
+    }
+    @media (min-width: 1280px) {
+      .settings-layout { grid-template-columns: 1fr 380px; }
+    }
+
   </style>
 </head>
 <body>
@@ -965,8 +1949,71 @@
   <div class="glow-orb orb1"></div>
   <div class="glow-orb orb2"></div>
   <div class="glow-orb orb3"></div>
+  <div class="bg-grid"></div>
 
-  <div class="main-app" id="mainApp">
+  <div class="app-frame">
+    <div class="titlebar">
+      <div class="titlebar-left">
+        <span class="app-logo">📋</span>
+        <span class="app-name">智财管家</span>
+        <span class="app-version">v5.0.0</span>
+      </div>
+      <div class="window-controls">
+        <button class="win-btn minimize" title="最小化"></button>
+        <button class="win-btn maximize" title="最大化"></button>
+        <button class="win-btn close" title="关闭"></button>
+      </div>
+    </div>
+    <div class="menubar">
+      <div class="menu-item">文件(F)
+        <div class="menu-dropdown">
+          <div class="menu-dropdown-item" onclick="handleCalculate()">💾 计算并保存<span class="shortcut">Ctrl+Enter</span></div>
+          <div class="menu-dropdown-item" onclick="exportBackup()">📤 导出全量备份<span class="shortcut">Ctrl+Shift+S</span></div>
+          <div class="menu-separator"></div>
+          <div class="menu-dropdown-item" onclick="document.getElementById('btnReset').click()">🔄 重置当前月<span class="shortcut"></span></div>
+        </div>
+      </div>
+      <div class="menu-item">编辑(E)
+        <div class="menu-dropdown">
+          <div class="menu-dropdown-item" onclick="document.getElementById('btnImportData').click()">📥 导入数据<span class="shortcut">Ctrl+O</span></div>
+          <div class="menu-dropdown-item" onclick="copySalarySlip()">📋 复制工资条<span class="shortcut">Ctrl+C</span></div>
+        </div>
+      </div>
+      <div class="menu-item">视图(V)
+        <div class="menu-dropdown">
+          <div class="menu-dropdown-item" onclick="switchThemeMode()">🌗 切换明暗主题<span class="shortcut">Ctrl+T</span></div>
+          <div class="menu-dropdown-item" onclick="toggleSidebar()">📂 切换侧边栏<span class="shortcut">Ctrl+B</span></div>
+        </div>
+      </div>
+      <div class="menu-item">帮助(H)
+        <div class="menu-dropdown">
+          <div class="menu-dropdown-item" onclick="showToast('📋 智财管家 v5.0.0 | 快捷键: Ctrl+Enter 计算, Ctrl+1/2/3/4 切换标签')">ℹ️ 关于<span class="shortcut"></span></div>
+        </div>
+      </div>
+    </div>
+    <div class="app-body">
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-brand">
+            <span>📋</span>
+            <span>智财管家</span>
+            <span class="sidebar-version">v5.0.0</span>
+          </div>
+          <div class="sidebar-subtitle">工资核算 · 计时模式</div>
+        </div>
+        <nav class="sidebar-nav">
+          <button class="nav-btn active" data-tab="settings"><span class="tab-icon">⚙️</span><span>参数设置</span></button>
+          <button class="nav-btn" data-tab="overtime"><span class="tab-icon">📆</span><span>加班日历</span></button>
+          <button class="nav-btn" data-tab="salary"><span class="tab-icon">📊</span><span>工资数据</span></button>
+          <button class="nav-btn" data-tab="theme"><span class="tab-icon">🎨</span><span>主题中心</span></button>
+        </nav>
+        <div class="sidebar-footer">
+          <div>💾 数据本地存储</div>
+          <div style="margin-top:2px;">Ctrl+Enter 快速计算</div>
+        </div>
+      </aside>
+      <main class="main-content">
+        <div class="main-app" id="mainApp">
 
     <!-- 头部 + 导航 -->
     <div class="nav-wrapper">
@@ -974,8 +2021,7 @@
         <div class="brand" style="position:relative;">
           <span class="brand-icon">📋</span>
           <span>智财管家</span>
-          <span class="version">v3</span>
-          <button id="themeToggleBtn" title="切换主题" style="position:absolute;right:0;top:50%;transform:translateY(-50%);background:var(--input-bg);border:1px solid var(--input-border);border-radius:50%;width:36px;height:36px;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:all 0.3s;box-shadow:0 2px 8px rgba(0,0,0,0.08);z-index:10;">🌙</button>
+          <span class="version">v5.0.0</span>
         </div>
         <div class="subtitle">工资核算 · 计时模式 <span class="badge" style="background:var(--primary);color:#fff;">⚡ 专业版</span></div>
       </div>
@@ -983,10 +2029,18 @@
         <button class="nav-btn active" data-tab="settings"><span class="tab-icon">⚙️</span><span class="tab-label">设置</span></button>
         <button class="nav-btn" data-tab="overtime"><span class="tab-icon">📆</span><span class="tab-label">加班</span></button>
         <button class="nav-btn" data-tab="salary"><span class="tab-icon">📊</span><span class="tab-label">工资数据</span></button>
+        <button class="nav-btn" data-tab="theme" title="主题中心"><span class="tab-icon" id="themeToggleIcon">🌙</span><span class="tab-label">主题</span></button>
       </nav>
     </div>
 
-    <div class="toast" id="toast"></div>
+    
+  <!-- 全局浮动计算按钮 -->
+  <button class="fab-calculate" id="fabCalculate" title="计算本月工资">
+    <span class="fab-icon">📊</span>
+    <span class="fab-label">计算</span>
+  </button>
+
+  <div class="toast" id="toast"></div>
 
     <!-- ===== 设置面板 ===== -->
     <div class="tab-panel active" id="tab-settings">
@@ -995,6 +2049,8 @@
           <span>⚙️ 参数设置</span>
         </div>
         <div class="card-body">
+          <div class="settings-layout">
+            <div class="settings-main">
           <div class="month-picker">
             <button id="monthDownBtn">‹</button>
             <span class="display" id="monthDisplayLabel"></span>
@@ -1010,7 +2066,7 @@
               <div class="form-group"><label>月计薪天数</label><input type="number" id="workDaysPerMonth" step="0.25" min="0.1"></div>
               <div class="form-group"><label>日工时</label><input type="number" id="workHoursPerDay" step="0.5" min="0.1"></div>
             </div>
-            <div style="font-size:0.6rem;color:var(--text-secondary);margin:4px 0;">⚡ 时薪 ≈ <strong id="hourlyRatePreview" style="color:var(--primary);">0.00</strong> 元/小时</div>
+            <div style="font-size:0.8rem;color:var(--text-secondary);margin:6px 0;">⚡ 时薪 ≈ <strong id="hourlyRatePreview" style="color:var(--primary);">0.00</strong> 元/小时</div>
           </div>
 
           <div class="section-title" id="toggleOvertimeParams"><span>⏱️ 加班倍率</span><span class="toggle-icon">▼</span></div>
@@ -1019,7 +2075,7 @@
               <div class="form-group"><label>工作日</label><input type="number" id="multiplierWeekday" step="0.1" min="0"></div>
               <div class="form-group"><label>休息日</label><input type="number" id="multiplierWeekend" step="0.1" min="0"></div>
               <div class="form-group"><label>节假日</label><input type="number" id="multiplierHoliday" step="0.1" min="0"></div>
-              <div class="form-group" style="grid-column:span 2;"><label>加班费合计</label><div style="font-size:1rem;font-weight:700;color:var(--primary);" id="overtimeTotalDisplay">¥0.00</div></div>
+              <div class="form-group" style="grid-column:span 2;"><label>加班费合计</label><div style="font-size:1.1rem;font-weight:700;color:var(--primary);" id="overtimeTotalDisplay">¥0.00</div></div>
             </div>
           </div>
 
@@ -1032,7 +2088,7 @@
               <div class="form-group"><label>个税起征点</label><input type="number" id="taxThreshold" step="100" min="0"></div>
             </div>
             <div style="margin-top:6px;border-top:1px solid rgba(255,255,255,0.02);padding-top:6px;">
-              <div style="font-size:0.6rem;font-weight:600;color:var(--text-secondary);margin-bottom:3px;">📋 专项附加扣除</div>
+              <div style="font-size:0.8rem;font-weight:600;color:var(--text-secondary);margin-bottom:4px;">📋 专项附加扣除</div>
               <div class="params-grid">
                 <div class="form-group"><label>子女教育</label><input type="number" id="deduct_child" step="100" min="0" value="0"></div>
                 <div class="form-group"><label>继续教育</label><input type="number" id="deduct_education" step="100" min="0" value="0"></div>
@@ -1042,16 +2098,16 @@
                 <div class="form-group"><label>赡养老人</label><input type="number" id="deduct_elder" step="100" min="0" value="0"></div>
                 <div class="form-group"><label>婴幼儿照护</label><input type="number" id="deduct_infant" step="100" min="0" value="0"></div>
               </div>
-              <div style="font-size:0.55rem;color:var(--text-secondary);">合计：<strong id="deductTotalDisplay">¥0.00</strong></div>
+              <div style="font-size:0.8rem;color:var(--text-secondary);margin-top:4px;">合计：<strong id="deductTotalDisplay">¥0.00</strong></div>
             </div>
             <div style="margin-top:6px;border-top:1px solid rgba(255,255,255,0.02);padding-top:6px;">
               <div class="section-title" id="toggleCustomItems" style="margin-top:0;"><span>🔧 自定义增减项</span><span class="toggle-icon">▼</span></div>
               <div class="section-content" id="customItemsContent">
                 <div id="customItemsList"></div>
-                <div style="display:flex;gap:4px;margin-top:4px;flex-wrap:wrap;align-items:center;">
-                  <input type="text" id="customItemName" placeholder="项目名称" style="flex:1;min-width:60px;padding:3px 8px;border-radius:var(--radius-xl);border:1px solid rgba(255,255,255,0.03);background:rgba(255,255,255,0.02);color:var(--text-primary);font-size:.65rem;outline:none;">
-                  <input type="number" id="customItemAmount" placeholder="金额" step="0.01" style="width:60px;padding:3px 8px;border-radius:var(--radius-xl);border:1px solid rgba(255,255,255,0.03);background:rgba(255,255,255,0.02);color:var(--text-primary);font-size:.65rem;outline:none;">
-                  <select id="customItemType" style="padding:3px 6px;border-radius:var(--radius-xl);border:1px solid rgba(255,255,255,0.03);background:rgba(255,255,255,0.02);color:var(--text-primary);font-size:.65rem;">
+                <div class="custom-item-input-group" style="margin-top:6px;">
+                  <input type="text" id="customItemName" placeholder="项目名称">
+                  <input type="number" id="customItemAmount" placeholder="金额" step="0.01">
+                  <select id="customItemType">
                     <option value="add">➕ 增加</option>
                     <option value="sub">➖ 扣除</option>
                   </select>
@@ -1061,11 +2117,31 @@
             </div>
           </div>
 
-          <div style="margin-top:6px;text-align:center;">
-            <button class="btn btn-primary" id="btnCalculate">📊 计算并存入历史</button>
-            <button class="btn btn-outline" id="btnReset">🔄 重置参数</button>
+          <div style="margin-top:10px;text-align:center;display:flex;flex-direction:column;gap:8px;align-items:center;">
+            <button class="btn btn-primary" id="btnCalculate" style="width:100%;max-width:280px;">📊 计算并存入历史</button>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;width:100%;max-width:280px;">
+              <button class="btn btn-ghost" id="btnReset" style="flex:1;min-width:80px;">🔄 重置</button>
+              <button class="btn btn-outline" id="btnExportSettings" style="flex:1;min-width:80px;">📤 导出</button>
+              <button class="btn btn-outline" id="btnImportData" style="flex:1;min-width:80px;">📥 导入</button>
+            </div>
           </div>
-          <div style="text-align:center;font-size:.55rem;color:var(--text-secondary);">⌨️ Ctrl+Enter 快速计算</div>
+          <div style="text-align:center;font-size:0.75rem;color:var(--text-secondary);margin-top:4px;">⌨️ Ctrl+Enter 快速计算</div>
+            </div>
+            <aside class="settings-preview">
+              <div class="preview-header">📊 实时预览</div>
+              <div class="preview-body" id="settingsPreviewBody">
+                <div class="preview-row"><span class="pr-label">时薪</span><span class="pr-value primary" id="previewHourlyRate">—</span></div>
+                <div class="preview-row"><span class="pr-label">加班费</span><span class="pr-value positive" id="previewOvertime">¥0.00</span></div>
+                <div class="preview-row"><span class="pr-label">其他收入</span><span class="pr-value positive" id="previewOtherIncome">¥0.00</span></div>
+                <div class="preview-row"><span class="pr-label">自定义增减</span><span class="pr-value" id="previewCustom" style="color:var(--color-warning);">¥0.00</span></div>
+                <div class="preview-row"><span class="pr-label">应发工资</span><span class="pr-value primary" id="previewGross">¥0.00</span></div>
+                <div class="preview-row"><span class="pr-label">社保</span><span class="pr-value negative" id="previewSI">¥0.00</span></div>
+                <div class="preview-row"><span class="pr-label">公积金</span><span class="pr-value negative" id="previewHF">¥0.00</span></div>
+                <div class="preview-row"><span class="pr-label">个税</span><span class="pr-value negative" id="previewTax">¥0.00</span></div>
+                <div class="preview-total"><span class="pt-label">💵 实发工资</span><span class="pt-value" id="previewNet">¥0.00</span></div>
+              </div>
+            </aside>
+          </div>
         </div>
       </div>
     </div>
@@ -1078,9 +2154,13 @@
           <div class="overtime-toolbar">
             <button class="btn btn-sm btn-outline" id="btnBatchSelect">📅 批量</button>
             <button class="btn btn-sm btn-ghost" id="btnCancelSelect" style="display:none;">❌ 取消</button>
-            <span style="font-size:.55rem;color:var(--text-secondary);">点击两个日期</span>
-            <button class="btn btn-sm btn-pdf" id="btnExportOvertime" style="margin-left:auto;">📄 PDF</button>
+            <span style="font-size:0.75rem;color:var(--text-secondary);">点击两个日期</span>
+            <button class="btn btn-sm btn-outline" id="btnRefreshHolidays">🔄 刷新节假日</button>
+            <button class="btn btn-sm btn-outline" id="btnImportOvertime">📥 导入</button>
+            <span id="holidayStatus" style="font-size:0.75rem;color:var(--text-secondary);margin-left:auto;"></span>
+            <button class="btn btn-sm btn-export" id="btnExportOvertime">📄 PDF</button>
             <button class="btn btn-sm btn-outline" id="btnExportOvertimeCSV">📊 CSV</button>
+            <button class="btn btn-sm btn-outline" id="btnExportOvertimeJSON">💾 JSON</button>
           </div>
           <div class="overtime-multiplier">
             <span>🏢 <strong id="dispMultWeekday">1.5</strong></span>
@@ -1099,6 +2179,12 @@
           </div>
           <div id="calendarContainer" class="calendar-grid"></div>
         </div>
+
+          <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(0,0,0,0.03);text-align:center;">
+            <button class="btn btn-primary" id="btnCalcFromOvertime" style="width:100%;max-width:280px;">📊 计算本月工资</button>
+            <div style="font-size:0.75rem;color:var(--text-secondary);margin-top:6px;">💡 将当前加班数据与设置参数合并计算</div>
+          </div>
+
       </div>
     </div>
 
@@ -1108,32 +2194,192 @@
         <div class="card-header">
           <span>📊 月工资数据</span>
           <div style="display:flex;align-items:center;gap:4px;margin-left:auto;">
-            <button id="yearDownBtn" style="width:22px;height:22px;border-radius:50%;border:1px solid rgba(255,255,255,0.03);background:rgba(255,255,255,0.02);cursor:pointer;color:var(--text-primary);font-size:0.7rem;">‹</button>
-            <span id="annualYearLabel" style="font-weight:600;font-size:0.7rem;min-width:50px;text-align:center;"></span>
-            <button id="yearUpBtn" style="width:22px;height:22px;border-radius:50%;border:1px solid rgba(255,255,255,0.03);background:rgba(255,255,255,0.02);cursor:pointer;color:var(--text-primary);font-size:0.7rem;">›</button>
+            <button id="yearDownBtn" style="width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,0.03);background:rgba(255,255,255,0.02);cursor:pointer;color:var(--text-primary);font-size:0.8rem;display:flex;align-items:center;justify-content:center;">‹</button>
+            <span id="annualYearLabel" style="font-weight:600;font-size:0.9rem;min-width:60px;text-align:center;"></span>
+            <button id="yearUpBtn" style="width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,0.03);background:rgba(255,255,255,0.02);cursor:pointer;color:var(--text-primary);font-size:0.8rem;display:flex;align-items:center;justify-content:center;">›</button>
           </div>
         </div>
         <div class="card-body">
-          <div id="annualSummaryContent"><div style="text-align:center;padding:8px;color:var(--text-secondary);font-size:0.7rem;">暂无数据</div></div>
+          <div id="annualSummaryContent">
+            <div class="empty-state">
+              <div class="empty-icon">📭</div>
+              <div class="empty-text">暂无工资数据</div>
+              <div class="empty-hint">您还没有保存任何工资记录<br>设置好参数并计算后，数据将在这里汇总展示</div>
+              <button class="empty-action" onclick="document.querySelector('[data-tab=\'settings\']').click();">⚙️ 前往设置开始计算</button>
+            </div>
+          </div>
           <div style="margin-top:4px;text-align:center;"><button class="btn btn-sm btn-ghost" id="toggleAnnualHistory">📋 展开明细</button></div>
           <div id="annualHistoryContainer" style="margin-top:6px;display:none;"></div>
 
           <div class="salary-export-group">
-            <button class="btn btn-sm btn-pdf" id="btnPrintSalarySlip">📄 工资条</button>
+            <button class="btn btn-sm btn-export" id="btnPrintSalarySlip">📄 工资条</button>
             <button class="btn btn-sm btn-outline" id="btnCopySalarySlip">📋 复制</button>
-            <button class="btn btn-sm btn-pdf" id="btnPrintYearlyReport">📄 年度报表</button>
+            <button class="btn btn-sm btn-export" id="btnPrintYearlyReport">📄 年度报表</button>
             <button class="btn btn-sm btn-outline" id="btnExportSalaryCSV">📊 CSV</button>
+            <button class="btn btn-sm btn-outline" id="btnExportSalaryJSON">💾 导出JSON</button>
+            <button class="btn btn-sm btn-outline" id="btnExportBackup">🗂️ 全量备份</button>
+            <button class="btn btn-sm btn-outline" id="btnImportSalary">📥 导入</button>
           </div>
         </div>
       </div>
     </div>
 
+
+    <!-- ===== 主题中心面板 ===== -->
+    <div class="tab-panel" id="tab-theme">
+      <div class="card">
+        <div class="card-header">🎨 主题中心 <span class="badge">个性化</span></div>
+        <div class="card-body">
+
+          <!-- 预览卡片 -->
+          <div class="theme-preview-card">
+            <div class="preview-title">✨ 实时预览</div>
+            <div class="preview-sample">
+              <div class="preview-sample-item">
+                <div class="ps-label">底薪</div>
+                <div class="ps-value">¥8,500</div>
+                <div class="ps-bar"><div class="ps-bar-inner"></div></div>
+              </div>
+              <div class="preview-sample-item">
+                <div class="ps-label">加班费</div>
+                <div class="ps-value">¥1,200</div>
+                <div class="ps-bar"><div class="ps-bar-inner" style="width:40%"></div></div>
+              </div>
+              <div class="preview-sample-item">
+                <div class="ps-label">实发</div>
+                <div class="ps-value" style="color:var(--color-income)">¥7,890</div>
+                <div class="ps-bar"><div class="ps-bar-inner" style="width:80%"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 外观模式 -->
+          <div class="section-title" style="margin-top:0;cursor:default;"><span>🌗 外观模式</span></div>
+          <div class="theme-mode-grid">
+            <div class="theme-mode-option" data-mode="dark" id="modeDark">
+              <span class="mode-icon">🌙</span>
+              <span class="mode-label">深色</span>
+              <span class="mode-hint">护眼沉浸</span>
+            </div>
+            <div class="theme-mode-option" data-mode="light" id="modeLight">
+              <span class="mode-icon">☀️</span>
+              <span class="mode-label">浅色</span>
+              <span class="mode-hint">清晰明亮</span>
+            </div>
+            <div class="theme-mode-option" data-mode="auto" id="modeAuto">
+              <span class="mode-icon">🌓</span>
+              <span class="mode-label">跟随系统</span>
+              <span class="mode-hint">自动切换</span>
+            </div>
+          </div>
+
+          <!-- 强调色 -->
+          <div class="section-title" style="cursor:default;"><span>🎨 强调色</span></div>
+          <div class="accent-color-grid">
+            <div class="accent-color-option active" data-accent="purple" style="--ac-preview:#8b5cf6;">
+              <div class="ac-swatch"></div>
+              <span class="ac-label">紫韵</span>
+            </div>
+            <div class="accent-color-option" data-accent="cyan" style="--ac-preview:#06b6d4;">
+              <div class="ac-swatch"></div>
+              <span class="ac-label">青岚</span>
+            </div>
+            <div class="accent-color-option" data-accent="pink" style="--ac-preview:#ec4899;">
+              <div class="ac-swatch"></div>
+              <span class="ac-label">桃夭</span>
+            </div>
+            <div class="accent-color-option" data-accent="blue" style="--ac-preview:#3b82f6;">
+              <div class="ac-swatch"></div>
+              <span class="ac-label">蔚蓝</span>
+            </div>
+            <div class="accent-color-option" data-accent="green" style="--ac-preview:#10b981;">
+              <div class="ac-swatch"></div>
+              <span class="ac-label">翠微</span>
+            </div>
+            <div class="accent-color-option" data-accent="orange" style="--ac-preview:#f59e0b;">
+              <div class="ac-swatch"></div>
+              <span class="ac-label">橘颂</span>
+            </div>
+          </div>
+
+          <!-- 视觉效果 -->
+          <div class="section-title" style="cursor:default;"><span>✨ 视觉效果</span></div>
+          <div class="theme-toggle-list">
+            <div class="theme-toggle-row">
+              <div class="theme-toggle-info">
+                <span class="tt-icon">🔮</span>
+                <div>
+                  <div class="tt-label">粒子背景</div>
+                  <div class="tt-hint">动态粒子连线效果</div>
+                </div>
+              </div>
+              <label class="theme-switch">
+                <input type="checkbox" id="toggleParticles" checked>
+                <span class="theme-switch-slider"></span>
+              </label>
+            </div>
+            <div class="theme-toggle-row">
+              <div class="theme-toggle-info">
+                <span class="tt-icon">🫧</span>
+                <div>
+                  <div class="tt-label">光晕装饰</div>
+                  <div class="tt-hint">背景浮动光晕球</div>
+                </div>
+              </div>
+              <label class="theme-switch">
+                <input type="checkbox" id="toggleOrbs" checked>
+                <span class="theme-switch-slider"></span>
+              </label>
+            </div>
+            <div class="theme-toggle-row">
+              <div class="theme-toggle-info">
+                <span class="tt-icon">📐</span>
+                <div>
+                  <div class="tt-label">网格纹理</div>
+                  <div class="tt-hint">背景网格线装饰</div>
+                </div>
+              </div>
+              <label class="theme-switch">
+                <input type="checkbox" id="toggleGrid" checked>
+                <span class="theme-switch-slider"></span>
+              </label>
+            </div>
+            <div class="theme-toggle-row">
+              <div class="theme-toggle-info">
+                <span class="tt-icon">🎬</span>
+                <div>
+                  <div class="tt-label">入场动画</div>
+                  <div class="tt-hint">卡片滑入缩放效果</div>
+                </div>
+              </div>
+              <label class="theme-switch">
+                <input type="checkbox" id="toggleAnimations" checked>
+                <span class="theme-switch-slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 字体大小 -->
+          <div class="section-title" style="cursor:default;"><span>🔤 字体大小</span></div>
+          <div class="font-size-slider-wrap">
+            <span class="fs-label-small">A</span>
+            <input type="range" id="fontSizeSlider" min="0.85" max="1.15" step="0.05" value="1" class="font-size-slider">
+            <span class="fs-label-large">A</span>
+          </div>
+          <div style="text-align:center;font-size:0.75rem;color:var(--text-muted);margin-top:4px;">当前缩放: <strong id="fontSizeValue">100%</strong></div>
+
+          <div style="margin-top:16px;text-align:center;">
+            <button class="btn btn-outline" id="btnResetTheme" style="width:100%;max-width:200px;">🔄 恢复默认主题</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ===== 模态框 ===== -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal-box">
-      <h3 id="modalDateTitle" style="font-size:0.85rem;margin-bottom:8px;"></h3>
+      <h3 id="modalDateTitle" style="font-size:1rem;margin-bottom:10px;"></h3>
       <select id="modalDayType"><option value="weekday">工作日</option><option value="weekend">休息日</option><option value="holiday">节假日</option></select>
 
       <div class="time-segments-area">
@@ -1165,12 +2411,12 @@
 
   <div class="modal-overlay" id="batchModalOverlay">
     <div class="modal-box">
-      <h3 style="font-size:0.85rem;">📅 批量设置加班</h3>
-      <p id="batchRangeInfo" style="font-size:.65rem;color:var(--text-secondary);margin:3px 0;"></p>
+      <h3 style="font-size:1rem;">📅 批量设置加班</h3>
+      <p id="batchRangeInfo" style="font-size:0.8rem;color:var(--text-secondary);margin:4px 0;"></p>
       <select id="batchDayType"><option value="weekday">工作日</option><option value="weekend">休息日</option><option value="holiday">节假日</option></select>
       <div style="margin:6px 0;">
         <label style="font-size:0.65rem;color:var(--text-secondary);">加班小时数</label>
-        <input type="number" id="batchHours" step="0.1" min="0" max="24" placeholder="小时数" style="font-size:1.1rem;padding:10px;">
+        <input type="number" id="batchHours" step="0.1" min="0" max="24" placeholder="小时数" style="font-size:1.1rem;padding:10px;min-height:44px;">
       </div>
       <div class="modal-actions">
         <button class="btn btn-primary" id="batchApply">✔ 应用</button>
@@ -1220,6 +2466,103 @@
       var persistTimer = null;
       var autoSaveTimer = null;
       var currentAnnualYear = new Date().getFullYear();
+
+      // ---- 节假日自动获取 ----
+      var HOLIDAY_CACHE_KEY = 'holiday_cache_v3';
+      var holidayCache = {};
+      var holidayFetchStatus = {}; // year -> 'loading' | 'loaded' | 'error'
+
+      function loadHolidayCache() {
+        try {
+          var raw = localStorage.getItem(HOLIDAY_CACHE_KEY);
+          if (raw) holidayCache = JSON.parse(raw);
+        } catch (e) { holidayCache = {}; }
+      }
+
+      function saveHolidayCache() {
+        try {
+          localStorage.setItem(HOLIDAY_CACHE_KEY, JSON.stringify(holidayCache));
+        } catch (e) {}
+      }
+
+      function parseAilcc(data, year) {
+        if (!data || data.code !== 0 || !data.holiday) return null;
+        var result = {};
+        for (var key in data.holiday) {
+          var item = data.holiday[key];
+          if (!item || !item.date) continue;
+          var dk = item.date;
+          var isHoliday = item.holiday === true;
+          var name = (item.name || '').toString();
+          var isWorkday = name.indexOf('补班') !== -1 || name.indexOf('班') !== -1 && name.indexOf('休') === -1;
+          if (isHoliday && !isWorkday) {
+            result[dk] = 'holiday';
+          } else if (isWorkday) {
+            result[dk] = 'weekday';
+          }
+        }
+        return result;
+      }
+
+      function parseTimor(data, year) {
+        if (!data || data.code !== 0 || !data.holiday) return null;
+        var result = {};
+        for (var key in data.holiday) {
+          var item = data.holiday[key];
+          if (!item || !item.date) continue;
+          var dk = item.date;
+          if (item.holiday === true) {
+            var name = (item.name || '').toString();
+            if (name.indexOf('班') !== -1 && name.indexOf('休') === -1) {
+              result[dk] = 'weekday';
+            } else {
+              result[dk] = 'holiday';
+            }
+          }
+        }
+        return result;
+      }
+
+      function fetchHolidayData(year) {
+        return new Promise(function(resolve, reject) {
+          if (holidayFetchStatus[year] === 'loading') { resolve(null); return; }
+          if (holidayCache[year] && holidayCache[year].timestamp) {
+            var age = Date.now() - holidayCache[year].timestamp;
+            if (age < 30 * 24 * 60 * 60 * 1000) { resolve(holidayCache[year]); return; }
+          }
+          holidayFetchStatus[year] = 'loading';
+          var apis = [
+            { url: 'https://holiday.ailcc.com/api/holiday/year/' + year, parser: parseAilcc },
+            { url: 'https://timor.tech/api/holiday/year/' + year + '/', parser: parseTimor }
+          ];
+          function tryNext(i) {
+            if (i >= apis.length) { holidayFetchStatus[year] = 'error'; reject(new Error('所有API均不可用')); return; }
+            var api = apis[i];
+            fetch(api.url, { method: 'GET', mode: 'cors', cache: 'no-cache' })
+              .then(function(res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
+              .then(function(data) {
+                var parsed = api.parser(data, year);
+                if (parsed && Object.keys(parsed).length > 0) {
+                  holidayCache[year] = { data: parsed, timestamp: Date.now(), source: api.url };
+                  saveHolidayCache();
+                  holidayFetchStatus[year] = 'loaded';
+                  resolve(holidayCache[year]);
+                } else { throw new Error('解析失败'); }
+              })
+              .catch(function(err) { tryNext(i + 1); });
+          }
+          tryNext(0);
+        });
+      }
+
+      function updateHolidayStatus(year, status) {
+        var el = $('holidayStatus');
+        if (!el) return;
+        if (status === 'loading') el.textContent = '🔄 获取 ' + year + ' 年节假日...';
+        else if (status === 'loaded') el.textContent = '✅ ' + year + ' 年节假日已同步';
+        else if (status === 'error') el.textContent = '⚠️ ' + year + ' 年节假日获取失败';
+        else el.textContent = '';
+      }
 
       var STORAGE_META = {
         history: { key: 'salary_history_v3', default: {} },
@@ -1299,11 +2642,23 @@
         t._timer = setTimeout(function() { t.classList.remove('show'); }, 2500);
       }
 
-      // ---- 粒子 ----
+      // ---- 粒子（降级处理） ----
       function initParticles() {
+        var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReduced) return;
         var canvas = document.getElementById('particleCanvas');
+        if (!canvas) return;
         var ctx = canvas.getContext('2d');
         var particles = [], w, h;
+        var isLowEnd = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
+        var particleCount = isLowEnd ? 12 : 20;
+        var connectionDist = isLowEnd ? 50 : 70;
+        var colors = [
+          [108, 92, 231],   // primary purple
+          [0, 206, 201],    // secondary teal
+          [253, 121, 168],  // accent pink
+          [91, 76, 219]     // primary dark
+        ];
         var resize = function() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
         window.addEventListener('resize', resize);
         resize();
@@ -1311,25 +2666,36 @@
         Particle.prototype.reset = function() {
           this.x = Math.random() * w;
           this.y = Math.random() * h;
-          this.size = Math.random() * 1.2 + 0.3;
-          this.speedX = (Math.random() - 0.5) * 0.3;
-          this.speedY = (Math.random() - 0.5) * 0.3;
-          this.opacity = Math.random() * 0.3 + 0.03;
+          this.size = Math.random() * 1.5 + 0.4;
+          this.speedX = (Math.random() - 0.5) * 0.25;
+          this.speedY = (Math.random() - 0.5) * 0.25;
+          this.opacity = Math.random() * 0.25 + 0.04;
+          this.colorIdx = Math.floor(Math.random() * colors.length);
+          this.pulse = Math.random() * Math.PI * 2;
+          this.pulseSpeed = 0.02 + Math.random() * 0.03;
         };
         Particle.prototype.update = function() {
           this.x += this.speedX;
           this.y += this.speedY;
-          if (this.x < 0 || this.x > w) this.speedX *= -1;
-          if (this.y < 0 || this.y > h) this.speedY *= -1;
+          this.pulse += this.pulseSpeed;
+          if (this.x < -10) this.x = w + 10;
+          if (this.x > w + 10) this.x = -10;
+          if (this.y < -10) this.y = h + 10;
+          if (this.y > h + 10) this.y = -10;
         };
         Particle.prototype.draw = function() {
+          var c = colors[this.colorIdx];
+          var pulseOpacity = this.opacity * (0.7 + 0.3 * Math.sin(this.pulse));
           ctx.beginPath();
           ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(108,92,231,' + this.opacity + ')';
+          ctx.fillStyle = 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + pulseOpacity + ')';
           ctx.fill();
         };
-        for (var i = 0; i < 50; i++) { var p = new Particle(); particles.push(p); }
+        for (var i = 0; i < particleCount; i++) { var p = new Particle(); particles.push(p); }
+        var frameCount = 0;
         function animate() {
+          frameCount++;
+          if (frameCount % 2 !== 0 && isLowEnd) { requestAnimationFrame(animate); return; }
           ctx.clearRect(0, 0, w, h);
           particles.forEach(function(p) { p.update(); p.draw(); });
           for (var i2 = 0; i2 < particles.length; i2++) {
@@ -1337,12 +2703,17 @@
               var dx = particles[i2].x - particles[j].x;
               var dy = particles[i2].y - particles[j].y;
               var dist = Math.sqrt(dx * dx + dy * dy);
-              if (dist < 100) {
+              if (dist < connectionDist) {
+                var c1 = colors[particles[i2].colorIdx];
+                var c2 = colors[particles[j].colorIdx];
+                var avgR = Math.round((c1[0] + c2[0]) / 2);
+                var avgG = Math.round((c1[1] + c2[1]) / 2);
+                var avgB = Math.round((c1[2] + c2[2]) / 2);
                 ctx.beginPath();
                 ctx.moveTo(particles[i2].x, particles[i2].y);
                 ctx.lineTo(particles[j].x, particles[j].y);
-                ctx.strokeStyle = 'rgba(108,92,231,' + (0.02 * (1 - dist / 100)) + ')';
-                ctx.lineWidth = 0.3;
+                ctx.strokeStyle = 'rgba(' + avgR + ',' + avgG + ',' + avgB + ',' + (0.03 * (1 - dist / connectionDist)) + ')';
+                ctx.lineWidth = 0.4;
                 ctx.stroke();
               }
             }
@@ -1352,6 +2723,135 @@
         animate();
       }
       initParticles();
+
+
+      // ---- 桌面端功能 ----
+      function updateSettingsPreview() {
+        var baseSalary = roundToCent(parseFloat($('baseSalary')?.value) || 0);
+        var otherIncome = roundToCent(parseFloat($('otherIncome')?.value) || 0);
+        var socialInsurance = roundToCent(parseFloat($('socialInsurance')?.value) || 0);
+        var housingFund = roundToCent(parseFloat($('housingFund')?.value) || 0);
+        var otherDeduction = roundToCent(parseFloat($('otherDeduction')?.value) || 0);
+        var hr = getHourlyRate(baseSalary);
+        var ot = getOvertimeHours();
+        var settings = getSettings();
+        var otPay = isNaN(hr) ? 0 : roundToCent((ot.weekday * settings.multiplierWeekday + ot.weekend * settings.multiplierWeekend + ot.holiday * settings.multiplierHoliday) * hr);
+        var customTotal = getCustomItemsTotal(customItems);
+        var grossPay = roundToCent(baseSalary + otPay + otherIncome + customTotal);
+        var specialDeduction = calcTotalSpecialDeduction(getSpecialDeductions());
+        var thr = settings.taxThreshold;
+        var taxable = Math.max(0, grossPay - socialInsurance - housingFund - otherDeduction - specialDeduction - thr);
+        var tax = 0;
+        if (taxable > 0) {
+          if (taxable <= 36000) tax = taxable * 0.03;
+          else if (taxable <= 144000) tax = taxable * 0.10 - 2520;
+          else if (taxable <= 300000) tax = taxable * 0.20 - 16920;
+          else if (taxable <= 420000) tax = taxable * 0.25 - 31920;
+          else if (taxable <= 660000) tax = taxable * 0.30 - 52920;
+          else if (taxable <= 960000) tax = taxable * 0.35 - 85920;
+          else tax = taxable * 0.45 - 181920;
+          tax = Math.max(0, roundToCent(tax));
+        }
+        var netPay = roundToCent(grossPay - socialInsurance - housingFund - otherDeduction - tax);
+        if ($('previewHourlyRate')) $('previewHourlyRate').textContent = isNaN(hr) ? '—' : '¥' + hr.toFixed(2) + '/h';
+        if ($('previewOvertime')) $('previewOvertime').textContent = '¥' + otPay.toFixed(2);
+        if ($('previewOtherIncome')) $('previewOtherIncome').textContent = '¥' + otherIncome.toFixed(2);
+        if ($('previewCustom')) $('previewCustom').textContent = (customTotal >= 0 ? '+' : '') + '¥' + customTotal.toFixed(2);
+        if ($('previewGross')) $('previewGross').textContent = '¥' + grossPay.toFixed(2);
+        if ($('previewSI')) $('previewSI').textContent = '¥' + socialInsurance.toFixed(2);
+        if ($('previewHF')) $('previewHF').textContent = '¥' + housingFund.toFixed(2);
+        if ($('previewTax')) $('previewTax').textContent = '¥' + tax.toFixed(2);
+        if ($('previewNet')) $('previewNet').textContent = '¥' + netPay.toFixed(2);
+      }
+
+      function updateStatusBar() {
+        if ($('statusMonth')) $('statusMonth').textContent = currentMonthKey || '—';
+        var recs = storage.history || {};
+        var count = Object.keys(recs).length;
+        if ($('statusRecords')) $('statusRecords').textContent = '工资记录: ' + count + ' 条';
+      }
+
+      function switchThemeMode() {
+        var current = document.documentElement.getAttribute('data-theme') || 'dark';
+        var next = current === 'dark' ? 'light' : 'dark';
+        themeConfig.mode = next;
+        saveThemeConfig();
+        applyThemeMode(next);
+        showToast(next === 'dark' ? '🌙 已切换深色模式' : '☀️ 已切换浅色模式');
+      }
+
+      function toggleSidebar() {
+        var sb = document.querySelector('.sidebar');
+        if (sb) {
+          var isHidden = sb.style.display === 'none';
+          sb.style.display = isHidden ? '' : 'none';
+          showToast(isHidden ? '📂 侧边栏已显示' : '📂 侧边栏已隐藏');
+        }
+      }
+
+      function showContextMenu(x, y, items) {
+        var menu = $('contextMenu');
+        if (!menu) return;
+        menu.innerHTML = '';
+        items.forEach(function(item) {
+          if (item.separator) {
+            var sep = document.createElement('div');
+            sep.className = 'context-menu-separator';
+            menu.appendChild(sep);
+          } else {
+            var div = document.createElement('div');
+            div.className = 'context-menu-item';
+            div.innerHTML = (item.icon || '') + ' ' + item.label;
+            div.addEventListener('click', function() { item.action(); menu.style.display = 'none'; });
+            menu.appendChild(div);
+          }
+        });
+        menu.style.left = x + 'px';
+        menu.style.top = y + 'px';
+        menu.style.display = 'block';
+      }
+
+      document.addEventListener('click', function() {
+        var menu = $('contextMenu');
+        if (menu) menu.style.display = 'none';
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); handleCalculate(); return; }
+        if (e.ctrlKey && e.key === 's' && !e.shiftKey) { e.preventDefault(); handleCalculate(); showToast('💾 已保存'); return; }
+        if (e.ctrlKey && e.shiftKey && e.key === 'S') { e.preventDefault(); exportBackup(); return; }
+        if (e.ctrlKey && e.key === 'o') { e.preventDefault(); openImportModal(); return; }
+        if (e.ctrlKey && e.key === 't') { e.preventDefault(); switchThemeMode(); return; }
+        if (e.ctrlKey && e.key === 'b') { e.preventDefault(); toggleSidebar(); return; }
+        if (e.ctrlKey && ['1','2','3','4'].includes(e.key)) {
+          e.preventDefault();
+          var tabs = ['settings', 'overtime', 'salary', 'theme'];
+          var tab = tabs[parseInt(e.key) - 1];
+          if (tab) {
+            document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+            document.querySelectorAll('.sidebar-nav .nav-btn').forEach(function(b) { b.classList.remove('active'); });
+            document.querySelectorAll('#bottomNav .nav-btn').forEach(function(b) { b.classList.remove('active'); });
+            var panel = $('tab-' + tab);
+            if (panel) panel.classList.add('active');
+            var sbBtn = document.querySelector('.sidebar-nav .nav-btn[data-tab="' + tab + '"]');
+            if (sbBtn) sbBtn.classList.add('active');
+            var mbBtn = document.querySelector('#bottomNav .nav-btn[data-tab="' + tab + '"]');
+            if (mbBtn) mbBtn.classList.add('active');
+            if (tab === 'overtime') renderCalendar();
+            if (tab === 'salary') updateAnnualSummary();
+            if (tab === 'theme') { applyThemeMode(themeConfig.mode); applyAccentColor(themeConfig.accent); applyFontScale(themeConfig.fontScale); }
+          }
+          return;
+        }
+        if (e.key === 'F5' || (e.ctrlKey && e.key === 'r')) {
+          e.preventDefault();
+          showToast('🔄 数据已刷新');
+          loadStorage(); loadCustomItems(); loadOvertimeData(); loadMonthParams(currentMonthKey);
+          updateAnnualSummary(); updateHourlyPreview(); updateDeductTotalDisplay(); renderCustomItems();
+          updateSettingsPreview(); updateStatusBar();
+          return;
+        }
+      });
 
       // ---- 设置函数 ----
       function getSettings() {
@@ -1448,13 +2948,26 @@
 
       // ---- 日历 ----
       function getDayType(y, m, d) {
-        var holidays = {
-          '2026-01-01': 1, '2026-02-17': 1, '2026-02-18': 1, '2026-02-19': 1, '2026-02-20': 1,
-          '2026-04-05': 1, '2026-05-01': 1, '2026-06-19': 1, '2026-10-01': 1, '2026-10-02': 1,
-          '2026-10-03': 1, '2026-10-04': 1, '2026-10-05': 1, '2026-10-06': 1, '2026-10-07': 1
-        };
         var dk = y + '-' + String(m).padStart(2, '0') + '-' + String(d).padStart(2, '0');
-        if (holidays[dk]) return 'holiday';
+        var yearStr = y.toString();
+        // 优先使用缓存的API数据
+        if (holidayCache[yearStr] && holidayCache[yearStr].data && holidayCache[yearStr].data[dk]) {
+          return holidayCache[yearStr].data[dk];
+        }
+        // fallback: 内置硬编码数据（2024-2027）
+        var fallbackHolidays = {
+          '2024-01-01':1,'2024-02-10':1,'2024-02-11':1,'2024-02-12':1,'2024-02-13':1,'2024-02-14':1,'2024-02-15':1,'2024-02-16':1,'2024-02-17':1,'2024-04-04':1,'2024-04-05':1,'2024-04-06':1,'2024-05-01':1,'2024-05-02':1,'2024-05-03':1,'2024-05-04':1,'2024-05-05':1,'2024-06-10':1,'2024-09-15':1,'2024-09-16':1,'2024-09-17':1,'2024-10-01':1,'2024-10-02':1,'2024-10-03':1,'2024-10-04':1,'2024-10-05':1,'2024-10-06':1,'2024-10-07':1,
+          '2025-01-01':1,'2025-01-28':1,'2025-01-29':1,'2025-01-30':1,'2025-01-31':1,'2025-02-01':1,'2025-02-02':1,'2025-02-03':1,'2025-02-04':1,'2025-04-04':1,'2025-04-05':1,'2025-04-06':1,'2025-05-01':1,'2025-05-02':1,'2025-05-03':1,'2025-05-04':1,'2025-05-05':1,'2025-05-31':1,'2025-06-01':1,'2025-06-02':1,'2025-10-01':1,'2025-10-02':1,'2025-10-03':1,'2025-10-04':1,'2025-10-05':1,'2025-10-06':1,'2025-10-07':1,'2025-10-08':1,
+          '2026-01-01':1,'2026-01-02':1,'2026-01-03':1,'2026-02-15':1,'2026-02-16':1,'2026-02-17':1,'2026-02-18':1,'2026-02-19':1,'2026-02-20':1,'2026-02-21':1,'2026-02-22':1,'2026-02-23':1,'2026-04-04':1,'2026-04-05':1,'2026-04-06':1,'2026-05-01':1,'2026-05-02':1,'2026-05-03':1,'2026-05-04':1,'2026-05-05':1,'2026-06-19':1,'2026-06-20':1,'2026-06-21':1,'2026-09-25':1,'2026-09-26':1,'2026-09-27':1,'2026-10-01':1,'2026-10-02':1,'2026-10-03':1,'2026-10-04':1,'2026-10-05':1,'2026-10-06':1,'2026-10-07':1,
+          '2027-01-01':1,'2027-02-06':1,'2027-02-07':1,'2027-02-08':1,'2027-02-09':1,'2027-02-10':1,'2027-02-11':1,'2027-02-12':1,'2027-02-13':1,'2027-02-14':1,'2027-04-03':1,'2027-04-04':1,'2027-04-05':1,'2027-05-01':1,'2027-05-02':1,'2027-05-03':1,'2027-05-04':1,'2027-05-05':1,'2027-06-09':1,'2027-06-10':1,'2027-06-11':1,'2027-09-17':1,'2027-09-18':1,'2027-09-19':1,'2027-10-01':1,'2027-10-02':1,'2027-10-03':1,'2027-10-04':1,'2027-10-05':1,'2027-10-06':1,'2027-10-07':1
+        };
+        var fallbackWorkdays = {
+          '2024-02-04':1,'2024-02-18':1,'2024-04-07':1,'2024-04-28':1,'2024-05-11':1,'2024-09-14':1,'2024-09-29':1,'2024-10-12':1,
+          '2025-01-26':1,'2025-02-08':1,'2025-04-27':1,'2025-09-28':1,'2025-10-11':1,
+          '2026-01-04':1,'2026-02-14':1,'2026-02-28':1,'2026-05-09':1,'2026-09-20':1,'2026-10-10':1
+        };
+        if (fallbackHolidays[dk]) return 'holiday';
+        if (fallbackWorkdays[dk]) return 'weekday';
         var day = new Date(y, m - 1, d).getDay();
         return (day === 0 || day === 6) ? 'weekend' : 'weekday';
       }
@@ -1497,6 +3010,7 @@
           }
 
           var innerHtml = '<div class="day-number">' + d + '</div>';
+          innerHtml += '<div class="day-type-dot ' + (item.type || defaultType) + '"></div>';
           if (item.hours > 0) {
             var timeStr = '';
             if (item.segments && item.segments.length > 0) {
@@ -1863,18 +3377,18 @@
         if (!container) return;
         container.innerHTML = '';
         if (!customItems || customItems.length === 0) {
-          container.innerHTML = '<div style="color:var(--text-secondary);font-size:.65rem;padding:2px 0;">暂无自定义项目</div>';
+          container.innerHTML = '<div style="color:var(--text-secondary);font-size:0.8rem;padding:4px 0;">暂无自定义项目</div>';
           return;
         }
         customItems.forEach(function(item, idx) {
           var div = document.createElement('div');
-          div.className = 'piece-product-row';
+          div.className = 'custom-item-row';
           var sign = item.type === 'add' ? '+' : '-';
           var color = item.type === 'add' ? 'var(--color-income)' : 'var(--color-expense)';
-          div.innerHTML = '<span style="flex:1;font-size:0.65rem;">' + escapeHtml(item.name) + '</span><span style="width:60px;text-align:center;color:' + color + '">' + sign + ' ' + (item.amount || 0).toFixed(2) + '</span><button class="btn-del" data-idx="' + idx + '">✕</button>';
+          div.innerHTML = '<span style="flex:1;font-size:0.85rem;">' + escapeHtml(item.name) + '</span><span style="width:80px;text-align:right;color:' + color + ';font-weight:600;">' + sign + ' ' + (item.amount || 0).toFixed(2) + '</span><button class="btn btn-sm btn-danger" style="min-height:28px;padding:2px 8px;font-size:0.8rem;" data-idx="' + idx + '">✕</button>';
           container.appendChild(div);
         });
-        container.querySelectorAll('.btn-del').forEach(function(btn) {
+        container.querySelectorAll('.btn-danger').forEach(function(btn) {
           btn.addEventListener('click', function() {
             var idx = parseInt(this.dataset.idx);
             if (!isNaN(idx) && idx >= 0 && idx < customItems.length) {
@@ -1964,6 +3478,7 @@
           taxThreshold: settings.taxThreshold
         };
         saveToStorageImmediate('history', recs);
+        updateStatusBar();
 
         // 同时保存参数
         saveAllParams();
@@ -1971,6 +3486,18 @@
 
         updateAnnualSummary();
         showToast('✅ 工资：实发 ¥' + netPay.toFixed(2) + '，个税 ¥' + tax.toFixed(2) + '，自定义 ¥' + customTotal.toFixed(2));
+
+        // 自动跳转到工资数据页
+        setTimeout(function() {
+          document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+          document.querySelectorAll('#bottomNav .nav-btn').forEach(function(b) { b.classList.remove('active'); });
+          var salaryPanel = $('tab-salary');
+          var salaryBtn = document.querySelector('[data-tab="salary"]');
+          if (salaryPanel) salaryPanel.classList.add('active');
+          if (salaryBtn) salaryBtn.classList.add('active');
+          updateAnnualSummary();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 800);
       }
 
       // ---- 年度汇总 ----
@@ -1988,7 +3515,7 @@
         var recs = storage.history || {};
         var yearKeys = Object.keys(recs).filter(function(k) { return k.startsWith(year + '-'); }).sort();
         if (yearKeys.length === 0) {
-          container.innerHTML = '<div style="text-align:center;padding:8px;color:var(--text-secondary);font-size:0.7rem;">暂无数据</div>';
+          container.innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div><div class="empty-text">暂无数据</div><div class="empty-hint">前往「设置」页计算并保存第一条工资记录</div></div>';
           if ($('annualHistoryContainer')) $('annualHistoryContainer').innerHTML = '';
           return;
         }
@@ -2025,14 +3552,29 @@
         if (!container) return;
         var yearKeys = Object.keys(recs).filter(function(k) { return k.startsWith(year + '-'); }).sort();
         if (yearKeys.length === 0) { container.innerHTML = ''; return; }
-        var html = '<div class="history-table-wrap"><table class="history-table"><thead><tr><th>月份</th><th>底薪</th><th>加班费</th><th>其他</th><th>自定义</th><th>应发</th><th>社保</th><th>公积金</th><th>个税</th><th>实发</th><th>操作</th></tr></thead><tbody>';
+        var tableHtml = '<div class="history-table-wrap"><table class="history-table"><thead><tr><th>月份</th><th>底薪</th><th>加班费</th><th>其他</th><th>自定义</th><th>应发</th><th>社保</th><th>公积金</th><th>个税</th><th>实发</th><th>操作</th></tr></thead><tbody>';
+        var cardHtml = '<div class="salary-card-list">';
         yearKeys.forEach(function(k) {
           var r = recs[k];
           var monthNum = k.split('-')[1];
-          html += '<tr><td>' + monthNum + '月</td><td>¥' + (r.baseSalary || 0).toFixed(2) + '</td><td>¥' + (r.totalOvertimePay || 0).toFixed(2) + '</td><td>¥' + (r.otherIncome || 0).toFixed(2) + '</td><td>¥' + (r.customTotal || 0).toFixed(2) + '</td><td>¥' + (r.grossPay || 0).toFixed(2) + '</td><td>¥' + (r.socialInsurance || 0).toFixed(2) + '</td><td>¥' + (r.housingFund || 0).toFixed(2) + '</td><td class="tax">¥' + (r.tax || 0).toFixed(2) + '</td><td class="net-pay">¥' + (r.netPay || 0).toFixed(2) + '</td><td><button class="delete-record-btn" data-del="' + k + '">✕</button></td></tr>';
+          tableHtml += '<tr><td>' + monthNum + '月</td><td>¥' + (r.baseSalary || 0).toFixed(2) + '</td><td>¥' + (r.totalOvertimePay || 0).toFixed(2) + '</td><td>¥' + (r.otherIncome || 0).toFixed(2) + '</td><td>¥' + (r.customTotal || 0).toFixed(2) + '</td><td>¥' + (r.grossPay || 0).toFixed(2) + '</td><td>¥' + (r.socialInsurance || 0).toFixed(2) + '</td><td>¥' + (r.housingFund || 0).toFixed(2) + '</td><td class="tax">¥' + (r.tax || 0).toFixed(2) + '</td><td class="net-pay">¥' + (r.netPay || 0).toFixed(2) + '</td><td><button class="delete-record-btn" data-del="' + k + '">✕</button></td></tr>';
+          cardHtml += '<div class="salary-card">' +
+            '<div class="sc-month">' + monthNum + '月</div>' +
+            '<div class="sc-net">¥' + (r.netPay || 0).toFixed(2) + '</div>' +
+            '<div class="sc-row"><span class="sc-label">底薪</span><span class="sc-value">¥' + (r.baseSalary || 0).toFixed(2) + '</span></div>' +
+            '<div class="sc-row"><span class="sc-label">加班费</span><span class="sc-value">¥' + (r.totalOvertimePay || 0).toFixed(2) + '</span></div>' +
+            '<div class="sc-row"><span class="sc-label">其他</span><span class="sc-value">¥' + (r.otherIncome || 0).toFixed(2) + '</span></div>' +
+            '<div class="sc-row"><span class="sc-label">自定义</span><span class="sc-value" style="color:var(--color-warning);">¥' + (r.customTotal || 0).toFixed(2) + '</span></div>' +
+            '<div class="sc-row"><span class="sc-label">应发</span><span class="sc-value">¥' + (r.grossPay || 0).toFixed(2) + '</span></div>' +
+            '<div class="sc-row"><span class="sc-label">社保</span><span class="sc-value">¥' + (r.socialInsurance || 0).toFixed(2) + '</span></div>' +
+            '<div class="sc-row"><span class="sc-label">公积金</span><span class="sc-value">¥' + (r.housingFund || 0).toFixed(2) + '</span></div>' +
+            '<div class="sc-row"><span class="sc-label">个税</span><span class="sc-value tax">¥' + (r.tax || 0).toFixed(2) + '</span></div>' +
+            '<div class="sc-actions"><button class="delete-record-btn" data-del="' + k + '">✕ 删除</button></div>' +
+            '</div>';
         });
-        html += '</tbody></table></div>';
-        container.innerHTML = html;
+        tableHtml += '</tbody></table></div>';
+        cardHtml += '</div>';
+        container.innerHTML = tableHtml + cardHtml;
         container.querySelectorAll('.delete-record-btn').forEach(function(btn) {
           btn.addEventListener('click', function() {
             var mk = this.dataset.del;
@@ -2091,13 +3633,13 @@
         var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>加班记录</title>' +
           '<style>' +
           'body{font-family:sans-serif;padding:20px;background:#0a0e1a;color:#e8ecf4;}' +
-          'h2{color:#6c5ce7;text-align:center;margin-bottom:16px;}' +
+          'h2{color:var(--primary);text-align:center;margin-bottom:16px;}' +
           '.summary{background:rgba(108,92,231,0.08);border-radius:12px;padding:12px 20px;margin-bottom:16px;display:flex;justify-content:space-around;flex-wrap:wrap;}' +
           '.summary span{font-size:0.9rem;}' +
           '.summary strong{color:#fdcb6e;}' +
           'table{width:100%;border-collapse:collapse;font-size:0.85rem;}' +
           'th,td{padding:6px 10px;border-bottom:1px solid rgba(255,255,255,0.05);text-align:center;}' +
-          'th{color:#6c5ce7;background:rgba(108,92,231,0.06);}' +
+          'th{color:var(--primary);background:rgba(108,92,231,0.06);}' +
           '.total-row{background:rgba(108,92,231,0.08);font-weight:bold;}' +
           '.total-row td{color:#fdcb6e;}' +
           '.footer{text-align:center;margin-top:16px;font-size:0.7rem;color:#5a6a8a;}' +
@@ -2166,13 +3708,13 @@
         var recs = storage.history || {};
         var rec = recs[currentMonthKey];
         if (!rec) { showToast('该月暂无计算记录'); return; }
-        var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>工资条</title><style>body{font-family:sans-serif;padding:16px;background:#0a0e1a;color:#e8ecf4;}h2{color:#6c5ce7;}table{width:100%;border-collapse:collapse;}td{padding:4px 8px;border-bottom:1px solid rgba(255,255,255,0.05);}.total{font-size:18px;color:#00b894;text-align:center;padding:10px;background:rgba(108,92,231,0.08);border-radius:10px;margin-top:10px;}</style></head><body>' +
+        var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>工资条</title><style>body{font-family:sans-serif;padding:16px;background:#0a0e1a;color:#e8ecf4;}h2{color:var(--primary);}table{width:100%;border-collapse:collapse;}td{padding:4px 8px;border-bottom:1px solid rgba(255,255,255,0.05);}.total{font-size:18px;color:#00b894;text-align:center;padding:10px;background:rgba(108,92,231,0.08);border-radius:10px;margin-top:10px;}</style></head><body>' +
           '<h2>💰 ' + currentMonthKey + ' 工资条</h2>' +
           '<table><tr><td>底薪</td><td>¥' + (rec.baseSalary || 0).toFixed(2) + '</td></tr>' +
           '<tr><td>加班费</td><td>¥' + (rec.totalOvertimePay || 0).toFixed(2) + '</td></tr>' +
           '<tr><td>其他收入</td><td>¥' + (rec.otherIncome || 0).toFixed(2) + '</td></tr>' +
           '<tr><td>自定义增减</td><td style="color:var(--color-warning);">¥' + (rec.customTotal || 0).toFixed(2) + '</td></tr>' +
-          '<tr style="font-weight:bold;color:#6c5ce7;"><td>应发</td><td>¥' + (rec.grossPay || 0).toFixed(2) + '</td></tr>' +
+          '<tr style="font-weight:bold;color:var(--primary);"><td>应发</td><td>¥' + (rec.grossPay || 0).toFixed(2) + '</td></tr>' +
           '<tr><td>社保</td><td>¥' + (rec.socialInsurance || 0).toFixed(2) + '</td></tr>' +
           '<tr><td>公积金</td><td>¥' + (rec.housingFund || 0).toFixed(2) + '</td></tr>' +
           '<tr><td>其他扣除</td><td>¥' + (rec.otherDeduction || 0).toFixed(2) + '</td></tr>' +
@@ -2193,9 +3735,9 @@
         var rows = '';
         keys.forEach(function(k) {
           var r = recs[k];
-          rows += '<tr><td>' + k.slice(5) + '月</td><td>¥' + (r.baseSalary || 0).toFixed(2) + '</td><td>¥' + (r.totalOvertimePay || 0).toFixed(2) + '</td><td>¥' + (r.customTotal || 0).toFixed(2) + '</td><td>¥' + (r.grossPay || 0).toFixed(2) + '</td><td style="color:#6c5ce7;">¥' + (r.netPay || 0).toFixed(2) + '</td></tr>';
+          rows += '<tr><td>' + k.slice(5) + '月</td><td>¥' + (r.baseSalary || 0).toFixed(2) + '</td><td>¥' + (r.totalOvertimePay || 0).toFixed(2) + '</td><td>¥' + (r.customTotal || 0).toFixed(2) + '</td><td>¥' + (r.grossPay || 0).toFixed(2) + '</td><td style="color:var(--primary);">¥' + (r.netPay || 0).toFixed(2) + '</td></tr>';
         });
-        var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>年度报表</title><style>body{font-family:sans-serif;padding:16px;background:#0a0e1a;color:#e8ecf4;}h2{color:#6c5ce7;}table{width:100%;border-collapse:collapse;font-size:12px;}th,td{padding:4px 6px;border-bottom:1px solid rgba(255,255,255,0.05);text-align:center;}th{color:#6c5ce7;}</style></head><body>' +
+        var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>年度报表</title><style>body{font-family:sans-serif;padding:16px;background:#0a0e1a;color:#e8ecf4;}h2{color:var(--primary);}table{width:100%;border-collapse:collapse;font-size:12px;}th,td{padding:4px 6px;border-bottom:1px solid rgba(255,255,255,0.05);text-align:center;}th{color:var(--primary);}</style></head><body>' +
           '<h2>📊 ' + year + ' 年度报表</h2>' +
           '<table><tr><th>月份</th><th>底薪</th><th>加班费</th><th>自定义</th><th>应发</th><th>实发</th></tr>' + rows + '</table></body></html>';
         var w = window.open('', '_blank');
@@ -2245,6 +3787,386 @@
         navigator.clipboard.writeText(text).then(function() { showToast('✅ 工资条已复制到剪贴板'); }).catch(function() { showToast('❌ 复制失败'); });
       }
 
+      
+
+      // ============================================================
+      // 各模块导出函数
+      // ============================================================
+
+      function exportSettingsJSON() {
+        if (!currentMonthKey) { showToast('请选择月份'); return; }
+        var data = {
+          type: 'settings',
+          month: currentMonthKey,
+          exportDate: getLocalDateString(),
+          settings: getSettings(),
+          params: {
+            baseSalary: parseFloat($('baseSalary')?.value) || 0,
+            otherIncome: parseFloat($('otherIncome')?.value) || 0,
+            socialInsurance: parseFloat($('socialInsurance')?.value) || 0,
+            housingFund: parseFloat($('housingFund')?.value) || 0,
+            otherDeduction: parseFloat($('otherDeduction')?.value) || 0,
+            deductionsDetail: getSpecialDeductions(),
+            customItems: JSON.parse(JSON.stringify(customItems))
+          }
+        };
+        var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = '参数设置_' + currentMonthKey + '.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('✅ 参数已导出');
+      }
+
+      function exportOvertimeJSON() {
+        if (!currentMonthKey) { showToast('请选择月份'); return; }
+        var records = getOvertimeRecordsForMonth();
+        var data = {
+          type: 'overtime',
+          month: currentMonthKey,
+          exportDate: getLocalDateString(),
+          settings: getSettings(),
+          records: records,
+          dayDetails: currentDayDetails
+        };
+        var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = '加班记录_' + currentMonthKey + '.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('✅ 加班数据已导出');
+      }
+
+      function exportSalaryJSON() {
+        if (!currentMonthKey) { showToast('请选择月份'); return; }
+        var recs = storage.history || {};
+        var rec = recs[currentMonthKey];
+        if (!rec) { showToast('该月暂无计算记录'); return; }
+        var data = {
+          type: 'salary',
+          month: currentMonthKey,
+          exportDate: getLocalDateString(),
+          record: rec
+        };
+        var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = '工资数据_' + currentMonthKey + '.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('✅ 工资数据已导出');
+      }
+
+      function exportBackup() {
+        var backup = {
+          version: '3.0',
+          exportDate: getLocalDateString(),
+          appName: '智财管家',
+          data: {
+            history: storage.history || {},
+            details: storage.details || {},
+            settings: storage.settings || {},
+            monthParams: storage.monthParams || {},
+            customItems: customItems || []
+          }
+        };
+        var blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = '智财管家备份_' + getLocalDateString() + '.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('✅ 全量备份已导出');
+      }
+
+      // ============================================================
+      // 导入数据功能
+      // ============================================================
+      var pendingImportData = null;
+      var pendingImportConflicts = [];
+
+      function openImportModal() {
+        pendingImportData = null;
+        pendingImportConflicts = [];
+        if ($('importFileInput')) $('importFileInput').value = '';
+        if ($('importPreviewArea')) $('importPreviewArea').style.display = 'none';
+        if ($('importConflictArea')) $('importConflictArea').style.display = 'none';
+        if ($('importConfirmBtn')) $('importConfirmBtn').disabled = true;
+        if ($('importModalOverlay')) $('importModalOverlay').classList.add('active');
+      }
+
+      function closeImportModal() {
+        if ($('importModalOverlay')) $('importModalOverlay').classList.remove('active');
+        pendingImportData = null;
+        pendingImportConflicts = [];
+      }
+
+      function validateBackupData(data) {
+        if (!data || typeof data !== 'object') return { valid: false, error: '数据格式错误' };
+        if (data.type && ['settings','overtime','salary'].indexOf(data.type) !== -1) {
+          return { valid: true, mode: 'single' };
+        }
+        if (data.data && typeof data.data === 'object') {
+          var d = data.data;
+          if (d.history !== undefined && typeof d.history !== 'object') return { valid: false, error: 'history 格式错误' };
+          if (d.details !== undefined && typeof d.details !== 'object') return { valid: false, error: 'details 格式错误' };
+          if (d.settings !== undefined && typeof d.settings !== 'object') return { valid: false, error: 'settings 格式错误' };
+          if (d.monthParams !== undefined && typeof d.monthParams !== 'object') return { valid: false, error: 'monthParams 格式错误' };
+          if (d.customItems !== undefined && !Array.isArray(d.customItems)) return { valid: false, error: 'customItems 格式错误' };
+          return { valid: true, mode: 'full' };
+        }
+        return { valid: false, error: '无法识别的数据格式' };
+      }
+
+      function detectConflicts(importData, mode) {
+        var conflicts = [];
+        var localHistory = storage.history || {};
+        if (mode === 'full') {
+          var importHistory = importData.data.history || {};
+          for (var mk in importHistory) {
+            if (localHistory[mk]) conflicts.push(mk);
+          }
+        } else if (mode === 'single') {
+          var month = importData.month;
+          if (month && localHistory[month]) conflicts.push(month);
+        }
+        return conflicts;
+      }
+
+      function renderImportPreview(data, conflicts, mode) {
+        var content = $('importPreviewContent');
+        if (!content) return;
+        var html = '';
+        if (mode === 'full') {
+          var d = data.data;
+          var hCount = Object.keys(d.history || {}).length;
+          var dCount = Object.keys(d.details || {}).length;
+          var mCount = Object.keys(d.monthParams || {}).length;
+          var cCount = (d.customItems || []).length;
+          html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">';
+          html += '<div>📊 工资记录：<strong style="color:var(--primary);">' + hCount + '</strong> 条</div>';
+          html += '<div>📆 加班记录：<strong style="color:var(--primary);">' + dCount + '</strong> 个月</div>';
+          html += '<div>⚙️ 月份参数：<strong style="color:var(--primary);">' + mCount + '</strong> 个月</div>';
+          html += '<div>🔧 自定义项：<strong style="color:var(--primary);">' + cCount + '</strong> 个</div>';
+          html += '</div>';
+        } else {
+          html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">';
+          html += '<div>📁 类型：<strong style="color:var(--primary);">' + (data.type === 'settings' ? '参数设置' : data.type === 'overtime' ? '加班记录' : '工资数据') + '</strong></div>';
+          html += '<div>📅 月份：<strong style="color:var(--primary);">' + (data.month || '—') + '</strong></div>';
+          html += '</div>';
+        }
+        if (conflicts.length > 0) {
+          html += '<div style="margin-top:8px;color:var(--color-warning);">⚠️ 冲突月份：' + conflicts.join('、') + '</div>';
+        }
+        content.innerHTML = html;
+        if ($('importPreviewArea')) $('importPreviewArea').style.display = '';
+      }
+
+      function handleImportFile(file) {
+        if (!file) return;
+        if (!file.name.endsWith('.json')) { showToast('请选择 .json 文件'); return; }
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          try {
+            var data = JSON.parse(e.target.result);
+            var validation = validateBackupData(data);
+            if (!validation.valid) { showToast('❌ ' + validation.error); return; }
+            pendingImportData = data;
+            pendingImportConflicts = detectConflicts(data, validation.mode);
+            renderImportPreview(data, pendingImportConflicts, validation.mode);
+            if (pendingImportConflicts.length > 0) {
+              if ($('importConflictArea')) $('importConflictArea').style.display = '';
+            } else {
+              if ($('importConflictArea')) $('importConflictArea').style.display = 'none';
+            }
+            if ($('importConfirmBtn')) $('importConfirmBtn').disabled = false;
+          } catch (err) {
+            showToast('❌ 文件解析失败：' + err.message);
+          }
+        };
+        reader.readAsText(file);
+      }
+
+      function executeImport() {
+        if (!pendingImportData) { showToast('请先选择文件'); return; }
+        var mode = document.querySelector('input[name="importConflictMode"]:checked')?.value || 'merge';
+        var validation = validateBackupData(pendingImportData);
+        var importMode = validation.mode;
+        var importedCount = { history: 0, details: 0, monthParams: 0, customItems: 0, skipped: 0 };
+
+        if (importMode === 'full') {
+          var d = pendingImportData.data;
+          if (d.history) {
+            var localHistory = {};
+            for (var key in storage.history || {}) { localHistory[key] = storage.history[key]; }
+            for (var mk in d.history) {
+              if (localHistory[mk] && mode === 'skip') { importedCount.skipped++; continue; }
+              if (mode === 'merge' && localHistory[mk]) {
+                localHistory[mk] = Object.assign({}, localHistory[mk], d.history[mk]);
+              } else {
+                localHistory[mk] = JSON.parse(JSON.stringify(d.history[mk]));
+              }
+              importedCount.history++;
+            }
+            saveToStorageImmediate('history', localHistory);
+          }
+          if (d.details) {
+            var localDetails = {};
+            for (var key2 in storage.details || {}) { localDetails[key2] = storage.details[key2]; }
+            for (var mk2 in d.details) {
+              if (localDetails[mk2] && mode === 'skip') continue;
+              if (mode === 'merge' && localDetails[mk2]) {
+                localDetails[mk2] = Object.assign({}, localDetails[mk2], d.details[mk2]);
+              } else {
+                localDetails[mk2] = JSON.parse(JSON.stringify(d.details[mk2]));
+              }
+              importedCount.details++;
+            }
+            saveToStorageImmediate('details', localDetails);
+          }
+          if (d.monthParams) {
+            var localMonthParams = {};
+            for (var key3 in storage.monthParams || {}) { localMonthParams[key3] = storage.monthParams[key3]; }
+            for (var mk3 in d.monthParams) {
+              if (localMonthParams[mk3] && mode === 'skip') continue;
+              if (mode === 'merge' && localMonthParams[mk3]) {
+                localMonthParams[mk3] = Object.assign({}, localMonthParams[mk3], d.monthParams[mk3]);
+              } else {
+                localMonthParams[mk3] = JSON.parse(JSON.stringify(d.monthParams[mk3]));
+              }
+              importedCount.monthParams++;
+            }
+            saveToStorageImmediate('monthParams', localMonthParams);
+          }
+          if (d.settings && Object.keys(d.settings).length > 0) {
+            saveToStorageImmediate('settings', JSON.parse(JSON.stringify(d.settings)));
+            var s = d.settings;
+            if ($('workDaysPerMonth')) $('workDaysPerMonth').value = s.workDaysPerMonth || 21.75;
+            if ($('workHoursPerDay')) $('workHoursPerDay').value = s.workHoursPerDay || 8;
+            if ($('taxThreshold')) $('taxThreshold').value = s.taxThreshold || 5000;
+            if ($('multiplierWeekday')) $('multiplierWeekday').value = s.multiplierWeekday || 1.5;
+            if ($('multiplierWeekend')) $('multiplierWeekend').value = s.multiplierWeekend || 2.0;
+            if ($('multiplierHoliday')) $('multiplierHoliday').value = s.multiplierHoliday || 3.0;
+          }
+          if (d.customItems && d.customItems.length > 0) {
+            var existingNames = {};
+            customItems.forEach(function(item) { existingNames[item.name] = item; });
+            d.customItems.forEach(function(item) {
+              if (mode === 'skip' && existingNames[item.name]) return;
+              if (mode === 'merge' && existingNames[item.name]) {
+                existingNames[item.name] = JSON.parse(JSON.stringify(item));
+              } else {
+                customItems.push(JSON.parse(JSON.stringify(item)));
+                existingNames[item.name] = item;
+              }
+              importedCount.customItems++;
+            });
+            if (mode === 'merge') customItems = Object.values(existingNames);
+            saveCustomItems();
+          }
+        } else {
+          var singleData = pendingImportData;
+          var month = singleData.month;
+          if (singleData.type === 'settings' && singleData.params) {
+            var mp = {};
+            for (var key4 in storage.monthParams || {}) { mp[key4] = storage.monthParams[key4]; }
+            if (mp[month] && mode === 'skip') {
+              importedCount.skipped++;
+            } else {
+              mp[month] = JSON.parse(JSON.stringify(singleData.params));
+              saveToStorageImmediate('monthParams', mp);
+              importedCount.monthParams++;
+            }
+            if (singleData.settings) {
+              var ss = singleData.settings;
+              if ($('workDaysPerMonth')) $('workDaysPerMonth').value = ss.workDaysPerMonth || 21.75;
+              if ($('workHoursPerDay')) $('workHoursPerDay').value = ss.workHoursPerDay || 8;
+              if ($('taxThreshold')) $('taxThreshold').value = ss.taxThreshold || 5000;
+              if ($('multiplierWeekday')) $('multiplierWeekday').value = ss.multiplierWeekday || 1.5;
+              if ($('multiplierWeekend')) $('multiplierWeekend').value = ss.multiplierWeekend || 2.0;
+              if ($('multiplierHoliday')) $('multiplierHoliday').value = ss.multiplierHoliday || 3.0;
+            }
+            if (singleData.params) {
+              var p = singleData.params;
+              if ($('baseSalary')) $('baseSalary').value = p.baseSalary || '';
+              if ($('otherIncome')) $('otherIncome').value = p.otherIncome || '';
+              if ($('socialInsurance')) $('socialInsurance').value = p.socialInsurance || '';
+              if ($('housingFund')) $('housingFund').value = p.housingFund || '';
+              if ($('otherDeduction')) $('otherDeduction').value = p.otherDeduction || '';
+              var dd = p.deductionsDetail || {};
+              if ($('deduct_child')) $('deduct_child').value = dd.child || 0;
+              if ($('deduct_education')) $('deduct_education').value = dd.education || 0;
+              if ($('deduct_medical')) $('deduct_medical').value = dd.medical || 0;
+              if ($('deduct_loan')) $('deduct_loan').value = dd.loan || 0;
+              if ($('deduct_rent')) $('deduct_rent').value = dd.rent || 0;
+              if ($('deduct_elder')) $('deduct_elder').value = dd.elder || 0;
+              if ($('deduct_infant')) $('deduct_infant').value = dd.infant || 0;
+              if (p.customItems && Array.isArray(p.customItems)) {
+                customItems = JSON.parse(JSON.stringify(p.customItems));
+                saveCustomItems();
+                renderCustomItems();
+              }
+            }
+          } else if (singleData.type === 'overtime' && singleData.dayDetails) {
+            var dt = {};
+            for (var key5 in storage.details || {}) { dt[key5] = storage.details[key5]; }
+            if (dt[month] && mode === 'skip') {
+              importedCount.skipped++;
+            } else {
+              dt[month] = JSON.parse(JSON.stringify(singleData.dayDetails));
+              saveToStorageImmediate('details', dt);
+              importedCount.details++;
+            }
+            if (month === currentMonthKey) {
+              currentDayDetails = JSON.parse(JSON.stringify(singleData.dayDetails));
+              renderCalendar();
+            }
+          } else if (singleData.type === 'salary' && singleData.record) {
+            var hr = {};
+            for (var key6 in storage.history || {}) { hr[key6] = storage.history[key6]; }
+            if (hr[month] && mode === 'skip') {
+              importedCount.skipped++;
+            } else {
+              hr[month] = JSON.parse(JSON.stringify(singleData.record));
+              saveToStorageImmediate('history', hr);
+              importedCount.history++;
+            }
+          }
+        }
+
+        loadStorage();
+        loadCustomItems();
+        loadOvertimeData();
+        loadMonthParams(currentMonthKey);
+        updateAnnualSummary();
+        updateHourlyPreview();
+        updateDeductTotalDisplay();
+        renderCustomItems();
+
+        closeImportModal();
+        var msg = '✅ 导入完成';
+        if (importedCount.history > 0) msg += ' 工资' + importedCount.history + '条';
+        if (importedCount.details > 0) msg += ' 加班' + importedCount.details + '个月';
+        if (importedCount.monthParams > 0) msg += ' 参数' + importedCount.monthParams + '个月';
+        if (importedCount.customItems > 0) msg += ' 自定义' + importedCount.customItems + '个';
+        if (importedCount.skipped > 0) msg += ' 跳过' + importedCount.skipped + '条';
+        showToast(msg);
+      }
+
       // ---- 切换月份 ----
       window.switchMonth = function(delta) {
         if (!currentMonthKey) { currentMonthKey = $('salaryMonth')?.value; if (!currentMonthKey) return; }
@@ -2263,6 +4185,12 @@
           var p = parseMonthKey(newMK);
           if (p) $('monthDisplayLabel').textContent = p.year + '年' + p.month + '月';
         }
+        // 切换月份时自动获取该年节假日数据
+        fetchHolidayData(y).then(function() {
+          renderCalendar();
+        }).catch(function() {
+          renderCalendar();
+        });
         loadOvertimeData();
         loadMonthParams(newMK);
         updateAnnualSummary();
@@ -2272,12 +4200,24 @@
       // ---- 初始化 ----
       function initApp() {
         console.log('📋 智财管家 工资核算 启动');
-        var savedTheme = localStorage.getItem('app_theme') || 'dark';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        if ($('themeToggleBtn')) $('themeToggleBtn').textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+        // 主题配置由 initThemeCenter() 统一处理
 
         loadStorage();
         loadCustomItems();
+        loadHolidayCache();
+
+        // 自动获取当前年及前后1年的节假日数据
+        var currentYear = new Date().getFullYear();
+        [ currentYear - 1, currentYear, currentYear + 1 ].forEach(function(year) {
+          fetchHolidayData(year).then(function() {
+            console.log('✅ 节假日数据已获取:', year);
+            if (currentMonthKey && currentMonthKey.startsWith(year + '-')) {
+              renderCalendar();
+            }
+          }).catch(function(err) {
+            console.log('⚠️ 节假日数据获取失败:', year, err.message);
+          });
+        });
 
         var now = new Date();
         currentMonthKey = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
@@ -2297,6 +4237,7 @@
           if (el) {
             el.addEventListener('input', function() {
               updateHourlyPreview();
+              updateSettingsPreview();
               clearTimeout(autoSaveTimer);
               autoSaveTimer = setTimeout(function() { saveAllParams(); }, 500);
             });
@@ -2308,6 +4249,7 @@
           if (el) {
             el.addEventListener('input', function() {
               updateDeductTotalDisplay();
+              updateSettingsPreview();
               clearTimeout(autoSaveTimer);
               autoSaveTimer = setTimeout(function() { saveAllParams(); }, 500);
             });
@@ -2326,6 +4268,11 @@
             this.classList.add('active');
             if (tab === 'overtime') renderCalendar();
             if (tab === 'salary') updateAnnualSummary();
+            if (tab === 'theme') {
+              applyThemeMode(themeConfig.mode);
+              applyAccentColor(themeConfig.accent);
+              applyFontScale(themeConfig.fontScale);
+            }
           });
         });
 
@@ -2361,6 +4308,29 @@
         // ---- 批量 ----
         if ($('btnBatchSelect')) $('btnBatchSelect').addEventListener('click', enterBatchSelectMode);
         if ($('btnCancelSelect')) $('btnCancelSelect').addEventListener('click', exitBatchSelectMode);
+
+        // ---- 刷新节假日 ----
+        if ($('btnRefreshHolidays')) {
+          $('btnRefreshHolidays').addEventListener('click', function() {
+            var parsed = parseMonthKey(currentMonthKey);
+            if (!parsed) return;
+            var year = parsed.year;
+            updateHolidayStatus(year, 'loading');
+            delete holidayCache[year.toString()];
+            saveHolidayCache();
+            fetchHolidayData(year).then(function() {
+              updateHolidayStatus(year, 'loaded');
+              showToast('✅ ' + year + ' 年节假日数据已更新');
+              renderCalendar();
+              setTimeout(function() { updateHolidayStatus(year, ''); }, 3000);
+            }).catch(function(err) {
+              updateHolidayStatus(year, 'error');
+              showToast('❌ 获取失败，使用本地数据');
+              renderCalendar();
+              setTimeout(function() { updateHolidayStatus(year, ''); }, 3000);
+            });
+          });
+        }
         if ($('batchApply')) $('batchApply').addEventListener('click', applyBatchSetting);
         if ($('batchCancel')) {
           $('batchCancel').addEventListener('click', function() { if ($('batchModalOverlay')) $('batchModalOverlay').classList.remove('active'); exitBatchSelectMode(); });
@@ -2431,20 +4401,185 @@
         if ($('btnExportSalaryCSV')) $('btnExportSalaryCSV').addEventListener('click', exportSalaryCSV);
         if ($('btnExportOvertimeCSV')) $('btnExportOvertimeCSV').addEventListener('click', exportOvertimeCSV);
 
+        // ---- 各模块 JSON 导出 ----
+        if ($('btnExportSettings')) $('btnExportSettings').addEventListener('click', exportSettingsJSON);
+        if ($('btnExportOvertimeJSON')) $('btnExportOvertimeJSON').addEventListener('click', exportOvertimeJSON);
+        if ($('btnExportSalaryJSON')) $('btnExportSalaryJSON').addEventListener('click', exportSalaryJSON);
+        if ($('btnExportBackup')) $('btnExportBackup').addEventListener('click', exportBackup);
+
+        // ---- 导入 ----
+        if ($('btnImportData')) $('btnImportData').addEventListener('click', openImportModal);
+        if ($('btnImportOvertime')) $('btnImportOvertime').addEventListener('click', openImportModal);
+        if ($('btnImportSalary')) $('btnImportSalary').addEventListener('click', openImportModal);
+        if ($('importCancelBtn')) $('importCancelBtn').addEventListener('click', closeImportModal);
+        if ($('importConfirmBtn')) $('importConfirmBtn').addEventListener('click', executeImport);
+        if ($('importModalOverlay')) {
+          $('importModalOverlay').addEventListener('click', function(e) { if (e.target === this) closeImportModal(); });
+        }
+        if ($('importFileInput')) {
+          $('importFileInput').addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) handleImportFile(e.target.files[0]);
+          });
+        }
+
         // ---- 复制 ----
         if ($('btnCopySalarySlip')) { $('btnCopySalarySlip').addEventListener('click', copySalarySlip); }
 
-        // ---- 主题切换 ----
-        if ($('themeToggleBtn')) {
-          $('themeToggleBtn').addEventListener('click', function() {
-            var current = document.documentElement.getAttribute('data-theme') || 'dark';
-            var next = current === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', next);
-            localStorage.setItem('app_theme', next);
-            this.textContent = next === 'dark' ? '🌙' : '☀️';
-            showToast(next === 'dark' ? '🌙 已切换深色主题' : '☀️ 已切换浅色主题');
+        // ---- 主题中心功能 ----
+        var THEME_CONFIG_KEY = 'theme_config_v3';
+        var themeConfig = {
+          mode: 'dark',
+          accent: 'purple',
+          particles: true,
+          orbs: true,
+          grid: true,
+          animations: true,
+          fontScale: 1
+        };
+
+        function loadThemeConfig() {
+          try {
+            var raw = localStorage.getItem(THEME_CONFIG_KEY);
+            if (raw) {
+              var saved = JSON.parse(raw);
+              Object.assign(themeConfig, saved);
+            }
+          } catch (e) {}
+        }
+
+        function saveThemeConfig() {
+          try {
+            localStorage.setItem(THEME_CONFIG_KEY, JSON.stringify(themeConfig));
+          } catch (e) {}
+        }
+
+        function applyThemeMode(mode) {
+          var effectiveMode = mode;
+          if (mode === 'auto') {
+            effectiveMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          }
+          document.documentElement.classList.add('theme-transition');
+          document.documentElement.setAttribute('data-theme', effectiveMode);
+          if ($('themeToggleIcon')) $('themeToggleIcon').textContent = effectiveMode === 'dark' ? '🌙' : '☀️';
+          setTimeout(function() {
+            document.documentElement.classList.remove('theme-transition');
+          }, 600);
+          document.querySelectorAll('.theme-mode-option').forEach(function(el) {
+            el.classList.toggle('active', el.dataset.mode === mode);
           });
         }
+
+        function applyAccentColor(accent) {
+          document.documentElement.setAttribute('data-accent', accent);
+          document.querySelectorAll('.accent-color-option').forEach(function(el) {
+            el.classList.toggle('active', el.dataset.accent === accent);
+          });
+        }
+
+        function applyVisualEffects() {
+          var canvas = $('particleCanvas');
+          var orbs = document.querySelectorAll('.glow-orb');
+          var grid = document.querySelector('.bg-grid');
+          if (canvas) canvas.style.display = themeConfig.particles ? '' : 'none';
+          orbs.forEach(function(orb) { orb.style.display = themeConfig.orbs ? '' : 'none'; });
+          if (grid) grid.style.display = themeConfig.grid ? '' : 'none';
+          if (!themeConfig.animations) {
+            document.documentElement.style.setProperty('--transition', '0.01ms');
+          } else {
+            document.documentElement.style.setProperty('--transition', '0.4s cubic-bezier(0.34, 1.56, 0.64, 1)');
+          }
+        }
+
+        function applyFontScale(scale) {
+          document.documentElement.style.setProperty('--font-scale', scale);
+          if ($('fontSizeSlider')) $('fontSizeSlider').value = scale;
+          if ($('fontSizeValue')) $('fontSizeValue').textContent = Math.round(scale * 100) + '%';
+        }
+
+        function initThemeCenter() {
+          loadThemeConfig();
+          applyThemeMode(themeConfig.mode);
+          applyAccentColor(themeConfig.accent);
+          applyVisualEffects();
+          applyFontScale(themeConfig.fontScale);
+
+          document.querySelectorAll('.theme-mode-option').forEach(function(el) {
+            el.addEventListener('click', function() {
+              themeConfig.mode = this.dataset.mode;
+              saveThemeConfig();
+              applyThemeMode(themeConfig.mode);
+              showToast(themeConfig.mode === 'dark' ? '🌙 已切换深色模式' : themeConfig.mode === 'light' ? '☀️ 已切换浅色模式' : '🌓 已设为跟随系统');
+            });
+          });
+
+          document.querySelectorAll('.accent-color-option').forEach(function(el) {
+            el.addEventListener('click', function() {
+              themeConfig.accent = this.dataset.accent;
+              saveThemeConfig();
+              applyAccentColor(themeConfig.accent);
+              showToast('🎨 已切换为「' + this.querySelector('.ac-label').textContent + '」主题色');
+            });
+          });
+
+          var effectMap = [
+            { id: 'toggleParticles', key: 'particles' },
+            { id: 'toggleOrbs', key: 'orbs' },
+            { id: 'toggleGrid', key: 'grid' },
+            { id: 'toggleAnimations', key: 'animations' }
+          ];
+          effectMap.forEach(function(item) {
+            var el = $(item.id);
+            if (el) {
+              el.checked = themeConfig[item.key];
+              el.addEventListener('change', function() {
+                themeConfig[item.key] = this.checked;
+                saveThemeConfig();
+                applyVisualEffects();
+                showToast(this.checked ? '✨ 效果已开启' : '⏸️ 效果已关闭');
+              });
+            }
+          });
+
+          var fsSlider = $('fontSizeSlider');
+          if (fsSlider) {
+            fsSlider.addEventListener('input', function() {
+              themeConfig.fontScale = parseFloat(this.value);
+              applyFontScale(themeConfig.fontScale);
+            });
+            fsSlider.addEventListener('change', function() {
+              saveThemeConfig();
+              showToast('🔤 字体大小已调整');
+            });
+          }
+
+          if ($('btnResetTheme')) {
+            $('btnResetTheme').addEventListener('click', function() {
+              if (!confirm('确定恢复默认主题设置吗？')) return;
+              themeConfig = { mode: 'dark', accent: 'purple', particles: true, orbs: true, grid: true, animations: true, fontScale: 1 };
+              saveThemeConfig();
+              applyThemeMode(themeConfig.mode);
+              applyAccentColor(themeConfig.accent);
+              applyVisualEffects();
+              applyFontScale(themeConfig.fontScale);
+              effectMap.forEach(function(item) {
+                var el = $(item.id);
+                if (el) el.checked = themeConfig[item.key];
+              });
+              showToast('🔄 已恢复默认主题');
+            });
+          }
+
+          if (window.matchMedia) {
+            var mql = window.matchMedia('(prefers-color-scheme: dark)');
+            mql.addEventListener('change', function() {
+              if (themeConfig.mode === 'auto') {
+                applyThemeMode('auto');
+              }
+            });
+          }
+        }
+
+        initThemeCenter();
 
         // ---- 折叠面板 ----
         document.querySelectorAll('.section-title').forEach(function(title) {
@@ -2473,6 +4608,28 @@
         cards.forEach(function(card) { observer.observe(card); });
         setTimeout(function() { cards.forEach(function(card) { var rect = card.getBoundingClientRect(); if (rect.top < window.innerHeight) card.classList.add('visible'); }); }, 100);
 
+        // ---- 加班页计算按钮 ----
+        if ($('btnCalcFromOvertime')) {
+          $('btnCalcFromOvertime').addEventListener('click', function() {
+            // 先保存加班数据
+            saveOvertimeData();
+            saveAllParams();
+            // 切换到设置页执行计算（确保参数已加载）
+            handleCalculate();
+          });
+        }
+
+        // ---- 全局浮动计算按钮 ----
+        if ($('fabCalculate')) {
+          $('fabCalculate').addEventListener('click', function() {
+            // 先保存当前所有数据
+            saveOvertimeData();
+            saveAllParams();
+            // 执行计算
+            handleCalculate();
+          });
+        }
+
         // ---- 页面关闭保存 ----
         window.addEventListener('beforeunload', function() {
           if (currentMonthKey) {
@@ -2483,12 +4640,118 @@
         });
 
         showToast('📋 工资核算 已就绪');
+
+        // ---- 桌面端导航 ----
+        document.querySelectorAll('.sidebar-nav .nav-btn').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            var tab = this.dataset.tab;
+            document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+            document.querySelectorAll('.sidebar-nav .nav-btn').forEach(function(b) { b.classList.remove('active'); });
+            var panel = $('tab-' + tab);
+            if (panel) panel.classList.add('active');
+            this.classList.add('active');
+            if (tab === 'overtime') renderCalendar();
+            if (tab === 'salary') updateAnnualSummary();
+            if (tab === 'theme') { applyThemeMode(themeConfig.mode); applyAccentColor(themeConfig.accent); applyFontScale(themeConfig.fontScale); }
+          });
+        });
+
+        // ---- 右键菜单 ----
+        document.addEventListener('contextmenu', function(e) {
+          var table = e.target.closest('.history-table-wrap, .salary-card-list');
+          if (table) {
+            e.preventDefault();
+            showContextMenu(e.pageX, e.pageY, [
+              { icon: '📋', label: '复制工资条', action: copySalarySlip },
+              { icon: '📊', label: '导出 CSV', action: exportSalaryCSV },
+              { separator: true },
+              { icon: '📄', label: '打印工资条', action: printSalarySlip },
+              { icon: '📄', label: '打印年度报表', action: printYearlyReport }
+            ]);
+          }
+        });
+
+        // ---- 窗口控制按钮 ----
+        document.querySelectorAll('.win-btn').forEach(function(btn) {
+          btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (this.classList.contains('minimize')) showToast('➖ 最小化（演示）');
+            if (this.classList.contains('maximize')) {
+              if (!document.fullscreenElement) { document.documentElement.requestFullscreen().catch(function(){}); }
+              else { document.exitFullscreen(); }
+            }
+            if (this.classList.contains('close')) showToast('❌ 关闭（演示）');
+          });
+        });
+
+        updateSettingsPreview();
+        updateStatusBar();
       }
 
       document.addEventListener('DOMContentLoaded', initApp);
 
     })();
   </script>
+        </div>
+      </main>
+    </div>
+    <div class="statusbar">
+      <div class="statusbar-left">
+        <span id="statusText">✅ 就绪</span>
+        <span class="statusbar-separator"></span>
+        <span id="statusMonth">—</span>
+      </div>
+      <div class="statusbar-right">
+        <span id="statusRecords">工资记录: 0 条</span>
+        <span id="statusAutoSave">💾 自动保存</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 右键菜单 -->
+  <div class="context-menu" id="contextMenu"></div>
+
+  <!-- ===== 导入数据模态框 ===== -->
+  <div class="modal-overlay" id="importModalOverlay">
+    <div class="modal-box" style="max-width:480px;text-align:left;">
+      <h3 style="font-size:1.1rem;margin-bottom:4px;text-align:center;">📥 导入数据</h3>
+      <p style="font-size:0.8rem;color:var(--text-secondary);text-align:center;margin-bottom:12px;">支持导入之前导出的 JSON 备份文件</p>
+
+      <div style="margin-bottom:12px;">
+        <label style="font-size:0.8rem;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:6px;">选择文件</label>
+        <input type="file" id="importFileInput" accept=".json" style="width:100%;padding:10px;border-radius:var(--radius-md);border:2px dashed var(--primary-glow);background:var(--input-bg);color:var(--text-primary);font-size:0.9rem;cursor:pointer;">
+      </div>
+
+      <div id="importPreviewArea" style="display:none;margin-bottom:12px;background:var(--input-bg);border-radius:var(--radius-md);padding:12px;border:1px solid var(--input-border);max-height:200px;overflow-y:auto;">
+        <div style="font-size:0.8rem;font-weight:600;color:var(--primary);margin-bottom:8px;">📋 数据预览</div>
+        <div id="importPreviewContent" style="font-size:0.8rem;color:var(--text-secondary);line-height:1.8;"></div>
+      </div>
+
+      <div id="importConflictArea" style="display:none;margin-bottom:12px;padding:10px;background:rgba(253,203,110,0.08);border-radius:var(--radius-md);border:1px solid rgba(253,203,110,0.15);">
+        <div style="font-size:0.8rem;font-weight:600;color:var(--color-warning);margin-bottom:6px;">⚠️ 检测到冲突</div>
+        <div style="font-size:0.75rem;color:var(--text-secondary);margin-bottom:8px;">以下月份在本地已存在，请选择处理方式：</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <label style="display:flex;align-items:center;gap:4px;font-size:0.8rem;cursor:pointer;">
+            <input type="radio" name="importConflictMode" value="merge" checked style="accent-color:var(--primary);">
+            <span>智能合并</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:4px;font-size:0.8rem;cursor:pointer;">
+            <input type="radio" name="importConflictMode" value="overwrite" style="accent-color:var(--primary);">
+            <span>全部覆盖</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:4px;font-size:0.8rem;cursor:pointer;">
+            <input type="radio" name="importConflictMode" value="skip" style="accent-color:var(--primary);">
+            <span>跳过冲突</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="modal-actions" style="margin-top:16px;">
+        <button class="btn btn-primary" id="importConfirmBtn" disabled>✅ 确认导入</button>
+        <button class="btn btn-ghost" id="importCancelBtn">取消</button>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>

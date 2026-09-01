@@ -15,19 +15,29 @@
       -webkit-tap-highlight-color: transparent;
     }
     ::-webkit-scrollbar {
-      width: 4px;
-      height: 4px;
+      width: 6px;
+      height: 6px;
     }
     ::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0.04);
+      background: transparent;
       border-radius: 10px;
+    }
+    ::-webkit-scrollbar-track:hover {
+      background: rgba(0, 0, 0, 0.02);
     }
     ::-webkit-scrollbar-thumb {
-      background: rgba(91, 76, 219, 0.3);
+      background: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.2);
       border-radius: 10px;
+      border: 2px solid transparent;
+      background-clip: padding-box;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: var(--primary);
+      background: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.4);
+      border: 2px solid transparent;
+      background-clip: padding-box;
+    }
+    ::-webkit-scrollbar-corner {
+      background: transparent;
     }
     /* ===== 动态主题色系统 ===== */
     :root {
@@ -79,8 +89,7 @@
       --primary-light: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.10);
       --primary-glow: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.15);
       --primary-dark: #4a3ec7;
-      --secondary: var(--secondary);
-      --accent: var(--accent);
+      /* --secondary 与 --accent 继承 :root，无需重复定义 */
       --bg: #f5f7fa;
       --card-bg: #ffffff;
       --card-border: rgba(0, 0, 0, 0.06);
@@ -118,6 +127,9 @@
       font-size: calc(14px * var(--font-scale));
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
+    }
+    @media (max-width: 768px) {
+      body { padding: 8px 8px 0; }
     }
     #particleCanvas {
       position: fixed;
@@ -169,16 +181,16 @@
     .main-app {
       position: relative;
       z-index: 1;
-      max-width: 1000px;
+      max-width: 760px;
       margin: 0 auto;
       padding-bottom: 20px;
     }
     .app-header {
       text-align: center;
-      padding: 18px 20px 12px;
-      background: linear-gradient(135deg, var(--card-bg) 0%, var(--primary-light) 50%, rgba(0,181,176,0.05) 100%);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      padding: 20px 20px 14px;
+      background: linear-gradient(135deg, var(--card-bg) 0%, var(--primary-light) 40%, rgba(0,181,176,0.04) 100%);
+      backdrop-filter: blur(24px) saturate(140%);
+      -webkit-backdrop-filter: blur(24px) saturate(140%);
       border-radius: var(--radius-lg) var(--radius-lg) 0 0;
       border: 1px solid rgba(0, 0, 0, 0.04);
       border-bottom: none;
@@ -272,50 +284,67 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 2px;
-      padding: 10px 4px 8px;
+      gap: 3px;
+      padding: 8px 4px 6px;
       border: none;
       background: transparent;
       color: var(--text-secondary);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 500;
       cursor: pointer;
-      transition: all var(--transition);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       font-family: inherit;
       min-height: 52px;
       position: relative;
       border-bottom: 2px solid transparent;
     }
     .bottom-nav .nav-btn .tab-icon {
-      font-size: 1.2rem;
+      font-size: 1.25rem;
       line-height: 1;
-      transition: transform 0.3s ease;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     .bottom-nav .nav-btn .tab-label {
-      font-size: 0.85rem;
-      letter-spacing: 0.5px;
+      font-size: 0.75rem;
+      letter-spacing: 0.3px;
+      transition: all 0.2s ease;
     }
     .bottom-nav .nav-btn:hover {
-      background: rgba(0, 0, 0, 0.03);
       color: var(--text-primary);
+    }
+    .bottom-nav .nav-btn:hover .tab-icon {
+      transform: translateY(-1px);
     }
     .bottom-nav .nav-btn.active {
       color: var(--primary);
       border-bottom-color: var(--primary);
-      background: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.08);
+      background: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.06);
     }
     .bottom-nav .nav-btn.active .tab-icon {
-      transform: translateY(-2px) scale(1.08);
+      transform: translateY(-3px) scale(1.12);
+      filter: drop-shadow(0 4px 8px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.25));
+    }
+    .bottom-nav .nav-btn.active .tab-label {
+      font-weight: 600;
+      color: var(--primary);
     }
     .nav-wrapper {
       background: var(--card-bg);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(24px) saturate(140%);
+      -webkit-backdrop-filter: blur(24px) saturate(140%);
       border-radius: var(--radius-lg);
-      border: 1px solid rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--card-border);
       margin-bottom: 16px;
       overflow: hidden;
       box-shadow: var(--shadow-glow);
+      position: relative;
+    }
+    .nav-wrapper::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+      pointer-events: none;
     }
     .nav-wrapper .app-header {
       border-radius: 0;
@@ -333,20 +362,36 @@
     }
     .card {
       background: var(--card-bg);
-      backdrop-filter: blur(20px) saturate(180%);
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      backdrop-filter: blur(24px) saturate(160%);
+      -webkit-backdrop-filter: blur(24px) saturate(160%);
       border-radius: var(--radius-lg);
       border: 1px solid var(--card-border);
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06), 0 8px 32px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.04);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 8px 24px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.06);
       transition: all var(--transition);
       opacity: 0;
-      transform: translateY(30px) scale(0.98);
+      transform: translateY(24px) scale(0.97);
       margin-bottom: 16px;
       overflow: hidden;
+      position: relative;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+      opacity: 0.6;
+      pointer-events: none;
     }
     .card.visible {
       opacity: 1;
       transform: translateY(0) scale(1);
+    }
+    .card:hover {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 12px 40px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.1);
+      border-color: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.15);
     }
     .card-header {
       padding: 14px 18px;
@@ -375,17 +420,34 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      padding: 8px 18px;
+      padding: 10px 20px;
       border-radius: var(--radius-xl);
       font-weight: 600;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       border: none;
       cursor: pointer;
-      transition: all 0.3s ease;
-      min-height: 38px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      min-height: 40px;
       font-family: inherit;
+      position: relative;
+      overflow: hidden;
+      letter-spacing: 0.3px;
     }
-    .btn:active { transform: scale(0.94); }
+    .btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      pointer-events: none;
+    }
+    .btn:hover::after { opacity: 1; }
+    .btn:active { transform: scale(0.96) translateY(1px); }
+    .btn:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
     .btn-primary {
       background: linear-gradient(135deg, var(--primary), hsl(var(--primary-h), var(--primary-s), calc(var(--primary-l) + 15%)), var(--primary));
       background-size: 300% 300%;
@@ -457,22 +519,34 @@
     .form-group input,
     .form-group select {
       background: var(--input-bg);
-      border: 1px solid rgba(0, 0, 0, 0.08);
+      border: 1.5px solid var(--input-border);
       border-radius: var(--radius-md);
-      padding: 8px 14px;
-      font-size: 0.75rem;
-      transition: all 0.3s ease;
+      padding: 10px 16px;
+      font-size: 0.85rem;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       width: 100%;
       min-height: 44px;
       color: var(--text-primary);
       font-family: inherit;
       outline: none;
+      letter-spacing: 0.2px;
+    }
+    .form-group input::placeholder,
+    .form-group select::placeholder {
+      color: var(--text-muted);
+      opacity: 0.7;
+    }
+    .form-group input:hover,
+    .form-group select:hover {
+      border-color: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.25);
+      background: var(--input-focus-bg);
     }
     .form-group input:focus,
     .form-group select:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.15);
+      box-shadow: 0 0 0 4px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.12), 0 1px 2px rgba(0,0,0,0.05);
       background: var(--card-bg);
+      transform: translateY(-1px);
     }
     .params-grid {
       display: grid;
@@ -497,35 +571,46 @@
     }
     .hide { display: none !important; }
     .badge {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
       font-size: 0.7rem;
-      background: rgba(108, 92, 231, 0.08);
+      background: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.1);
       color: var(--primary);
-      padding: 1px 8px;
+      padding: 2px 10px;
       border-radius: var(--radius-xl);
-      font-weight: 500;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      border: 1px solid hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.15);
+      backdrop-filter: blur(4px);
     }
     .toast {
       position: fixed;
       top: 60px;
       left: 50%;
-      transform: translateX(-50%) translateY(-12px);
+      transform: translateX(-50%) translateY(-16px) scale(0.92);
       background: var(--toast-bg);
-      backdrop-filter: blur(20px);
+      backdrop-filter: blur(24px) saturate(140%);
+      -webkit-backdrop-filter: blur(24px) saturate(140%);
       color: var(--toast-color);
-      padding: 10px 20px;
+      padding: 12px 24px;
       border-radius: var(--radius-xl);
-      font-size: 0.95rem;
+      font-size: 0.9rem;
+      font-weight: 500;
       z-index: 200;
       opacity: 0;
-      transition: all 0.4s ease;
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
       pointer-events: none;
-      border: 1px solid rgba(0, 0, 0, 0.06);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255,255,255,0.03);
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     .toast.show {
       opacity: 1;
-      transform: translateX(-50%) translateY(0);
+      transform: translateX(-50%) translateY(0) scale(1);
     }
     .modal-overlay {
       position: fixed;
@@ -549,36 +634,53 @@
     }
     .modal-box {
       background: var(--card-bg);
-      backdrop-filter: blur(20px);
+      backdrop-filter: blur(32px) saturate(140%);
+      -webkit-backdrop-filter: blur(32px) saturate(140%);
       border-radius: var(--radius-lg);
-      padding: 22px;
+      padding: 24px;
       width: 92%;
       max-width: 420px;
       text-align: center;
-      border: 1px solid rgba(0, 0, 0, 0.06);
-      box-shadow: 0 16px 64px rgba(0, 0, 0, 0.15);
+      border: 1px solid var(--card-border);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255,255,255,0.03);
       max-height: 90vh;
       overflow-y: auto;
       color: var(--text-primary);
+      transform: scale(0.92) translateY(20px);
+      opacity: 0;
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .modal-overlay.active .modal-box {
+      transform: scale(1) translateY(0);
+      opacity: 1;
     }
     .modal-box input,
     .modal-box select {
       width: 100%;
-      padding: 10px 14px;
-      margin: 4px 0;
+      padding: 12px 16px;
+      margin: 6px 0;
       border-radius: var(--radius-xl);
-      border: 1px solid rgba(0, 0, 0, 0.08);
+      border: 1.5px solid var(--input-border);
       text-align: center;
       font-size: 0.95rem;
       background: var(--input-bg);
       min-height: 44px;
       color: var(--text-primary);
       outline: none;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      letter-spacing: 0.2px;
+    }
+    .modal-box input:hover,
+    .modal-box select:hover {
+      border-color: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.25);
+      background: var(--input-focus-bg);
     }
     .modal-box input:focus,
     .modal-box select:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.15);
+      box-shadow: 0 0 0 4px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.1), 0 1px 2px rgba(0,0,0,0.04);
+      background: var(--card-bg);
+      transform: translateY(-1px);
     }
     .modal-actions {
       display: flex;
@@ -605,15 +707,20 @@
     }
     .time-segment {
       display: flex;
-      gap: 6px;
+      gap: 8px;
       align-items: center;
-      margin: 3px 0;
+      margin: 4px 0;
       flex-wrap: wrap;
       justify-content: center;
-      padding: 4px 6px;
+      padding: 6px 10px;
       background: var(--card-bg);
       border-radius: var(--radius-sm);
       border: 1px solid var(--input-border);
+      transition: all 0.2s ease;
+    }
+    .time-segment:hover {
+      border-color: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.15);
+      box-shadow: 0 2px 8px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.04);
     }
     .time-segment input[type="time"] {
       width: 100px;
@@ -769,19 +876,44 @@
       justify-content: center;
       min-height: 58px;
       padding: 4px 2px;
-      transition: all 0.2s ease;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       text-align: center;
       color: var(--text-primary);
       position: relative;
     }
+    .calendar-day::after {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      border-radius: calc(var(--radius-sm) - 2px);
+      background: transparent;
+      transition: all 0.2s ease;
+      pointer-events: none;
+      z-index: 0;
+    }
     .calendar-day:hover {
-      background: rgba(108, 92, 231, 0.05);
-      border-color: rgba(108, 92, 231, 0.08);
+      background: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.04);
+      border-color: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.12);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.08);
+    }
+    .calendar-day:hover::after {
+      background: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.03);
+    }
+    .calendar-day.has-overtime {
+      border-color: var(--color-warning);
+      background: rgba(253, 203, 110, 0.04);
+      box-shadow: 0 2px 8px rgba(253, 203, 110, 0.06);
+    }
+    .calendar-day.in-range {
+      background: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.08) !important;
+      border-color: var(--primary) !important;
+      box-shadow: 0 0 0 2px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.15) !important;
     }
     .calendar-day .day-number {
       font-weight: 600;
       font-size: 1rem;
-      line-height: 1.3;
+      line-height: 1.4;
     }
     .calendar-day.weekend {
       background: rgba(0, 0, 0, 0.01);
@@ -790,14 +922,7 @@
       border-color: rgba(253, 121, 168, 0.15);
       background: rgba(253, 121, 168, 0.03);
     }
-    .calendar-day.has-overtime {
-      border-color: var(--color-warning);
-      background: rgba(253, 203, 110, 0.04);
-    }
-    .calendar-day.in-range {
-      background: rgba(108, 92, 231, 0.08) !important;
-      border-color: var(--primary) !important;
-    }
+
     .calendar-weekday {
       text-align: center;
       font-weight: 600;
@@ -878,9 +1003,9 @@
     .section-title {
       font-weight: 600;
       font-size: 0.9rem;
-      margin: 8px 0 4px;
-      padding-bottom: 3px;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.02);
+      margin: 12px 0 8px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--input-border);
       color: var(--primary);
       cursor: pointer;
       display: flex;
@@ -888,12 +1013,30 @@
       justify-content: space-between;
       user-select: none;
       letter-spacing: 0.5px;
+      transition: all 0.2s ease;
+      border-radius: var(--radius-sm);
+      padding-left: 8px;
+      padding-right: 8px;
+      margin-left: -8px;
+      margin-right: -8px;
+    }
+    .section-title:hover {
+      background: var(--hover-bg);
     }
     .section-title .toggle-icon {
-      font-size: 0.9rem;
-      transition: transform 0.3s ease;
+      font-size: 0.8rem;
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       color: var(--text-secondary);
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+    }
+    .section-title:hover .toggle-icon {
+      background: var(--primary-light);
+      color: var(--primary);
     }
     .section-title.collapsed .toggle-icon {
       transform: rotate(-90deg);
@@ -918,15 +1061,31 @@
     }
     .history-table th,
     .history-table td {
-      padding: 8px 10px;
+      padding: 10px 12px;
       text-align: center;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+      border-bottom: 1px solid var(--input-border);
+      transition: background 0.15s ease;
     }
     .history-table th {
-      background: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.08);
+      background: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.06);
       font-weight: 600;
       color: var(--primary);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      backdrop-filter: blur(8px);
+    }
+    .history-table tbody tr {
+      transition: all 0.15s ease;
+    }
+    .history-table tbody tr:hover {
+      background: var(--hover-bg);
+    }
+    .history-table tbody tr:hover td {
+      color: var(--text-primary);
     }
     .history-table .net-pay {
       color: var(--primary);
@@ -936,14 +1095,28 @@
       color: var(--color-expense);
     }
     .delete-record-btn {
-      background: rgba(255, 80, 80, 0.06);
-      border: 1px solid rgba(255, 80, 80, 0.06);
+      background: rgba(255, 80, 80, 0.04);
+      border: 1px solid rgba(255, 80, 80, 0.08);
       color: var(--color-expense);
-      padding: 2px 8px;
+      padding: 4px 10px;
       border-radius: var(--radius-xl);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       cursor: pointer;
       min-height: 28px;
+      transition: all 0.2s ease;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+    }
+    .delete-record-btn:hover {
+      background: rgba(255, 80, 80, 0.12);
+      border-color: rgba(255, 80, 80, 0.2);
+      transform: scale(1.05);
+      box-shadow: 0 2px 8px rgba(255, 80, 80, 0.1);
+    }
+    .delete-record-btn:active {
+      transform: scale(0.95);
     }
     .salary-export-group {
       display: flex;
@@ -979,20 +1152,43 @@
       }
     }
     .annual-summary-item {
-      background: rgba(0, 0, 0, 0.02);
+      background: var(--input-bg);
       border-radius: var(--radius-md);
-      padding: 6px 8px;
+      padding: 10px 8px;
       text-align: center;
-      border: 1px solid rgba(0, 0, 0, 0.01);
+      border: 1px solid var(--input-border);
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .annual-summary-item::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.2), transparent);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    .annual-summary-item:hover {
+      border-color: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.08);
+    }
+    .annual-summary-item:hover::before {
+      opacity: 1;
     }
     .annual-summary-item .alabel {
       font-size: 0.7rem;
       color: var(--text-secondary);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
     }
     .annual-summary-item .avalue {
       font-weight: 700;
-      font-size: 0.95rem;
-      margin-top: 1px;
+      font-size: 1rem;
+      margin-top: 4px;
+      letter-spacing: 0.5px;
     }
     @media(max-width:640px) {
       .toast { top: 50px; font-size: 0.95rem; padding: 5px 14px; }
@@ -1000,7 +1196,7 @@
       .bottom-nav .nav-btn { min-height: 40px; padding: 6px 2px 4px; }
       .bottom-nav .nav-btn .tab-icon { font-size: 0.85rem; }
       .bottom-nav .nav-btn .tab-label { font-size: 0.7rem; }
-      .calendar-day { min-height: 48px; }
+      .calendar-day { min-height: 58px; }
       .calendar-day .day-number { font-size: 0.9rem; }
       .overtime-badge { font-size: 0.5rem; padding: 1px 4px; }
       .modal-hours-input-wrap input[type="number"] { font-size: 1.1rem; padding: 10px 12px; min-height: 44px; }
@@ -1008,6 +1204,10 @@
       .calendar-grid { gap: 3px; }
       .time-segment { gap: 3px; padding: 3px 4px; }
       .time-segment label { font-size: 0.5rem; }
+      .empty-state { padding: 24px 16px; }
+      .empty-state .empty-icon { font-size: 2rem; }
+      .empty-state .empty-text { font-size: 0.95rem; }
+      .fab-calculate { bottom: max(16px, env(safe-area-inset-bottom) + 8px); }
     }
         @media(min-width:641px) {
       .salary-card-list { display: none; }
@@ -1020,21 +1220,28 @@
       .bottom-nav .nav-btn .tab-icon { font-size: 1.3rem; }
       .modal-box { padding: 16px; }
       .time-segment input[type="time"] { width: 65px; font-size: 0.75rem; padding: 3px 4px; }
-      .calendar-day { min-height: 42px; padding: 2px 1px; }
+      .calendar-day { min-height: 52px; padding: 2px 1px; }
       .calendar-day .day-number { font-size: 0.85rem; }
       .custom-item-input-group { flex-direction: column; align-items: stretch; }
       .custom-item-input-group input[type="text"],
       .custom-item-input-group input[type="number"],
       .custom-item-input-group select { width: 100%; }
+      .annual-summary-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     /* 自定义项 */
     .custom-item-row {
       display: flex;
       align-items: center;
-      gap: 6px;
-      padding: 4px 0;
-      border-bottom: 1px solid rgba(0,0,0,0.02);
+      gap: 8px;
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--input-border);
+      border-radius: var(--radius-sm);
+      transition: all 0.15s ease;
+      margin: 2px 0;
+    }
+    .custom-item-row:hover {
+      background: var(--hover-bg);
     }
     .custom-item-row:last-child { border-bottom: none; }
     .custom-item-input-group {
@@ -1093,11 +1300,26 @@
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: var(--radius-md);
-      padding: 12px;
+      padding: 14px;
       display: grid;
       grid-template-columns: 1fr auto;
-      gap: 6px;
+      gap: 8px;
       align-items: center;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .salary-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+    }
+    .salary-card:hover {
+      border-color: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.15);
+      box-shadow: 0 4px 16px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.06);
+      transform: translateY(-1px);
     }
     .salary-card .sc-month {
       font-weight: 700;
@@ -1266,32 +1488,41 @@
       padding: 48px 24px;
       color: var(--text-secondary);
       position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     .empty-state .empty-icon {
-      font-size: 4rem;
-      margin-bottom: 16px;
-      opacity: 0.6;
+      font-size: 3.5rem;
+      margin-bottom: 20px;
+      opacity: 0.5;
       display: inline-block;
-      animation: emptyFloat 3s ease-in-out infinite;
-      filter: drop-shadow(0 8px 24px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.15));
+      animation: emptyFloat 4s ease-in-out infinite;
+      filter: drop-shadow(0 12px 32px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.2));
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
     .empty-state .empty-text {
-      font-size: 1.1rem;
-      margin-bottom: 8px;
-      font-weight: 600;
+      font-size: 1.15rem;
+      margin-bottom: 6px;
+      font-weight: 700;
       color: var(--text-primary);
+      letter-spacing: 0.5px;
     }
     .empty-state .empty-hint {
       font-size: 0.85rem;
       color: var(--text-muted);
-      margin-bottom: 20px;
-      line-height: 1.6;
+      margin-bottom: 24px;
+      line-height: 1.7;
+      max-width: 280px;
     }
     .empty-state .empty-action {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 10px 24px;
+      padding: 12px 28px;
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: #fff;
       border-radius: var(--radius-xl);
@@ -1299,18 +1530,34 @@
       font-weight: 600;
       cursor: pointer;
       border: none;
-      box-shadow: 0 4px 16px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.25);
-      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.3);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       text-decoration: none;
+      position: relative;
+      overflow: hidden;
+    }
+    .empty-state .empty-action::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+      transition: left 0.5s ease;
+    }
+    .empty-state .empty-action:hover::before {
+      left: 100%;
     }
     .empty-state .empty-action:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(108, 92, 231, 0.35);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 28px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.4);
+    }
+    .empty-state .empty-action:active {
+      transform: translateY(0) scale(0.98);
     }
     @keyframes emptyFloat {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      25% { transform: translateY(-8px) rotate(2deg); }
-      75% { transform: translateY(-4px) rotate(-2deg); }
+      0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+      33% { transform: translateY(-10px) rotate(1deg) scale(1.05); }
+      66% { transform: translateY(-5px) rotate(-1deg) scale(0.98); }
     }
 
     /* ===== 粒子Canvas增强 ===== */
@@ -1497,6 +1744,11 @@
       .glow-orb { animation: none; }
     }
 
+    /* JS 禁用或脚本加载失败时的卡片降级显示 */
+    @media (scripting: none) {
+      .card { opacity: 1 !important; transform: none !important; }
+    }
+
     /* ============================================================
        ===== 主题中心面板样式 =====
        ============================================================ */
@@ -1574,20 +1826,37 @@
       background: var(--input-bg);
       border: 2px solid transparent;
       border-radius: var(--radius-md);
-      padding: 14px 8px;
+      padding: 16px 8px;
       text-align: center;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
+      overflow: hidden;
+    }
+    .theme-mode-option::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.3), transparent);
+      opacity: 0;
+      transition: opacity 0.2s ease;
     }
     .theme-mode-option:hover {
       border-color: var(--primary-glow);
       transform: translateY(-2px);
+      box-shadow: 0 4px 12px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.08);
+    }
+    .theme-mode-option:hover::before {
+      opacity: 1;
     }
     .theme-mode-option.active {
       border-color: var(--primary);
       background: var(--primary-light);
-      box-shadow: 0 4px 16px var(--primary-glow);
+      box-shadow: 0 4px 20px var(--primary-glow);
+    }
+    .theme-mode-option.active::before {
+      opacity: 1;
     }
     .theme-mode-option .mode-icon {
       font-size: 1.6rem;
@@ -1616,20 +1885,37 @@
       background: var(--input-bg);
       border: 2px solid transparent;
       border-radius: var(--radius-md);
-      padding: 12px 8px;
+      padding: 14px 8px;
       text-align: center;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
+      overflow: hidden;
+    }
+    .accent-color-option::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--ac-preview), transparent);
+      opacity: 0;
+      transition: opacity 0.2s ease;
     }
     .accent-color-option:hover {
       transform: translateY(-2px);
       border-color: var(--card-border);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .accent-color-option:hover::before {
+      opacity: 0.5;
     }
     .accent-color-option.active {
       border-color: var(--primary);
       background: var(--primary-light);
-      box-shadow: 0 4px 16px var(--primary-glow);
+      box-shadow: 0 4px 20px var(--primary-glow);
+    }
+    .accent-color-option.active::before {
+      opacity: 1;
     }
     .accent-color-option .ac-swatch {
       width: 32px;
@@ -1799,11 +2085,11 @@
     /* ===== 全局浮动计算按钮 ===== */
     .fab-calculate {
       position: fixed;
-      bottom: 24px;
+      bottom: max(24px, env(safe-area-inset-bottom) + 8px);
       right: 24px;
       z-index: 100;
-      width: 56px;
-      height: 56px;
+      width: 58px;
+      height: 58px;
       border-radius: 50%;
       border: none;
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
@@ -1814,39 +2100,59 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 1px;
-      box-shadow: 0 4px 20px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.35);
+      gap: 2px;
+      box-shadow: 0 4px 20px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.35), 0 0 0 1px rgba(255,255,255,0.1);
       transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      animation: fabPulse 2s ease-in-out infinite;
+      animation: fabPulse 3s ease-in-out infinite;
+      backdrop-filter: blur(4px);
+    }
+    .fab-calculate::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      opacity: 0.3;
+      z-index: -1;
+      filter: blur(8px);
+      animation: fabGlow 3s ease-in-out infinite;
     }
     .fab-calculate:hover {
-      transform: scale(1.1) translateY(-2px);
+      transform: scale(1.12) translateY(-3px);
       box-shadow: 0 8px 32px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.45);
     }
+    .fab-calculate:hover::before {
+      opacity: 0.5;
+    }
     .fab-calculate:active {
-      transform: scale(0.95);
+      transform: scale(0.94) translateY(1px);
     }
     .fab-calculate .fab-icon {
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       line-height: 1;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
     }
     .fab-calculate .fab-label {
       font-size: 0.6rem;
-      font-weight: 600;
-      letter-spacing: 0.5px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
     }
     @keyframes fabPulse {
       0%, 100% { box-shadow: 0 4px 20px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.35); }
-      50% { box-shadow: 0 4px 24px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.5); }
+      50% { box-shadow: 0 6px 28px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.55); }
+    }
+    @keyframes fabGlow {
+      0%, 100% { opacity: 0.2; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.05); }
     }
     @media(max-width:640px) {
       .fab-calculate {
-        bottom: 16px;
+        bottom: max(16px, env(safe-area-inset-bottom) + 8px);
         right: 16px;
-        width: 52px;
-        height: 52px;
+        width: 54px;
+        height: 54px;
       }
-      .fab-calculate .fab-icon { font-size: 1.1rem; }
+      .fab-calculate .fab-icon { font-size: 1.2rem; }
       .fab-calculate .fab-label { font-size: 0.55rem; }
     }
     /* ===== 桌面应用骨架 ===== */
@@ -1898,9 +2204,9 @@
     .context-menu-item:hover { background: var(--hover-bg); }
     .context-menu-separator { height: 1px; background: var(--card-border); margin: 4px 0; }
 
-    .settings-layout { display: grid; grid-template-columns: 1fr 300px; gap: 20px; }
+    .settings-layout { display: grid; grid-template-columns: 1fr 260px; gap: 16px; }
     .settings-main { min-width: 0; }
-    .settings-preview { position: sticky; top: 0; height: fit-content; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-md); padding: 0; overflow: hidden; }
+    .settings-preview { position: sticky; top: 20px; align-self: start; height: fit-content; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-md); padding: 0; overflow: hidden; }
     .preview-header { padding: 14px 16px; font-weight: 700; font-size: 0.95rem; border-bottom: 1px solid var(--card-border); background: linear-gradient(135deg, var(--primary-light) 0%, var(--card-bg) 100%); color: var(--primary); }
     .preview-body { padding: 16px; }
     .preview-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.03); font-size: 0.85rem; }
@@ -1924,21 +2230,26 @@
       .params-grid { grid-template-columns: repeat(3, 1fr); }
       .history-table-wrap { display: block !important; }
       .salary-card-list { display: none !important; }
+      .main-content { padding: 28px 48px; }
+      .card-body { padding: 20px 24px; }
+      .card-header { padding: 16px 24px; }
     }
     @media (max-width: 768px) {
       .app-frame { display: block; height: auto; overflow: visible; }
       .titlebar, .menubar, .sidebar, .statusbar { display: none !important; }
-      .main-content { padding: 16px; overflow: visible; }
+      .main-content { padding: 8px; overflow: visible; }
       .settings-layout { grid-template-columns: 1fr; }
       .settings-preview { display: none; }
-      .main-content .main-app { max-width: 1000px; margin: 0 auto; }
+      .main-content .main-app { max-width: 760px; margin: 0 auto; }
     }
     @media (min-width: 1024px) {
-      .params-grid { grid-template-columns: repeat(4, 1fr); }
-      .settings-layout { grid-template-columns: 1fr 340px; }
+      .params-grid { grid-template-columns: repeat(3, 1fr); }
+      .settings-layout { grid-template-columns: 1fr 280px; }
+      .main-content { padding: 32px 80px; }
     }
     @media (min-width: 1280px) {
-      .settings-layout { grid-template-columns: 1fr 380px; }
+      .settings-layout { grid-template-columns: 1fr 300px; }
+      .main-content { padding: 32px 120px; }
     }
 
   </style>
@@ -1956,7 +2267,7 @@
       <div class="titlebar-left">
         <span class="app-logo">📋</span>
         <span class="app-name">智财管家</span>
-        <span class="app-version">v5.0.0</span>
+        <span class="app-version">v5.1.0</span>
       </div>
       <div class="window-controls">
         <button class="win-btn minimize" title="最小化"></button>
@@ -1987,7 +2298,7 @@
       </div>
       <div class="menu-item">帮助(H)
         <div class="menu-dropdown">
-          <div class="menu-dropdown-item" onclick="showToast('📋 智财管家 v5.0.0 | 快捷键: Ctrl+Enter 计算, Ctrl+1/2/3/4 切换标签')">ℹ️ 关于<span class="shortcut"></span></div>
+          <div class="menu-dropdown-item" onclick="showToast('📋 智财管家 v5.1.0 | 快捷键: Ctrl+Enter 计算, Ctrl+1/2/3/4 切换标签')">ℹ️ 关于<span class="shortcut"></span></div>
         </div>
       </div>
     </div>
@@ -1997,7 +2308,7 @@
           <div class="sidebar-brand">
             <span>📋</span>
             <span>智财管家</span>
-            <span class="sidebar-version">v5.0.0</span>
+            <span class="sidebar-version">v5.1.0</span>
           </div>
           <div class="sidebar-subtitle">工资核算 · 计时模式</div>
         </div>
@@ -2021,7 +2332,7 @@
         <div class="brand" style="position:relative;">
           <span class="brand-icon">📋</span>
           <span>智财管家</span>
-          <span class="version">v5.0.0</span>
+          <span class="version">v5.1.0</span>
         </div>
         <div class="subtitle">工资核算 · 计时模式 <span class="badge" style="background:var(--primary);color:#fff;">⚡ 专业版</span></div>
       </div>
@@ -2119,10 +2430,10 @@
 
           <div style="margin-top:10px;text-align:center;display:flex;flex-direction:column;gap:8px;align-items:center;">
             <button class="btn btn-primary" id="btnCalculate" style="width:100%;max-width:280px;">📊 计算并存入历史</button>
-            <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;width:100%;max-width:280px;">
-              <button class="btn btn-ghost" id="btnReset" style="flex:1;min-width:80px;">🔄 重置</button>
-              <button class="btn btn-outline" id="btnExportSettings" style="flex:1;min-width:80px;">📤 导出</button>
-              <button class="btn btn-outline" id="btnImportData" style="flex:1;min-width:80px;">📥 导入</button>
+            <div style="display:flex;gap:4px;flex-wrap:nowrap;justify-content:center;width:100%;max-width:280px;">
+              <button class="btn btn-ghost" id="btnReset" style="flex:1;min-width:0;padding:6px 4px;font-size:0.8rem;white-space:nowrap;">🔄 重置</button>
+              <button class="btn btn-outline" id="btnExportSettings" style="flex:1;min-width:0;padding:6px 4px;font-size:0.8rem;white-space:nowrap;">📤 导出</button>
+              <button class="btn btn-outline" id="btnImportData" style="flex:1;min-width:0;padding:6px 4px;font-size:0.8rem;white-space:nowrap;">📥 导入</button>
             </div>
           </div>
           <div style="text-align:center;font-size:0.75rem;color:var(--text-secondary);margin-top:4px;">⌨️ Ctrl+Enter 快速计算</div>
@@ -2425,7 +2736,70 @@
     </div>
   </div>
 
-  <script>
+  
+        </div>
+      </main>
+    </div>
+    <div class="statusbar">
+      <div class="statusbar-left">
+        <span id="statusText">✅ 就绪</span>
+        <span class="statusbar-separator"></span>
+        <span id="statusMonth">—</span>
+      </div>
+      <div class="statusbar-right">
+        <span id="statusRecords">工资记录: 0 条</span>
+        <span id="statusAutoSave">💾 自动保存</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 右键菜单 -->
+  <div class="context-menu" id="contextMenu"></div>
+
+  <!-- ===== 导入数据模态框 ===== -->
+  <div class="modal-overlay" id="importModalOverlay">
+    <div class="modal-box" style="max-width:480px;text-align:left;">
+      <h3 style="font-size:1.1rem;margin-bottom:4px;text-align:center;">📥 导入数据</h3>
+      <p style="font-size:0.8rem;color:var(--text-secondary);text-align:center;margin-bottom:12px;">支持导入之前导出的 JSON 备份文件</p>
+
+      <div style="margin-bottom:12px;">
+        <label style="font-size:0.8rem;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:6px;">选择文件</label>
+        <input type="file" id="importFileInput" accept=".json" style="width:100%;padding:10px;border-radius:var(--radius-md);border:2px dashed var(--primary-glow);background:var(--input-bg);color:var(--text-primary);font-size:0.9rem;cursor:pointer;">
+      </div>
+
+      <div id="importPreviewArea" style="display:none;margin-bottom:12px;background:var(--input-bg);border-radius:var(--radius-md);padding:12px;border:1px solid var(--input-border);max-height:200px;overflow-y:auto;">
+        <div style="font-size:0.8rem;font-weight:600;color:var(--primary);margin-bottom:8px;">📋 数据预览</div>
+        <div id="importPreviewContent" style="font-size:0.8rem;color:var(--text-secondary);line-height:1.8;"></div>
+      </div>
+
+      <div id="importConflictArea" style="display:none;margin-bottom:12px;padding:10px;background:rgba(253,203,110,0.08);border-radius:var(--radius-md);border:1px solid rgba(253,203,110,0.15);">
+        <div style="font-size:0.8rem;font-weight:600;color:var(--color-warning);margin-bottom:6px;">⚠️ 检测到冲突</div>
+        <div style="font-size:0.75rem;color:var(--text-secondary);margin-bottom:8px;">以下月份在本地已存在，请选择处理方式：</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <label style="display:flex;align-items:center;gap:4px;font-size:0.8rem;cursor:pointer;">
+            <input type="radio" name="importConflictMode" value="merge" checked style="accent-color:var(--primary);">
+            <span>智能合并</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:4px;font-size:0.8rem;cursor:pointer;">
+            <input type="radio" name="importConflictMode" value="overwrite" style="accent-color:var(--primary);">
+            <span>全部覆盖</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:4px;font-size:0.8rem;cursor:pointer;">
+            <input type="radio" name="importConflictMode" value="skip" style="accent-color:var(--primary);">
+            <span>跳过冲突</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="modal-actions" style="margin-top:16px;">
+        <button class="btn btn-primary" id="importConfirmBtn" disabled>✅ 确认导入</button>
+        <button class="btn btn-ghost" id="importCancelBtn">取消</button>
+      </div>
+    </div>
+  </div>
+
+
+<script>
     // ============================================================
     // 工资核算 + 加班管理 + 数据汇总（仅计时模式）
     // ============================================================
@@ -3623,39 +3997,84 @@
           return;
         }
 
+        var weekdayHours = 0, weekendHours = 0, holidayHours = 0;
         var rows = '';
         records.forEach(function(r) {
-          rows += '<tr><td>' + r.date + '</td><td>' + r.type + '</td><td>' + r.segments + '</td><td>' + r.hours + 'h</td></tr>';
+          if (r.type === '工作日') weekdayHours += r.hours;
+          else if (r.type === '休息日') weekendHours += r.hours;
+          else if (r.type === '节假日') holidayHours += r.hours;
+          rows += '<tr><td>' + r.date + '</td><td><span class="tag ' + (r.type === '工作日' ? 'weekday' : r.type === '休息日' ? 'weekend' : 'holiday') + '">' + r.type + '</span></td><td>' + escapeHtml(r.segments) + '</td><td>' + r.hours.toFixed(1) + 'h</td></tr>';
         });
 
         var totalHours = records.reduce(function(sum, r) { return sum + r.hours; }, 0);
+        var settings = getSettings();
+        var baseSalary = parseFloat($('baseSalary')?.value) || 0;
+        var hr = getHourlyRate(baseSalary);
+        var otPay = isNaN(hr) ? 0 : roundToCent((weekdayHours * settings.multiplierWeekday + weekendHours * settings.multiplierWeekend + holidayHours * settings.multiplierHoliday) * hr);
 
-        var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>加班记录</title>' +
+        var html = '<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><title>' + currentMonthKey + ' 加班记录 - 智财管家</title>' +
           '<style>' +
-          'body{font-family:sans-serif;padding:20px;background:#0a0e1a;color:#e8ecf4;}' +
-          'h2{color:var(--primary);text-align:center;margin-bottom:16px;}' +
-          '.summary{background:rgba(108,92,231,0.08);border-radius:12px;padding:12px 20px;margin-bottom:16px;display:flex;justify-content:space-around;flex-wrap:wrap;}' +
-          '.summary span{font-size:0.9rem;}' +
-          '.summary strong{color:#fdcb6e;}' +
-          'table{width:100%;border-collapse:collapse;font-size:0.85rem;}' +
-          'th,td{padding:6px 10px;border-bottom:1px solid rgba(255,255,255,0.05);text-align:center;}' +
-          'th{color:var(--primary);background:rgba(108,92,231,0.06);}' +
-          '.total-row{background:rgba(108,92,231,0.08);font-weight:bold;}' +
-          '.total-row td{color:#fdcb6e;}' +
-          '.footer{text-align:center;margin-top:16px;font-size:0.7rem;color:#5a6a8a;}' +
-          '</style>' +
-          '</head><body>' +
-          '<h2>📆 ' + currentMonthKey + ' 加班记录</h2>' +
+          '@page { size: A4; margin: 15mm; }' +
+          '* { margin: 0; padding: 0; box-sizing: border-box; }' +
+          'body { font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", "Helvetica Neue", Arial, sans-serif; padding: 24px; background: #fff; color: #1a1a2e; font-size: 10pt; line-height: 1.6; -webkit-print-color-adjust: exact; print-color-adjust: exact; }' +
+          '.header { text-align: center; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 2px solid #5b4cdb; }' +
+          '.header h1 { font-size: 16pt; font-weight: 700; color: #1a1a2e; margin-bottom: 4px; }' +
+          '.header .sub { font-size: 9pt; color: #666; }' +
+          '.summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }' +
+          '.summary-item { background: linear-gradient(135deg, #f8f9fc, #eef0f8); border-radius: 10px; padding: 12px; text-align: center; border: 1px solid #e0e2ea; }' +
+          '.summary-item .label { font-size: 8pt; color: #666; margin-bottom: 4px; }' +
+          '.summary-item .value { font-size: 14pt; font-weight: 700; color: #1a1a2e; font-family: "SF Mono", monospace; }' +
+          '.summary-item.highlight { background: linear-gradient(135deg, #5b4cdb, #7c6ee0); color: #fff; border: none; }' +
+          '.summary-item.highlight .label, .summary-item.highlight .value { color: #fff; }' +
+          'table { width: 100%; border-collapse: collapse; font-size: 9pt; margin-bottom: 16px; }' +
+          'th { background: #5b4cdb; color: #fff; padding: 8px 10px; font-weight: 600; text-align: center; font-size: 8pt; letter-spacing: 0.3px; }' +
+          'th:first-child { border-radius: 8px 0 0 0; }' +
+          'th:last-child { border-radius: 0 8px 0 0; }' +
+          'td { padding: 8px 10px; text-align: center; border-bottom: 1px solid #f0f0f0; }' +
+          'td:first-child { font-weight: 600; color: #1a1a2e; }' +
+          'td:last-child { font-family: "SF Mono", monospace; font-weight: 600; }' +
+          'tr:nth-child(even) { background: #fafbfc; }' +
+          '.tag { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 8pt; font-weight: 600; }' +
+          '.tag.weekday { background: #e8e4ff; color: #5b4cdb; }' +
+          '.tag.weekend { background: #e0f7f5; color: #00a884; }' +
+          '.tag.holiday { background: #ffe8e8; color: #e74c3c; }' +
+          '.total-row td { background: #f0f2f8; font-weight: 700; border-top: 2px solid #5b4cdb; border-bottom: 2px solid #5b4cdb; font-family: "SF Mono", monospace; }' +
+          '.total-row td:first-child { font-family: inherit; }' +
+          '.params { margin-bottom: 16px; padding: 10px 14px; background: #fafbfc; border-radius: 8px; border: 1px solid #e0e2ea; font-size: 8pt; color: #666; display: flex; gap: 16px; flex-wrap: wrap; }' +
+          '.params span { display: flex; gap: 4px; }' +
+          '.params strong { color: #1a1a2e; font-family: "SF Mono", monospace; }' +
+          '.footer { text-align: center; font-size: 8pt; color: #999; margin-top: 20px; padding-top: 12px; border-top: 1px solid #eee; }' +
+          '.footer .app-name { font-weight: 600; color: #5b4cdb; }' +
+          '</style></head><body>' +
+          '<div class="header">' +
+          '<h1>📆 ' + currentMonthKey + ' 加班记录</h1>' +
+          '<div class="sub">智财管家 · 工资核算系统</div>' +
+          '</div>' +
           '<div class="summary">' +
-          '<span>📅 加班天数：<strong>' + records.length + ' 天</strong></span>' +
-          '<span>⏱️ 总加班小时：<strong>' + totalHours.toFixed(1) + 'h</strong></span>' +
+          '<div class="summary-item"><div class="label">加班天数</div><div class="value">' + records.length + ' 天</div></div>' +
+          '<div class="summary-item"><div class="label">工作日加班</div><div class="value">' + weekdayHours.toFixed(1) + 'h</div></div>' +
+          '<div class="summary-item"><div class="label">休息日加班</div><div class="value">' + weekendHours.toFixed(1) + 'h</div></div>' +
+          '<div class="summary-item"><div class="label">节假日加班</div><div class="value">' + holidayHours.toFixed(1) + 'h</div></div>' +
+          '<div class="summary-item highlight"><div class="label">总加班时长</div><div class="value">' + totalHours.toFixed(1) + 'h</div></div>' +
+          '<div class="summary-item highlight"><div class="label">预估加班费</div><div class="value">¥' + (isNaN(otPay) ? '—' : formatNumber(otPay)) + '</div></div>' +
+          '<div class="summary-item"><div class="label">工作日倍率</div><div class="value">' + settings.multiplierWeekday + 'x</div></div>' +
+          '<div class="summary-item"><div class="label">休息日倍率</div><div class="value">' + settings.multiplierWeekend + 'x</div></div>' +
+          '</div>' +
+          '<div class="params">' +
+          '<span>时薪 <strong>¥' + (isNaN(hr) ? '—' : hr.toFixed(2)) + '</strong></span>' +
+          '<span>节假日倍率 <strong>' + settings.multiplierHoliday + 'x</strong></span>' +
+          '<span>月计薪天数 <strong>' + settings.workDaysPerMonth + '天</strong></span>' +
+          '<span>日工时 <strong>' + settings.workHoursPerDay + '小时</strong></span>' +
           '</div>' +
           '<table>' +
-          '<thead><tr><th>日期</th><th>类型</th><th>时间段</th><th>小时</th></tr></thead>' +
+          '<thead><tr><th>日期</th><th>类型</th><th>时间段</th><th>时长</th></tr></thead>' +
           '<tbody>' + rows +
           '<tr class="total-row"><td colspan="3">合计</td><td>' + totalHours.toFixed(1) + 'h</td></tr>' +
           '</tbody></table>' +
-          '<div class="footer">生成时间：' + new Date().toLocaleString() + ' | 智财管家</div>' +
+          '<div class="footer">' +
+          '<span class="app-name">智财管家</span> · 工资核算系统 · 生成时间：' + new Date().toLocaleString('zh-CN') + '<br>' +
+          '本记录仅供参考，实际金额以财务部门核算为准' +
+          '</div>' +
           '</body></html>';
 
         var w = window.open('', '_blank');
@@ -3671,22 +4090,37 @@
           return;
         }
 
+        var weekdayHours = 0, weekendHours = 0, holidayHours = 0;
         var rows = [
-          ['日期', '类型', '时间段', '加班小时数']
+          ['智财管家 - 加班记录 CSV 导出'],
+          ['月份', currentMonthKey],
+          ['导出时间', new Date().toLocaleString('zh-CN')],
+          [''],
+          ['日期', '类型', '时间段', '加班小时数', '备注']
         ];
         records.forEach(function(r) {
-          rows.push([r.date, r.type, r.segments, r.hours]);
+          if (r.type === '工作日') weekdayHours += r.hours;
+          else if (r.type === '休息日') weekendHours += r.hours;
+          else if (r.type === '节假日') holidayHours += r.hours;
+          rows.push([r.date, r.type, r.segments, r.hours.toFixed(1), '']);
         });
 
         var totalHours = records.reduce(function(sum, r) { return sum + r.hours; }, 0);
-        rows.push(['', '', '合计', totalHours.toFixed(1) + 'h']);
+        rows.push(['']);
+        rows.push(['统计汇总', '', '', '', '']);
+        rows.push(['工作日加班', weekdayHours.toFixed(1) + '小时', '', '', '']);
+        rows.push(['休息日加班', weekendHours.toFixed(1) + '小时', '', '', '']);
+        rows.push(['节假日加班', holidayHours.toFixed(1) + '小时', '', '', '']);
+        rows.push(['总加班时长', totalHours.toFixed(1) + '小时', '', '', '']);
+        rows.push(['加班天数', records.length + '天', '', '', '']);
 
         var csvContent = '\uFEFF' + rows.map(function(row) {
           return row.map(function(cell) {
-            if (typeof cell === 'string' && (cell.indexOf(',') !== -1 || cell.indexOf('"') !== -1)) {
-              return '"' + cell.replace(/"/g, '""') + '"';
+            var s = String(cell);
+            if (s.indexOf(',') !== -1 || s.indexOf('"') !== -1 || s.indexOf('\n') !== -1) {
+              return '"' + s.replace(/"/g, '""') + '"';
             }
-            return cell;
+            return s;
           }).join(',');
         }).join('\n');
 
@@ -3708,18 +4142,95 @@
         var recs = storage.history || {};
         var rec = recs[currentMonthKey];
         if (!rec) { showToast('该月暂无计算记录'); return; }
-        var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>工资条</title><style>body{font-family:sans-serif;padding:16px;background:#0a0e1a;color:#e8ecf4;}h2{color:var(--primary);}table{width:100%;border-collapse:collapse;}td{padding:4px 8px;border-bottom:1px solid rgba(255,255,255,0.05);}.total{font-size:18px;color:#00b894;text-align:center;padding:10px;background:rgba(108,92,231,0.08);border-radius:10px;margin-top:10px;}</style></head><body>' +
-          '<h2>💰 ' + currentMonthKey + ' 工资条</h2>' +
-          '<table><tr><td>底薪</td><td>¥' + (rec.baseSalary || 0).toFixed(2) + '</td></tr>' +
-          '<tr><td>加班费</td><td>¥' + (rec.totalOvertimePay || 0).toFixed(2) + '</td></tr>' +
-          '<tr><td>其他收入</td><td>¥' + (rec.otherIncome || 0).toFixed(2) + '</td></tr>' +
-          '<tr><td>自定义增减</td><td style="color:var(--color-warning);">¥' + (rec.customTotal || 0).toFixed(2) + '</td></tr>' +
-          '<tr style="font-weight:bold;color:var(--primary);"><td>应发</td><td>¥' + (rec.grossPay || 0).toFixed(2) + '</td></tr>' +
-          '<tr><td>社保</td><td>¥' + (rec.socialInsurance || 0).toFixed(2) + '</td></tr>' +
-          '<tr><td>公积金</td><td>¥' + (rec.housingFund || 0).toFixed(2) + '</td></tr>' +
-          '<tr><td>其他扣除</td><td>¥' + (rec.otherDeduction || 0).toFixed(2) + '</td></tr>' +
-          '<tr><td>个税</td><td style="color:#ff6b6b;">¥' + (rec.tax || 0).toFixed(2) + '</td></tr></table>' +
-          '<div class="total">💵 实发：¥' + (rec.netPay || 0).toFixed(2) + '</div>' +
+
+        var specialDeductTotal = 0;
+        var dd = rec.deductionsDetail || {};
+        ['child','education','medical','loan','rent','elder','infant'].forEach(function(k) { specialDeductTotal += (dd[k] || 0); });
+
+        var ot = getOvertimeHours();
+        var settings = getSettings();
+        var hr = getHourlyRate(rec.baseSalary);
+
+        var html = '<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><title>' + rec.month + ' 工资条 - 智财管家</title>' +
+          '<style>' +
+          '@page { size: A4; margin: 15mm; }' +
+          '* { margin: 0; padding: 0; box-sizing: border-box; }' +
+          'body { font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", "Helvetica Neue", Arial, sans-serif; padding: 24px; background: #fff; color: #1a1a2e; font-size: 11pt; line-height: 1.6; -webkit-print-color-adjust: exact; print-color-adjust: exact; }' +
+          '.header { text-align: center; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 2px solid #5b4cdb; }' +
+          '.header h1 { font-size: 18pt; font-weight: 700; color: #1a1a2e; margin-bottom: 4px; letter-spacing: 1px; }' +
+          '.header .sub { font-size: 10pt; color: #666; }' +
+          '.header .badge { display: inline-block; background: #5b4cdb; color: #fff; padding: 2px 10px; border-radius: 20px; font-size: 8pt; margin-top: 6px; font-weight: 600; }' +
+          '.section { margin-bottom: 16px; }' +
+          '.section-title { font-size: 10pt; font-weight: 700; color: #5b4cdb; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid #eee; letter-spacing: 0.5px; text-transform: uppercase; }' +
+          'table { width: 100%; border-collapse: collapse; font-size: 10pt; }' +
+          'td, th { padding: 7px 10px; border-bottom: 1px solid #f0f0f0; }' +
+          'td:first-child { color: #555; width: 40%; }' +
+          'td:last-child { text-align: right; font-weight: 600; color: #1a1a2e; font-family: "SF Mono", "Consolas", monospace; }' +
+          '.income td:last-child { color: #00a884; }' +
+          '.deduct td:last-child { color: #e74c3c; }' +
+          '.total-row td { border-top: 2px solid #5b4cdb; border-bottom: 2px solid #5b4cdb; padding: 10px; font-size: 11pt; }' +
+          '.total-row td:first-child { font-weight: 700; color: #1a1a2e; }' +
+          '.total-row td:last-child { font-weight: 700; color: #00a884; font-size: 13pt; }' +
+          '.net-pay-box { margin-top: 16px; padding: 14px 20px; background: linear-gradient(135deg, #f8f9fc, #eef0f8); border-radius: 12px; border: 1px solid #e0e2ea; text-align: center; }' +
+          '.net-pay-box .label { font-size: 9pt; color: #666; margin-bottom: 4px; letter-spacing: 1px; }' +
+          '.net-pay-box .amount { font-size: 22pt; font-weight: 800; color: #00a884; letter-spacing: 1px; font-family: "SF Mono", "Consolas", monospace; }' +
+          '.footer { margin-top: 24px; padding-top: 12px; border-top: 1px solid #eee; text-align: center; font-size: 8pt; color: #999; }' +
+          '.footer .app-name { font-weight: 600; color: #5b4cdb; }' +
+          '.two-col { display: flex; gap: 16px; }' +
+          '.two-col > .section { flex: 1; }' +
+          '.param-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; font-size: 9pt; color: #666; }' +
+          '.param-grid span { display: flex; justify-content: space-between; }' +
+          '.param-grid strong { color: #1a1a2e; font-family: "SF Mono", monospace; }' +
+          '</style></head><body>' +
+          '<div class="header">' +
+          '<h1>💰 ' + rec.month + ' 工资条</h1>' +
+          '<div class="sub">智财管家 · 工资核算系统</div>' +
+          '<div class="badge">计时模式</div>' +
+          '</div>' +
+          '<div class="two-col">' +
+          '<div class="section">' +
+          '<div class="section-title">📊 收入明细</div>' +
+          '<table>' +
+          '<tr class="income"><td>底薪</td><td>¥' + formatNumber(rec.baseSalary || 0) + '</td></tr>' +
+          '<tr class="income"><td>加班费</td><td>¥' + formatNumber(rec.totalOvertimePay || 0) + '</td></tr>' +
+          '<tr class="income"><td>其他收入</td><td>¥' + formatNumber(rec.otherIncome || 0) + '</td></tr>' +
+          '<tr class="income"><td>自定义增减</td><td>¥' + formatNumber(rec.customTotal || 0) + '</td></tr>' +
+          '<tr class="total-row"><td>应发工资</td><td>¥' + formatNumber(rec.grossPay || 0) + '</td></tr>' +
+          '</table>' +
+          '</div>' +
+          '<div class="section">' +
+          '<div class="section-title">📉 扣除明细</div>' +
+          '<table>' +
+          '<tr class="deduct"><td>社保</td><td>¥' + formatNumber(rec.socialInsurance || 0) + '</td></tr>' +
+          '<tr class="deduct"><td>公积金</td><td>¥' + formatNumber(rec.housingFund || 0) + '</td></tr>' +
+          '<tr class="deduct"><td>其他扣除</td><td>¥' + formatNumber(rec.otherDeduction || 0) + '</td></tr>' +
+          '<tr class="deduct"><td>专项附加扣除</td><td>¥' + formatNumber(specialDeductTotal) + '</td></tr>' +
+          '<tr class="deduct"><td>个人所得税</td><td>¥' + formatNumber(rec.tax || 0) + '</td></tr>' +
+          '<tr class="total-row"><td>扣除合计</td><td>¥' + formatNumber((rec.socialInsurance||0)+(rec.housingFund||0)+(rec.otherDeduction||0)+specialDeductTotal+(rec.tax||0)) + '</td></tr>' +
+          '</table>' +
+          '</div>' +
+          '</div>' +
+          '<div class="section" style="margin-top:8px;">' +
+          '<div class="section-title">⚙️ 计薪参数</div>' +
+          '<div class="param-grid">' +
+          '<span>时薪 <strong>¥' + (isNaN(hr) ? '—' : hr.toFixed(2)) + '</strong></span>' +
+          '<span>工作日加班 <strong>' + ot.weekday.toFixed(1) + 'h × ' + settings.multiplierWeekday + 'x</strong></span>' +
+          '<span>休息日加班 <strong>' + ot.weekend.toFixed(1) + 'h × ' + settings.multiplierWeekend + 'x</strong></span>' +
+          '<span>节假日加班 <strong>' + ot.holiday.toFixed(1) + 'h × ' + settings.multiplierHoliday + 'x</strong></span>' +
+          '<span>月计薪天数 <strong>' + settings.workDaysPerMonth + '天</strong></span>' +
+          '<span>日工时 <strong>' + settings.workHoursPerDay + '小时</strong></span>' +
+          '<span>个税起征点 <strong>¥' + settings.taxThreshold + '</strong></span>' +
+          '<span>计税模式 <strong>累计预扣</strong></span>' +
+          '</div>' +
+          '</div>' +
+          '<div class="net-pay-box">' +
+          '<div class="label">实发工资</div>' +
+          '<div class="amount">¥' + formatNumber(rec.netPay || 0) + '</div>' +
+          '</div>' +
+          '<div class="footer">' +
+          '<span class="app-name">智财管家</span> · 工资核算系统 · 生成时间：' + new Date().toLocaleString('zh-CN') + '<br>' +
+          '本工资条仅供参考，实际金额以财务部门核算为准' +
+          '</div>' +
           '</body></html>';
         var w = window.open('', '_blank');
         w.document.write(html);
@@ -3732,14 +4243,101 @@
         var recs = storage.history || {};
         var keys = Object.keys(recs).filter(function(k) { return k.startsWith(year + '-'); }).sort();
         if (keys.length === 0) { showToast('暂无数据'); return; }
+
+        var sumBase = 0, sumOT = 0, sumOther = 0, sumGross = 0, sumSI = 0, sumHF = 0, sumTax = 0, sumNet = 0, sumCustom = 0, sumDeduct = 0;
         var rows = '';
         keys.forEach(function(k) {
           var r = recs[k];
-          rows += '<tr><td>' + k.slice(5) + '月</td><td>¥' + (r.baseSalary || 0).toFixed(2) + '</td><td>¥' + (r.totalOvertimePay || 0).toFixed(2) + '</td><td>¥' + (r.customTotal || 0).toFixed(2) + '</td><td>¥' + (r.grossPay || 0).toFixed(2) + '</td><td style="color:var(--primary);">¥' + (r.netPay || 0).toFixed(2) + '</td></tr>';
+          sumBase += (r.baseSalary || 0);
+          sumOT += (r.totalOvertimePay || 0);
+          sumOther += (r.otherIncome || 0);
+          sumGross += (r.grossPay || 0);
+          sumSI += (r.socialInsurance || 0);
+          sumHF += (r.housingFund || 0);
+          sumTax += (r.tax || 0);
+          sumNet += (r.netPay || 0);
+          sumCustom += (r.customTotal || 0);
+          sumDeduct += (r.otherDeduction || 0);
+          var monthNum = k.slice(5);
+          rows += '<tr>' +
+            '<td>' + monthNum + '月</td>' +
+            '<td>¥' + formatNumber(r.baseSalary || 0) + '</td>' +
+            '<td>¥' + formatNumber(r.totalOvertimePay || 0) + '</td>' +
+            '<td>¥' + formatNumber(r.otherIncome || 0) + '</td>' +
+            '<td>¥' + formatNumber(r.customTotal || 0) + '</td>' +
+            '<td>¥' + formatNumber(r.grossPay || 0) + '</td>' +
+            '<td>¥' + formatNumber(r.socialInsurance || 0) + '</td>' +
+            '<td>¥' + formatNumber(r.housingFund || 0) + '</td>' +
+            '<td>¥' + formatNumber(r.otherDeduction || 0) + '</td>' +
+            '<td>¥' + formatNumber(r.tax || 0) + '</td>' +
+            '<td style="font-weight:700;color:#00a884;">¥' + formatNumber(r.netPay || 0) + '</td>' +
+            '</tr>';
         });
-        var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>年度报表</title><style>body{font-family:sans-serif;padding:16px;background:#0a0e1a;color:#e8ecf4;}h2{color:var(--primary);}table{width:100%;border-collapse:collapse;font-size:12px;}th,td{padding:4px 6px;border-bottom:1px solid rgba(255,255,255,0.05);text-align:center;}th{color:var(--primary);}</style></head><body>' +
-          '<h2>📊 ' + year + ' 年度报表</h2>' +
-          '<table><tr><th>月份</th><th>底薪</th><th>加班费</th><th>自定义</th><th>应发</th><th>实发</th></tr>' + rows + '</table></body></html>';
+
+        var html = '<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><title>' + year + ' 年度工资报表 - 智财管家</title>' +
+          '<style>' +
+          '@page { size: A4 landscape; margin: 12mm; }' +
+          '* { margin: 0; padding: 0; box-sizing: border-box; }' +
+          'body { font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", "Helvetica Neue", Arial, sans-serif; padding: 20px; background: #fff; color: #1a1a2e; font-size: 9pt; line-height: 1.5; -webkit-print-color-adjust: exact; print-color-adjust: exact; }' +
+          '.header { text-align: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid #5b4cdb; }' +
+          '.header h1 { font-size: 16pt; font-weight: 700; color: #1a1a2e; margin-bottom: 4px; }' +
+          '.header .sub { font-size: 9pt; color: #666; }' +
+          'table { width: 100%; border-collapse: collapse; font-size: 9pt; margin-bottom: 16px; }' +
+          'th { background: #5b4cdb; color: #fff; padding: 8px 6px; font-weight: 600; text-align: center; font-size: 8pt; letter-spacing: 0.3px; }' +
+          'th:first-child { border-radius: 8px 0 0 0; }' +
+          'th:last-child { border-radius: 0 8px 0 0; }' +
+          'td { padding: 7px 6px; text-align: right; border-bottom: 1px solid #f0f0f0; font-family: "SF Mono", "Consolas", monospace; }' +
+          'td:first-child { text-align: center; font-weight: 600; color: #1a1a2e; font-family: inherit; }' +
+          'tr:nth-child(even) { background: #fafbfc; }' +
+          'tr:hover { background: #f0f2f8; }' +
+          '.total-row td { background: #f0f2f8; font-weight: 700; border-top: 2px solid #5b4cdb; border-bottom: 2px solid #5b4cdb; }' +
+          '.total-row td:first-child { font-family: inherit; }' +
+          '.summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }' +
+          '.summary-item { background: linear-gradient(135deg, #f8f9fc, #eef0f8); border-radius: 10px; padding: 10px; text-align: center; border: 1px solid #e0e2ea; }' +
+          '.summary-item .label { font-size: 8pt; color: #666; margin-bottom: 4px; }' +
+          '.summary-item .value { font-size: 12pt; font-weight: 700; color: #1a1a2e; font-family: "SF Mono", monospace; }' +
+          '.summary-item.income .value { color: #00a884; }' +
+          '.summary-item.deduct .value { color: #e74c3c; }' +
+          '.footer { text-align: center; font-size: 8pt; color: #999; margin-top: 16px; padding-top: 10px; border-top: 1px solid #eee; }' +
+          '.footer .app-name { font-weight: 600; color: #5b4cdb; }' +
+          '</style></head><body>' +
+          '<div class="header">' +
+          '<h1>📊 ' + year + ' 年度工资报表</h1>' +
+          '<div class="sub">智财管家 · 工资核算系统 · 共 ' + keys.length + ' 个月数据</div>' +
+          '</div>' +
+          '<div class="summary">' +
+          '<div class="summary-item income"><div class="label">年度底薪合计</div><div class="value">¥' + formatNumber(sumBase) + '</div></div>' +
+          '<div class="summary-item income"><div class="label">年度加班费合计</div><div class="value">¥' + formatNumber(sumOT) + '</div></div>' +
+          '<div class="summary-item income"><div class="label">年度其他收入</div><div class="value">¥' + formatNumber(sumOther) + '</div></div>' +
+          '<div class="summary-item income"><div class="label">年度自定义项</div><div class="value">¥' + formatNumber(sumCustom) + '</div></div>' +
+          '<div class="summary-item income"><div class="label">年度应发合计</div><div class="value">¥' + formatNumber(sumGross) + '</div></div>' +
+          '<div class="summary-item deduct"><div class="label">年度社保合计</div><div class="value">¥' + formatNumber(sumSI) + '</div></div>' +
+          '<div class="summary-item deduct"><div class="label">年度公积金合计</div><div class="value">¥' + formatNumber(sumHF) + '</div></div>' +
+          '<div class="summary-item deduct"><div class="label">年度个税合计</div><div class="value">¥' + formatNumber(sumTax) + '</div></div>' +
+          '</div>' +
+          '<table>' +
+          '<thead><tr>' +
+          '<th>月份</th><th>底薪</th><th>加班费</th><th>其他收入</th><th>自定义</th><th>应发</th><th>社保</th><th>公积金</th><th>其他扣除</th><th>个税</th><th>实发</th>' +
+          '</tr></thead>' +
+          '<tbody>' + rows +
+          '<tr class="total-row">' +
+          '<td>合计</td>' +
+          '<td>¥' + formatNumber(sumBase) + '</td>' +
+          '<td>¥' + formatNumber(sumOT) + '</td>' +
+          '<td>¥' + formatNumber(sumOther) + '</td>' +
+          '<td>¥' + formatNumber(sumCustom) + '</td>' +
+          '<td>¥' + formatNumber(sumGross) + '</td>' +
+          '<td>¥' + formatNumber(sumSI) + '</td>' +
+          '<td>¥' + formatNumber(sumHF) + '</td>' +
+          '<td>¥' + formatNumber(sumDeduct) + '</td>' +
+          '<td>¥' + formatNumber(sumTax) + '</td>' +
+          '<td style="color:#00a884;">¥' + formatNumber(sumNet) + '</td>' +
+          '</tr></tbody></table>' +
+          '<div class="footer">' +
+          '<span class="app-name">智财管家</span> · 工资核算系统 · 生成时间：' + new Date().toLocaleString('zh-CN') + '<br>' +
+          '本报表仅供参考，实际金额以财务部门核算为准' +
+          '</div>' +
+          '</body></html>';
         var w = window.open('', '_blank');
         w.document.write(html);
         w.document.close();
@@ -3747,7 +4345,15 @@
       }
 
       function downloadCSV(filename, rows) {
-        var csvContent = '\uFEFF' + rows.map(function(e) { return e.join(','); }).join('\n');
+        var csvContent = '\uFEFF' + rows.map(function(e) { 
+          return e.map(function(cell) {
+            var s = String(cell);
+            if (s.indexOf(',') !== -1 || s.indexOf('"') !== -1 || s.indexOf('\n') !== -1) {
+              return '"' + s.replace(/"/g, '""') + '"';
+            }
+            return s;
+          }).join(','); 
+        }).join('\n');
         var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         var url = URL.createObjectURL(blob);
         var a = document.createElement('a');
@@ -3764,7 +4370,31 @@
         var recs = storage.history || {};
         var rec = recs[currentMonthKey];
         if (!rec) { showToast('该月暂无计算记录'); return; }
-        var rows = [['项目','金额'], ['月份', rec.month], ['底薪', rec.baseSalary || 0], ['加班费', rec.totalOvertimePay || 0], ['其他收入', rec.otherIncome || 0], ['自定义增减', rec.customTotal || 0], ['应发工资', rec.grossPay || 0], ['社保', rec.socialInsurance || 0], ['公积金', rec.housingFund || 0], ['其他扣除', rec.otherDeduction || 0], ['个税', rec.tax || 0], ['实发工资', rec.netPay || 0]];
+        var dd = rec.deductionsDetail || {};
+        var rows = [
+          ['智财管家 - 工资条 CSV 导出'],
+          ['导出时间', new Date().toLocaleString('zh-CN')],
+          [''],
+          ['项目', '金额（元）', '说明'],
+          ['月份', rec.month, ''],
+          ['底薪', formatNumber(rec.baseSalary || 0), ''],
+          ['加班费', formatNumber(rec.totalOvertimePay || 0), ''],
+          ['其他收入', formatNumber(rec.otherIncome || 0), ''],
+          ['自定义增减', formatNumber(rec.customTotal || 0), ''],
+          ['应发工资', formatNumber(rec.grossPay || 0), '底薪+加班费+其他收入+自定义增减'],
+          ['社保', formatNumber(rec.socialInsurance || 0), ''],
+          ['公积金', formatNumber(rec.housingFund || 0), ''],
+          ['其他扣除', formatNumber(rec.otherDeduction || 0), ''],
+          ['子女教育扣除', formatNumber(dd.child || 0), '专项附加扣除'],
+          ['继续教育扣除', formatNumber(dd.education || 0), '专项附加扣除'],
+          ['大病医疗扣除', formatNumber(dd.medical || 0), '专项附加扣除'],
+          ['住房贷款扣除', formatNumber(dd.loan || 0), '专项附加扣除'],
+          ['住房租金扣除', formatNumber(dd.rent || 0), '专项附加扣除'],
+          ['赡养老人扣除', formatNumber(dd.elder || 0), '专项附加扣除'],
+          ['婴幼儿照护扣除', formatNumber(dd.infant || 0), '专项附加扣除'],
+          ['个人所得税', formatNumber(rec.tax || 0), ''],
+          ['实发工资', formatNumber(rec.netPay || 0), '应发-社保-公积金-其他扣除-个税']
+        ];
         downloadCSV('工资条_' + currentMonthKey + '.csv', rows);
         showToast('✅ CSV 已导出');
       }
@@ -3795,17 +4425,30 @@
 
       function exportSettingsJSON() {
         if (!currentMonthKey) { showToast('请选择月份'); return; }
+        var settings = getSettings();
+        var baseSalary = parseFloat($('baseSalary')?.value) || 0;
+        var hr = getHourlyRate(baseSalary);
         var data = {
-          type: 'settings',
-          month: currentMonthKey,
-          exportDate: getLocalDateString(),
-          settings: getSettings(),
+          _meta: {
+            app: '智财管家',
+            version: '5.0.0',
+            type: 'settings',
+            exportDate: new Date().toISOString(),
+            exportTimeLocal: new Date().toLocaleString('zh-CN'),
+            month: currentMonthKey
+          },
+          settings: settings,
+          computed: {
+            hourlyRate: isNaN(hr) ? null : hr,
+            currency: 'CNY'
+          },
           params: {
-            baseSalary: parseFloat($('baseSalary')?.value) || 0,
+            baseSalary: baseSalary,
             otherIncome: parseFloat($('otherIncome')?.value) || 0,
             socialInsurance: parseFloat($('socialInsurance')?.value) || 0,
             housingFund: parseFloat($('housingFund')?.value) || 0,
             otherDeduction: parseFloat($('otherDeduction')?.value) || 0,
+            taxThreshold: settings.taxThreshold,
             deductionsDetail: getSpecialDeductions(),
             customItems: JSON.parse(JSON.stringify(customItems))
           }
@@ -3825,11 +4468,29 @@
       function exportOvertimeJSON() {
         if (!currentMonthKey) { showToast('请选择月份'); return; }
         var records = getOvertimeRecordsForMonth();
+        var weekdayHours = 0, weekendHours = 0, holidayHours = 0;
+        records.forEach(function(r) {
+          if (r.type === '工作日') weekdayHours += r.hours;
+          else if (r.type === '休息日') weekendHours += r.hours;
+          else if (r.type === '节假日') holidayHours += r.hours;
+        });
         var data = {
-          type: 'overtime',
-          month: currentMonthKey,
-          exportDate: getLocalDateString(),
+          _meta: {
+            app: '智财管家',
+            version: '5.0.0',
+            type: 'overtime',
+            exportDate: new Date().toISOString(),
+            exportTimeLocal: new Date().toLocaleString('zh-CN'),
+            month: currentMonthKey
+          },
           settings: getSettings(),
+          summary: {
+            totalDays: records.length,
+            totalHours: records.reduce(function(sum, r) { return sum + r.hours; }, 0),
+            weekdayHours: weekdayHours,
+            weekendHours: weekendHours,
+            holidayHours: holidayHours
+          },
           records: records,
           dayDetails: currentDayDetails
         };
@@ -3851,10 +4512,21 @@
         var rec = recs[currentMonthKey];
         if (!rec) { showToast('该月暂无计算记录'); return; }
         var data = {
-          type: 'salary',
-          month: currentMonthKey,
-          exportDate: getLocalDateString(),
-          record: rec
+          _meta: {
+            app: '智财管家',
+            version: '5.0.0',
+            type: 'salary',
+            exportDate: new Date().toISOString(),
+            exportTimeLocal: new Date().toLocaleString('zh-CN'),
+            month: currentMonthKey
+          },
+          record: rec,
+          summary: {
+            totalIncome: (rec.baseSalary || 0) + (rec.totalOvertimePay || 0) + (rec.otherIncome || 0) + (rec.customTotal || 0),
+            totalDeduction: (rec.socialInsurance || 0) + (rec.housingFund || 0) + (rec.otherDeduction || 0) + (rec.tax || 0),
+            netPay: rec.netPay || 0,
+            currency: 'CNY'
+          }
         };
         var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' });
         var url = URL.createObjectURL(blob);
@@ -3869,10 +4541,24 @@
       }
 
       function exportBackup() {
+        var historyCount = Object.keys(storage.history || {}).length;
+        var detailsCount = Object.keys(storage.details || {}).length;
+        var monthParamsCount = Object.keys(storage.monthParams || {}).length;
         var backup = {
-          version: '3.0',
-          exportDate: getLocalDateString(),
-          appName: '智财管家',
+          _meta: {
+            app: '智财管家',
+            version: '5.0.0',
+            backupVersion: '3.0',
+            exportDate: new Date().toISOString(),
+            exportTimeLocal: new Date().toLocaleString('zh-CN'),
+            exportDateShort: getLocalDateString(),
+            statistics: {
+              historyRecords: historyCount,
+              overtimeMonths: detailsCount,
+              monthParams: monthParamsCount,
+              customItems: (customItems || []).length
+            }
+          },
           data: {
             history: storage.history || {},
             details: storage.details || {},
@@ -3890,7 +4576,7 @@
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-        showToast('✅ 全量备份已导出');
+        showToast('✅ 全量备份已导出（' + historyCount + '条工资记录）');
       }
 
       // ============================================================
@@ -4692,66 +5378,5 @@
 
     })();
   </script>
-        </div>
-      </main>
-    </div>
-    <div class="statusbar">
-      <div class="statusbar-left">
-        <span id="statusText">✅ 就绪</span>
-        <span class="statusbar-separator"></span>
-        <span id="statusMonth">—</span>
-      </div>
-      <div class="statusbar-right">
-        <span id="statusRecords">工资记录: 0 条</span>
-        <span id="statusAutoSave">💾 自动保存</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- 右键菜单 -->
-  <div class="context-menu" id="contextMenu"></div>
-
-  <!-- ===== 导入数据模态框 ===== -->
-  <div class="modal-overlay" id="importModalOverlay">
-    <div class="modal-box" style="max-width:480px;text-align:left;">
-      <h3 style="font-size:1.1rem;margin-bottom:4px;text-align:center;">📥 导入数据</h3>
-      <p style="font-size:0.8rem;color:var(--text-secondary);text-align:center;margin-bottom:12px;">支持导入之前导出的 JSON 备份文件</p>
-
-      <div style="margin-bottom:12px;">
-        <label style="font-size:0.8rem;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:6px;">选择文件</label>
-        <input type="file" id="importFileInput" accept=".json" style="width:100%;padding:10px;border-radius:var(--radius-md);border:2px dashed var(--primary-glow);background:var(--input-bg);color:var(--text-primary);font-size:0.9rem;cursor:pointer;">
-      </div>
-
-      <div id="importPreviewArea" style="display:none;margin-bottom:12px;background:var(--input-bg);border-radius:var(--radius-md);padding:12px;border:1px solid var(--input-border);max-height:200px;overflow-y:auto;">
-        <div style="font-size:0.8rem;font-weight:600;color:var(--primary);margin-bottom:8px;">📋 数据预览</div>
-        <div id="importPreviewContent" style="font-size:0.8rem;color:var(--text-secondary);line-height:1.8;"></div>
-      </div>
-
-      <div id="importConflictArea" style="display:none;margin-bottom:12px;padding:10px;background:rgba(253,203,110,0.08);border-radius:var(--radius-md);border:1px solid rgba(253,203,110,0.15);">
-        <div style="font-size:0.8rem;font-weight:600;color:var(--color-warning);margin-bottom:6px;">⚠️ 检测到冲突</div>
-        <div style="font-size:0.75rem;color:var(--text-secondary);margin-bottom:8px;">以下月份在本地已存在，请选择处理方式：</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <label style="display:flex;align-items:center;gap:4px;font-size:0.8rem;cursor:pointer;">
-            <input type="radio" name="importConflictMode" value="merge" checked style="accent-color:var(--primary);">
-            <span>智能合并</span>
-          </label>
-          <label style="display:flex;align-items:center;gap:4px;font-size:0.8rem;cursor:pointer;">
-            <input type="radio" name="importConflictMode" value="overwrite" style="accent-color:var(--primary);">
-            <span>全部覆盖</span>
-          </label>
-          <label style="display:flex;align-items:center;gap:4px;font-size:0.8rem;cursor:pointer;">
-            <input type="radio" name="importConflictMode" value="skip" style="accent-color:var(--primary);">
-            <span>跳过冲突</span>
-          </label>
-        </div>
-      </div>
-
-      <div class="modal-actions" style="margin-top:16px;">
-        <button class="btn btn-primary" id="importConfirmBtn" disabled>✅ 确认导入</button>
-        <button class="btn btn-ghost" id="importCancelBtn">取消</button>
-      </div>
-    </div>
-  </div>
-
 </body>
 </html>

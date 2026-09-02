@@ -874,7 +874,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 58px;
+      min-height: 72px;
       padding: 4px 2px;
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       text-align: center;
@@ -2156,20 +2156,8 @@
       .fab-calculate .fab-label { font-size: 0.55rem; }
     }
     /* ===== 桌面应用骨架 ===== */
-    .app-frame { display: flex; flex-direction: column; height: 100vh; overflow: hidden; position: relative; z-index: 1; }
-    .titlebar { height: 40px; background: var(--card-bg); border-bottom: 1px solid var(--card-border); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; flex-shrink: 0; -webkit-app-region: drag; user-select: none; }
-    .titlebar-left { display: flex; align-items: center; gap: 10px; }
-    .app-logo { font-size: 1.1rem; }
-    .app-name { font-weight: 700; font-size: 0.9rem; color: var(--text-primary); letter-spacing: 1px; }
-    .app-version { font-size: 0.65rem; background: var(--primary); color: #fff; padding: 1px 6px; border-radius: 10px; }
-    .window-controls { display: flex; gap: 8px; }
-    .win-btn { width: 12px; height: 12px; border-radius: 50%; border: none; cursor: pointer; transition: opacity 0.2s; }
-    .win-btn:hover { opacity: 0.8; }
-    .win-btn.minimize { background: #fbbf24; }
-    .win-btn.maximize { background: #34d399; }
-    .win-btn.close { background: #f87171; }
-
-    .menubar { height: 34px; background: var(--card-bg); border-bottom: 1px solid var(--card-border); display: flex; align-items: center; padding: 0 12px; gap: 2px; font-size: 0.8rem; flex-shrink: 0; user-select: none; }
+    .app-frame { display: flex; flex-direction: column; height: 100vh; overflow: hidden; position: relative; z-index: 1; border-radius: 12px; box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 20px 60px rgba(0,0,0,0.3); }
+    .menubar { height: 34px; background: var(--card-bg); border-bottom: 1px solid var(--card-border); display: flex; align-items: center; padding: 0 12px; gap: 2px; font-size: 0.8rem; flex-shrink: 0; user-select: none; border-radius: 12px 12px 0 0; }
     .menu-item { position: relative; padding: 4px 12px; border-radius: 4px; cursor: pointer; color: var(--text-secondary); font-size: 0.8rem; transition: all 0.15s; }
     .menu-item:hover { background: var(--hover-bg); color: var(--text-primary); }
     .menu-dropdown { display: none; position: absolute; top: 100%; left: 0; background: var(--modal-bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 6px; min-width: 220px; box-shadow: 0 12px 40px rgba(0,0,0,0.3); z-index: 1000; margin-top: 2px; }
@@ -2180,7 +2168,7 @@
     .menu-separator { height: 1px; background: var(--card-border); margin: 6px 0; }
 
     .app-body { display: flex; flex: 1; overflow: hidden; }
-    .sidebar { width: 210px; flex-shrink: 0; background: var(--card-bg); border-right: 1px solid var(--card-border); display: flex; flex-direction: column; padding: 16px 10px; overflow-y: auto; }
+    .sidebar { width: 210px; flex-shrink: 0; background: var(--card-bg); border-right: 1px solid var(--card-border); display: flex; flex-direction: column; padding: 16px 10px; overflow-y: auto; border-radius: 12px 0 0 0; }
     .sidebar-header { padding: 0 10px 16px; border-bottom: 1px solid var(--card-border); margin-bottom: 12px; }
     .sidebar-brand { display: flex; align-items: center; gap: 8px; font-size: 1.1rem; font-weight: 700; color: var(--primary); }
     .sidebar-version { font-size: 0.6rem; background: var(--primary); color: #fff; padding: 1px 6px; border-radius: 10px; margin-left: 4px; }
@@ -2263,18 +2251,7 @@
   <div class="bg-grid"></div>
 
   <div class="app-frame">
-    <div class="titlebar">
-      <div class="titlebar-left">
-        <span class="app-logo">📋</span>
-        <span class="app-name">智财管家</span>
-        <span class="app-version">v5.1.0</span>
-      </div>
-      <div class="window-controls">
-        <button class="win-btn minimize" title="最小化"></button>
-        <button class="win-btn maximize" title="最大化"></button>
-        <button class="win-btn close" title="关闭"></button>
-      </div>
-    </div>
+    
     <div class="menubar">
       <div class="menu-item">文件(F)
         <div class="menu-dropdown">
@@ -2298,8 +2275,13 @@
       </div>
       <div class="menu-item">帮助(H)
         <div class="menu-dropdown">
-          <div class="menu-dropdown-item" onclick="showToast('📋 智财管家 v5.1.0 | 快捷键: Ctrl+Enter 计算, Ctrl+1/2/3/4 切换标签')">ℹ️ 关于<span class="shortcut"></span></div>
+          <div class="menu-dropdown-item" onclick="showToast('📋 智财管家 v6.0.0 | 快捷键: Ctrl+Enter 计算, Ctrl+1/2/3/4 切换标签')">ℹ️ 关于<span class="shortcut"></span></div>
         </div>
+      </div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:12px;font-size:0.75rem;color:var(--text-secondary);">
+        <span id="menubarMonth" style="display:flex;align-items:center;gap:4px;">📅 <strong style="color:var(--text-primary);" id="menubarMonthVal">—</strong></span>
+        <span class="statusbar-separator"></span>
+        <span id="menubarNet" style="display:flex;align-items:center;gap:4px;">💵 实发 <strong style="color:var(--color-income);" id="menubarNetVal">—</strong></span>
       </div>
     </div>
     <div class="app-body">
@@ -2308,7 +2290,7 @@
           <div class="sidebar-brand">
             <span>📋</span>
             <span>智财管家</span>
-            <span class="sidebar-version">v5.1.0</span>
+            <span class="sidebar-version">v6.0.0</span>
           </div>
           <div class="sidebar-subtitle">工资核算 · 计时模式</div>
         </div>
@@ -2321,6 +2303,11 @@
         <div class="sidebar-footer">
           <div>💾 数据本地存储</div>
           <div style="margin-top:2px;">Ctrl+Enter 快速计算</div>
+          <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--card-border);">
+            <button class="nav-btn" id="btnChangelog" style="padding:6px 8px;font-size:0.8rem;border-radius:6px;width:100%;justify-content:center;">
+              <span class="tab-icon">📜</span><span>更新日志</span>
+            </button>
+          </div>
         </div>
       </aside>
       <main class="main-content">
@@ -2332,7 +2319,7 @@
         <div class="brand" style="position:relative;">
           <span class="brand-icon">📋</span>
           <span>智财管家</span>
-          <span class="version">v5.1.0</span>
+          <span class="version">v6.0.0</span>
         </div>
         <div class="subtitle">工资核算 · 计时模式 <span class="badge" style="background:var(--primary);color:#fff;">⚡ 专业版</span></div>
       </div>
@@ -2455,6 +2442,11 @@
           </div>
         </div>
       </div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:12px;font-size:0.75rem;color:var(--text-secondary);">
+        <span id="menubarMonth" style="display:flex;align-items:center;gap:4px;">📅 <strong style="color:var(--text-primary);" id="menubarMonthVal">—</strong></span>
+        <span class="statusbar-separator"></span>
+        <span id="menubarNet" style="display:flex;align-items:center;gap:4px;">💵 实发 <strong style="color:var(--color-income);" id="menubarNetVal">—</strong></span>
+      </div>
     </div>
 
     <!-- ===== 加班面板 ===== -->
@@ -2471,6 +2463,7 @@
             <span id="holidayStatus" style="font-size:0.75rem;color:var(--text-secondary);margin-left:auto;"></span>
             <button class="btn btn-sm btn-export" id="btnExportOvertime">📄 PDF</button>
             <button class="btn btn-sm btn-outline" id="btnExportOvertimeCSV">📊 CSV</button>
+            <button class="btn btn-sm btn-outline" id="btnExportOvertimeExcel">📈 Excel</button>
             <button class="btn btn-sm btn-outline" id="btnExportOvertimeJSON">💾 JSON</button>
           </div>
           <div class="overtime-multiplier">
@@ -2527,11 +2520,19 @@
             <button class="btn btn-sm btn-outline" id="btnCopySalarySlip">📋 复制</button>
             <button class="btn btn-sm btn-export" id="btnPrintYearlyReport">📄 年度报表</button>
             <button class="btn btn-sm btn-outline" id="btnExportSalaryCSV">📊 CSV</button>
+            <button class="btn btn-sm btn-outline" id="btnExportSalaryExcel">📈 Excel</button>
             <button class="btn btn-sm btn-outline" id="btnExportSalaryJSON">💾 导出JSON</button>
             <button class="btn btn-sm btn-outline" id="btnExportBackup">🗂️ 全量备份</button>
-            <button class="btn btn-sm btn-outline" id="btnImportSalary">📥 导入</button>
+            <button class="btn btn-sm btn-outline" id="btnImportSalary">📥 导入单条</button>
+            <button class="btn btn-sm btn-export" id="btnExportAllMonthsExcel" style="background: linear-gradient(135deg, #10b981, #059669);">💾 导出全部数据备份</button>
+            <button class="btn btn-sm btn-primary" id="btnImportBackup">📥 导入全量备份</button>
           </div>
         </div>
+      </div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:12px;font-size:0.75rem;color:var(--text-secondary);">
+        <span id="menubarMonth" style="display:flex;align-items:center;gap:4px;">📅 <strong style="color:var(--text-primary);" id="menubarMonthVal">—</strong></span>
+        <span class="statusbar-separator"></span>
+        <span id="menubarNet" style="display:flex;align-items:center;gap:4px;">💵 实发 <strong style="color:var(--color-income);" id="menubarNetVal">—</strong></span>
       </div>
     </div>
 
@@ -2684,6 +2685,11 @@
           </div>
         </div>
       </div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:12px;font-size:0.75rem;color:var(--text-secondary);">
+        <span id="menubarMonth" style="display:flex;align-items:center;gap:4px;">📅 <strong style="color:var(--text-primary);" id="menubarMonthVal">—</strong></span>
+        <span class="statusbar-separator"></span>
+        <span id="menubarNet" style="display:flex;align-items:center;gap:4px;">💵 实发 <strong style="color:var(--color-income);" id="menubarNetVal">—</strong></span>
+      </div>
     </div>
   </div>
 
@@ -2805,6 +2811,9 @@
     // ============================================================
     (function() {
       "use strict";
+      var APP_VERSION = '6.0.0';
+      var APP_VERSION_INT = 600;
+
 
       var $ = function(id) { return document.getElementById(id); };
       var roundToCent = function(v) { return Math.round((v || 0) * 100) / 100; };
@@ -3221,7 +3230,8 @@
           e.preventDefault();
           showToast('🔄 数据已刷新');
           loadStorage(); loadCustomItems(); loadOvertimeData(); loadMonthParams(currentMonthKey);
-          updateAnnualSummary(); updateHourlyPreview(); updateDeductTotalDisplay(); renderCustomItems();
+          updateAnnualSummary();
+        updateMenubarInfo(); updateHourlyPreview(); updateDeductTotalDisplay(); renderCustomItems();
           updateSettingsPreview(); updateStatusBar();
           return;
         }
@@ -3321,7 +3331,9 @@
       }
 
       // ---- 日历 ----
+      var usingLocalHolidayData = false;
       function getDayType(y, m, d) {
+        usingLocalHolidayData = false;
         var dk = y + '-' + String(m).padStart(2, '0') + '-' + String(d).padStart(2, '0');
         var yearStr = y.toString();
         // 优先使用缓存的API数据
@@ -3329,6 +3341,7 @@
           return holidayCache[yearStr].data[dk];
         }
         // fallback: 内置硬编码数据（2024-2027）
+        usingLocalHolidayData = true;
         var fallbackHolidays = {
           '2024-01-01':1,'2024-02-10':1,'2024-02-11':1,'2024-02-12':1,'2024-02-13':1,'2024-02-14':1,'2024-02-15':1,'2024-02-16':1,'2024-02-17':1,'2024-04-04':1,'2024-04-05':1,'2024-04-06':1,'2024-05-01':1,'2024-05-02':1,'2024-05-03':1,'2024-05-04':1,'2024-05-05':1,'2024-06-10':1,'2024-09-15':1,'2024-09-16':1,'2024-09-17':1,'2024-10-01':1,'2024-10-02':1,'2024-10-03':1,'2024-10-04':1,'2024-10-05':1,'2024-10-06':1,'2024-10-07':1,
           '2025-01-01':1,'2025-01-28':1,'2025-01-29':1,'2025-01-30':1,'2025-01-31':1,'2025-02-01':1,'2025-02-02':1,'2025-02-03':1,'2025-02-04':1,'2025-04-04':1,'2025-04-05':1,'2025-04-06':1,'2025-05-01':1,'2025-05-02':1,'2025-05-03':1,'2025-05-04':1,'2025-05-05':1,'2025-05-31':1,'2025-06-01':1,'2025-06-02':1,'2025-10-01':1,'2025-10-02':1,'2025-10-03':1,'2025-10-04':1,'2025-10-05':1,'2025-10-06':1,'2025-10-07':1,'2025-10-08':1,
@@ -3402,6 +3415,15 @@
         if ($('calendarContainer')) $('calendarContainer').innerHTML = html;
         if ($('currentMonthLabel')) $('currentMonthLabel').textContent = year + '年' + month + '月';
         updateOvertimeDisplay();
+        // 节假日数据来源提示
+        var statusEl = $('holidayStatus');
+        if (statusEl) {
+          if (usingLocalHolidayData) {
+            statusEl.innerHTML = '<span style="color:var(--color-warning);font-size:0.7rem;">📌 使用本地节假日数据</span>';
+          } else if (holidayFetchStatus[year] === 'loaded') {
+            statusEl.innerHTML = '<span style="color:var(--color-income);font-size:0.7rem;">✅ 已同步官方节假日</span>';
+          }
+        }
       }
 
       // ---- 保存加班数据 ----
@@ -3859,6 +3881,7 @@
         saveOvertimeData();
 
         updateAnnualSummary();
+        updateMenubarInfo();
         showToast('✅ 工资：实发 ¥' + netPay.toFixed(2) + '，个税 ¥' + tax.toFixed(2) + '，自定义 ¥' + customTotal.toFixed(2));
 
         // 自动跳转到工资数据页
@@ -3870,12 +3893,14 @@
           if (salaryPanel) salaryPanel.classList.add('active');
           if (salaryBtn) salaryBtn.classList.add('active');
           updateAnnualSummary();
+        updateMenubarInfo();
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }, 800);
       }
 
       // ---- 年度汇总 ----
       function updateAnnualSummary() {
+        updateMenubarInfo();
         var recs = storage.history || {};
         var allYears = new Set();
         for (var key in recs) { allYears.add(key.split('-')[0]); }
@@ -3958,6 +3983,7 @@
               delete recs2[mk];
               saveToStorageImmediate('history', recs2);
               updateAnnualSummary();
+        updateMenubarInfo();
               showToast('已删除');
             }
           });
@@ -4431,7 +4457,7 @@
         var data = {
           _meta: {
             app: '智财管家',
-            version: '5.0.0',
+            version: '6.0.0',
             type: 'settings',
             exportDate: new Date().toISOString(),
             exportTimeLocal: new Date().toLocaleString('zh-CN'),
@@ -4477,7 +4503,7 @@
         var data = {
           _meta: {
             app: '智财管家',
-            version: '5.0.0',
+            version: '6.0.0',
             type: 'overtime',
             exportDate: new Date().toISOString(),
             exportTimeLocal: new Date().toLocaleString('zh-CN'),
@@ -4514,7 +4540,7 @@
         var data = {
           _meta: {
             app: '智财管家',
-            version: '5.0.0',
+            version: '6.0.0',
             type: 'salary',
             exportDate: new Date().toISOString(),
             exportTimeLocal: new Date().toLocaleString('zh-CN'),
@@ -4547,7 +4573,7 @@
         var backup = {
           _meta: {
             app: '智财管家',
-            version: '5.0.0',
+            version: '6.0.0',
             backupVersion: '3.0',
             exportDate: new Date().toISOString(),
             exportTimeLocal: new Date().toLocaleString('zh-CN'),
@@ -4839,6 +4865,7 @@
         loadOvertimeData();
         loadMonthParams(currentMonthKey);
         updateAnnualSummary();
+        updateMenubarInfo();
         updateHourlyPreview();
         updateDeductTotalDisplay();
         renderCustomItems();
@@ -4880,12 +4907,246 @@
         loadOvertimeData();
         loadMonthParams(newMK);
         updateAnnualSummary();
+        updateMenubarInfo();
         showToast('📅 已切换到 ' + newMK);
+        updateMenubarInfo();
       };
 
       // ---- 初始化 ----
+
+      function updateVersionDisplays() {
+        document.querySelectorAll('.version, .app-version, .sidebar-version').forEach(function(el) {
+          if (el.textContent.indexOf('v') === 0 || el.textContent.indexOf('v') === -1) {
+            el.textContent = 'v' + APP_VERSION;
+          }
+        });
+        document.title = document.title.replace(/v[\d.]+/, 'v' + APP_VERSION);
+      }
+
+
+      var CHANGELOG_DATA = [
+        {
+          version: '6.0.0',
+          date: '2026-09-02',
+          highlights: ['全新大版本', '全量备份导入导出', '修复关键BUG'],
+          details: [
+            '🚀 全新 v6.0 大版本发布',
+            '📥 新增「导入全量备份」入口，支持一键恢复所有历史数据',
+            '💾 「导出全部月份」升级为「导出全部数据备份」，导出完整 JSON 备份（含工资、加班、参数、自定义项）',
+            '🔖 版本号升级至 v6.0.0，架构全面优化',
+            '🐛 修复脚本标签未闭合导致的页面空白问题',
+            '🐛 修复打印函数字符串中断导致的 JS 语法错误',
+            '🐛 修复重复 DOM 元素 ID 冲突问题'
+          ]
+        },
+        {
+          version: '5.2.0',
+          date: '2026-09-02',
+          highlights: ['版本号集中管理', '菜单栏圆角优化', '新增更新日志入口', '标题栏空间复用', '支持 Excel 导出', '节假日离线提示', '全局月份导出'],
+          details: [
+            '✨ 版本号改为全局常量统一管理，避免遗漏',
+            '🎨 桌面端窗口增加圆角和阴影，视觉更精致',
+            '📜 新增更新日志面板，随时查看版本迭代',
+            '📊 菜单栏右侧增加当前月份和实发工资预览',
+            '📊 新增 Excel 格式导出（工资条/加班记录/年度报表）',
+            '📌 节假日 API 失败时显示「使用本地数据」提示',
+            '📊 新增「导出全部月份」按钮，一键导出所有历史工资数据'
+          ]
+        },
+        {
+          version: '5.1.0',
+          date: '2026-08-15',
+          highlights: ['主题中心', '实时预览', '快捷键系统'],
+          details: [
+            '🎨 全新主题中心：6 种强调色、深浅/跟随系统模式',
+            '🔮 粒子背景、光晕装饰、网格纹理等视觉效果开关',
+            '🔤 字体大小无级缩放（85% ~ 115%）',
+            '📊 设置页右侧实时预览工资计算结果',
+            '⌨️ 完整快捷键系统：Ctrl+Enter 计算、Ctrl+1/2/3/4 切换标签等',
+            '📅 批量设置加班时段',
+            '📥 智能导入：支持合并/覆盖/跳过三种冲突处理模式'
+          ]
+        }
+      ];
+
+      function showChangelog() {
+        var container = $('changelogContent');
+        if (!container) return;
+        var html = '';
+        CHANGELOG_DATA.forEach(function(item, idx) {
+          var isLatest = idx === 0;
+          html += '<div style="margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--input-border);' + (isLatest ? 'background:var(--primary-light);border-radius:8px;padding:12px;border:1px solid var(--primary-glow);' : '') + '">';
+          html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">';
+          html += '<span style="font-weight:700;color:var(--primary);font-size:1rem;">v' + item.version + '</span>';
+          if (isLatest) html += '<span class="badge" style="background:var(--primary);color:#fff;">最新</span>';
+          html += '<span style="font-size:0.75rem;color:var(--text-muted);margin-left:auto;">' + item.date + '</span>';
+          html += '</div>';
+          html += '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;">';
+          item.highlights.forEach(function(h) {
+            html += '<span style="font-size:0.7rem;background:var(--input-bg);color:var(--text-secondary);padding:2px 8px;border-radius:12px;border:1px solid var(--input-border);">' + escapeHtml(h) + '</span>';
+          });
+          html += '</div>';
+          html += '<ul style="margin:0;padding-left:18px;font-size:0.85rem;color:var(--text-secondary);line-height:1.8;">';
+          item.details.forEach(function(d) {
+            html += '<li>' + escapeHtml(d) + '</li>';
+          });
+          html += '</ul></div>';
+        });
+        container.innerHTML = html;
+        if ($('changelogModalOverlay')) $('changelogModalOverlay').classList.add('active');
+      }
+
+
+      function updateMenubarInfo() {
+        var recs = storage.history || {};
+        var rec = recs[currentMonthKey];
+        if ($('menubarMonthVal')) $('menubarMonthVal').textContent = currentMonthKey || '—';
+        if ($('menubarNetVal')) {
+          if (rec && rec.netPay !== undefined) {
+            $('menubarNetVal').textContent = '¥' + rec.netPay.toFixed(2);
+          } else {
+            $('menubarNetVal').textContent = '未计算';
+          }
+        }
+      }
+
+
+      // ---- Excel 导出（HTML 表格伪装，Excel 完美兼容）----
+      function exportToExcel(filename, sheetName, rows) {
+        var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>' +
+          'table { border-collapse: collapse; font-family: "Microsoft YaHei", sans-serif; font-size: 11pt; }' +
+          'th { background: #5b4cdb; color: #fff; padding: 8px 10px; font-weight: 600; text-align: center; border: 1px solid #ddd; }' +
+          'td { padding: 7px 10px; border: 1px solid #ddd; text-align: center; }' +
+          'tr:nth-child(even) { background: #f8f9fc; }' +
+          '.num { text-align: right; font-family: "SF Mono", monospace; }' +
+          '.total { font-weight: 700; background: #f0f2f8; }' +
+          '.income { color: #00a884; }' +
+          '.deduct { color: #e74c3c; }' +
+          'h2 { color: #1a1a2e; font-size: 14pt; margin-bottom: 8px; }' +
+          '.meta { color: #666; font-size: 9pt; margin-bottom: 16px; }' +
+          '</style></head><body>' +
+          '<h2>📊 ' + escapeHtml(sheetName) + '</h2>' +
+          '<div class="meta">智财管家 v' + APP_VERSION + ' · 导出时间：' + new Date().toLocaleString('zh-CN') + '</div>' +
+          '<table>';
+        rows.forEach(function(row, ridx) {
+          var isHeader = ridx === 0;
+          html += '<tr>';
+          row.forEach(function(cell) {
+            if (isHeader) {
+              html += '<th>' + escapeHtml(String(cell)) + '</th>';
+            } else {
+              var cls = '';
+              if (typeof cell === 'number') cls = 'num';
+              if (String(cell).indexOf('¥') === 0) {
+                var num = parseFloat(cell.replace(/[¥,]/g, ''));
+                if (!isNaN(num) && num > 0) cls += ' income';
+                else if (!isNaN(num) && num < 0) cls += ' deduct';
+              }
+              html += '<td class="' + cls + '">' + escapeHtml(String(cell)) + '</td>';
+            }
+          });
+          html += '</tr>';
+        });
+        html += '</table></body></html>';
+        var blob = new Blob([html], { type: 'application/vnd.ms-excel;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = filename + '.xls';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('✅ Excel 已导出');
+      }
+
+      function exportSalaryExcel() {
+        if (!currentMonthKey) { showToast('请选择月份'); return; }
+        var recs = storage.history || {};
+        var rec = recs[currentMonthKey];
+        if (!rec) { showToast('该月暂无计算记录'); return; }
+        var dd = rec.deductionsDetail || {};
+        var rows = [
+          ['项目', '金额（元）', '类型'],
+          ['月份', rec.month, '信息'],
+          ['底薪', '¥' + formatNumber(rec.baseSalary || 0), '收入'],
+          ['加班费', '¥' + formatNumber(rec.totalOvertimePay || 0), '收入'],
+          ['其他收入', '¥' + formatNumber(rec.otherIncome || 0), '收入'],
+          ['自定义增减', '¥' + formatNumber(rec.customTotal || 0), '收入'],
+          ['应发工资', '¥' + formatNumber(rec.grossPay || 0), '收入'],
+          ['社保', '¥' + formatNumber(rec.socialInsurance || 0), '扣除'],
+          ['公积金', '¥' + formatNumber(rec.housingFund || 0), '扣除'],
+          ['其他扣除', '¥' + formatNumber(rec.otherDeduction || 0), '扣除'],
+          ['子女教育扣除', '¥' + formatNumber(dd.child || 0), '专项扣除'],
+          ['继续教育扣除', '¥' + formatNumber(dd.education || 0), '专项扣除'],
+          ['大病医疗扣除', '¥' + formatNumber(dd.medical || 0), '专项扣除'],
+          ['住房贷款扣除', '¥' + formatNumber(dd.loan || 0), '专项扣除'],
+          ['住房租金扣除', '¥' + formatNumber(dd.rent || 0), '专项扣除'],
+          ['赡养老人扣除', '¥' + formatNumber(dd.elder || 0), '专项扣除'],
+          ['婴幼儿照护扣除', '¥' + formatNumber(dd.infant || 0), '专项扣除'],
+          ['个人所得税', '¥' + formatNumber(rec.tax || 0), '扣除'],
+          ['实发工资', '¥' + formatNumber(rec.netPay || 0), '合计']
+        ];
+        exportToExcel('工资条_' + rec.month, rec.month + ' 工资条', rows);
+      }
+
+      function exportOvertimeExcel() {
+        var records = getOvertimeRecordsForMonth();
+        if (records.length === 0) { showToast('📭 本月暂无加班记录'); return; }
+        var rows = [['日期', '类型', '时间段', '加班小时数']];
+        records.forEach(function(r) {
+          rows.push([r.date, r.type, r.segments, r.hours.toFixed(1)]);
+        });
+        var total = records.reduce(function(s, r) { return s + r.hours; }, 0);
+        rows.push(['合计', '', '', total.toFixed(1)]);
+        exportToExcel('加班记录_' + currentMonthKey, currentMonthKey + ' 加班记录', rows);
+      }
+
+      function exportYearlyExcel() {
+        var year = currentAnnualYear;
+        var recs = storage.history || {};
+        var keys = Object.keys(recs).filter(function(k) { return k.startsWith(year + '-'); }).sort();
+        if (keys.length === 0) { showToast('暂无数据'); return; }
+        var rows = [['月份', '底薪', '加班费', '其他收入', '自定义', '应发', '社保', '公积金', '其他扣除', '个税', '实发']];
+        keys.forEach(function(k) {
+          var r = recs[k];
+          rows.push([
+            k.slice(5) + '月',
+            '¥' + formatNumber(r.baseSalary || 0),
+            '¥' + formatNumber(r.totalOvertimePay || 0),
+            '¥' + formatNumber(r.otherIncome || 0),
+            '¥' + formatNumber(r.customTotal || 0),
+            '¥' + formatNumber(r.grossPay || 0),
+            '¥' + formatNumber(r.socialInsurance || 0),
+            '¥' + formatNumber(r.housingFund || 0),
+            '¥' + formatNumber(r.otherDeduction || 0),
+            '¥' + formatNumber(r.tax || 0),
+            '¥' + formatNumber(r.netPay || 0)
+          ]);
+        });
+        // 合计行
+        var sumBase = 0, sumOT = 0, sumOther = 0, sumGross = 0, sumSI = 0, sumHF = 0, sumTax = 0, sumNet = 0, sumCustom = 0, sumDeduct = 0;
+        keys.forEach(function(k) {
+          var r = recs[k];
+          sumBase += (r.baseSalary || 0); sumOT += (r.totalOvertimePay || 0); sumOther += (r.otherIncome || 0);
+          sumGross += (r.grossPay || 0); sumSI += (r.socialInsurance || 0); sumHF += (r.housingFund || 0);
+          sumTax += (r.tax || 0); sumNet += (r.netPay || 0); sumCustom += (r.customTotal || 0); sumDeduct += (r.otherDeduction || 0);
+        });
+        rows.push([
+          '合计',
+          '¥' + formatNumber(sumBase), '¥' + formatNumber(sumOT), '¥' + formatNumber(sumOther), '¥' + formatNumber(sumCustom),
+          '¥' + formatNumber(sumGross), '¥' + formatNumber(sumSI), '¥' + formatNumber(sumHF),
+          '¥' + formatNumber(sumDeduct), '¥' + formatNumber(sumTax), '¥' + formatNumber(sumNet)
+        ]);
+        exportToExcel(year + '年度工资报表', year + ' 年度工资报表', rows);
+      }
+
+
+      
+
       function initApp() {
-        console.log('📋 智财管家 工资核算 启动');
+        console.log('📋 智财管家 工资核算 启动 v' + APP_VERSION);
+        updateVersionDisplays();
         // 主题配置由 initThemeCenter() 统一处理
 
         loadStorage();
@@ -5091,12 +5352,16 @@
         if ($('btnExportSettings')) $('btnExportSettings').addEventListener('click', exportSettingsJSON);
         if ($('btnExportOvertimeJSON')) $('btnExportOvertimeJSON').addEventListener('click', exportOvertimeJSON);
         if ($('btnExportSalaryJSON')) $('btnExportSalaryJSON').addEventListener('click', exportSalaryJSON);
+        if ($('btnExportSalaryExcel')) $('btnExportSalaryExcel').addEventListener('click', exportSalaryExcel);
+        if ($('btnExportOvertimeExcel')) $('btnExportOvertimeExcel').addEventListener('click', exportOvertimeExcel);
+        if ($('btnExportAllMonthsExcel')) $('btnExportAllMonthsExcel').addEventListener('click', exportBackup);
         if ($('btnExportBackup')) $('btnExportBackup').addEventListener('click', exportBackup);
 
         // ---- 导入 ----
         if ($('btnImportData')) $('btnImportData').addEventListener('click', openImportModal);
         if ($('btnImportOvertime')) $('btnImportOvertime').addEventListener('click', openImportModal);
         if ($('btnImportSalary')) $('btnImportSalary').addEventListener('click', openImportModal);
+        if ($('btnImportBackup')) $('btnImportBackup').addEventListener('click', openImportModal);
         if ($('importCancelBtn')) $('importCancelBtn').addEventListener('click', closeImportModal);
         if ($('importConfirmBtn')) $('importConfirmBtn').addEventListener('click', executeImport);
         if ($('importModalOverlay')) {
@@ -5285,6 +5550,7 @@
         // ---- 渲染 ----
         renderCustomItems();
         updateAnnualSummary();
+        updateMenubarInfo();
 
         // ---- 卡片动画 ----
         var cards = document.querySelectorAll('.card');
@@ -5327,6 +5593,11 @@
 
         showToast('📋 工资核算 已就绪');
 
+        if ($('btnChangelog')) $('btnChangelog').addEventListener('click', showChangelog);
+        if ($('changelogCloseBtn')) $('changelogCloseBtn').addEventListener('click', function() { $('changelogModalOverlay').classList.remove('active'); });
+        if ($('changelogModalOverlay')) $('changelogModalOverlay').addEventListener('click', function(e) { if (e.target === this) this.classList.remove('active'); });
+
+
         // ---- 桌面端导航 ----
         document.querySelectorAll('.sidebar-nav .nav-btn').forEach(function(btn) {
           btn.addEventListener('click', function() {
@@ -5358,13 +5629,16 @@
         });
 
         // ---- 窗口控制按钮 ----
-        document.querySelectorAll('.win-btn').forEach(function(btn) {
-          btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            if (this.classList.contains('minimize')) showToast('➖ 最小化（演示）');
-            if (this.classList.contains('maximize')) {
-              if (!document.fullscreenElement) { document.documentElement.requestFullscreen().catch(function(){}); }
-              else { document.exitFullscreen(); }
+        document.querySelectorAll('.window-control').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            if (this.classList.contains('minimize')) {
+              showToast('➖ 最小化（演示）');
+            } else if (this.classList.contains('maximize')) {
+              if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(function() {});
+              } else {
+                document.exitFullscreen();
+              }
             }
             if (this.classList.contains('close')) showToast('❌ 关闭（演示）');
           });
@@ -5374,9 +5648,120 @@
         updateStatusBar();
       }
 
+      // ============================================================
+      // Gitee 自动更新检查（方案一）
+      // ============================================================
+      (function() {
+        var CURRENT_VERSION = APP_VERSION;
+        var GITEE_OWNER = 'Jie56789-oss';   // ← 改成你的 Gitee 用户名
+        var GITEE_REPO = 'super-funicular';    // ← 改成你的 Gitee 仓库名
+        var UPDATE_CHECK_KEY = 'update_skip_until';
+
+        function compareVersion(v1, v2) {
+          var a = v1.replace(/^v/, '').split('.').map(Number);
+          var b = v2.replace(/^v/, '').split('.').map(Number);
+          for (var i = 0; i < 3; i++) {
+            var x = a[i] || 0, y = b[i] || 0;
+            if (x > y) return 1;
+            if (x < y) return -1;
+          }
+          return 0;
+        }
+
+        function createUpdateDialog(data) {
+          // 如果已有弹窗，先移除
+          var existing = $('giteeUpdateDialog');
+          if (existing) existing.remove();
+
+          var overlay = document.createElement('div');
+          overlay.id = 'giteeUpdateDialog';
+          overlay.className = 'modal-overlay active';
+          overlay.innerHTML =
+            '<div class="modal-box" style="max-width:360px;">' +
+              '<h3 style="font-size:1.1rem;margin-bottom:6px;">🎉 发现新版本 <span style="color:var(--primary);">' + escapeHtml(data.version) + '</span></h3>' +
+              '<p style="font-size:0.85rem;color:var(--text-secondary);margin:8px 0;line-height:1.6;">' +
+                '当前版本: v' + CURRENT_VERSION + '<br>' +
+                '文件大小: ' + (data.size || '未知') +
+              '</p>' +
+              '<div class="modal-actions" style="margin-top:14px;">' +
+                '<button class="btn btn-primary" id="giteeUpdateDownload">📥 立即下载</button>' +
+                '<button class="btn btn-ghost" id="giteeUpdateSkip">稍后提醒</button>' +
+              '</div>' +
+            '</div>';
+          document.body.appendChild(overlay);
+
+          $('giteeUpdateDownload').addEventListener('click', function() {
+            var url = data.downloadUrl || ('https://gitee.com/' + GITEE_OWNER + '/' + GITEE_REPO + '/releases');
+            if (window.require) {
+              try { window.require('electron').shell.openExternal(url); } catch(e) { window.open(url, '_blank'); }
+            } else {
+              window.open(url, '_blank');
+            }
+            overlay.remove();
+          });
+
+          $('giteeUpdateSkip').addEventListener('click', function() {
+            try { localStorage.setItem(UPDATE_CHECK_KEY, String(Date.now() + 24 * 60 * 60 * 1000)); } catch(e) {}
+            overlay.remove();
+          });
+
+          overlay.addEventListener('click', function(e) {
+            if (e.target === overlay) overlay.remove();
+          });
+        }
+
+        function checkUpdateFromGitee() {
+          // 检查是否设置了跳过
+          try {
+            var skipUntil = parseInt(localStorage.getItem(UPDATE_CHECK_KEY)) || 0;
+            if (Date.now() < skipUntil) { console.log('[更新] 用户设置了跳过'); return; }
+          } catch(e) {}
+
+          fetch('https://gitee.com/api/v5/repos/' + GITEE_OWNER + '/' + GITEE_REPO + '/releases/latest')
+            .then(function(res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
+            .then(function(data) {
+              var latest = (data.tag_name || '').toString();
+              if (!latest) return;
+              if (compareVersion(latest, CURRENT_VERSION) > 0) {
+                var asset = (data.assets || []).find(function(a) { return a.name && a.name.endsWith('.exe'); });
+                createUpdateDialog({
+                  version: latest,
+                  downloadUrl: asset ? asset.browser_download_url : data.html_url,
+                  size: asset ? (asset.size / 1024 / 1024).toFixed(1) + ' MB' : '未知',
+                  changelog: data.body || ''
+                });
+                console.log('[更新] 发现新版本:', latest);
+              } else {
+                console.log('[更新] 已是最新版');
+              }
+            })
+            .catch(function(err) {
+              console.log('[更新] 检查失败:', err.message);
+            });
+        }
+
+        // 页面加载后 8 秒检查（避免启动时网络拥堵）
+        setTimeout(checkUpdateFromGitee, 8000);
+      })();
+
       document.addEventListener('DOMContentLoaded', initApp);
 
     })();
   </script>
+  
+  <!-- 更新日志模态框 -->
+  <div class="modal-overlay" id="changelogModalOverlay">
+    <div class="modal-box" style="max-width:520px;text-align:left;max-height:80vh;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <h3 style="font-size:1.1rem;display:flex;align-items:center;gap:8px;">📜 更新日志</h3>
+        <span style="font-size:0.75rem;color:var(--text-muted);background:var(--primary-light);padding:2px 10px;border-radius:20px;">v6.0.0</span>
+      </div>
+      <div id="changelogContent" style="max-height:55vh;overflow-y:auto;padding-right:8px;"></div>
+      <div class="modal-actions" style="margin-top:16px;">
+        <button class="btn btn-ghost" id="changelogCloseBtn">关闭</button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>

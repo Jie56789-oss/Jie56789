@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover" />
+<html lang="zh-CN" data-theme="dark" data-accent="purple" style="--transition: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); --font-scale: 1;"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="智财管家">
@@ -69,11 +68,32 @@
       --input-bg: rgba(255, 255, 255, 0.03);
       --input-border: rgba(255, 255, 255, 0.04);
       --input-focus-bg: rgba(255, 255, 255, 0.05);
-      --hover-bg: rgba(108, 92, 231, 0.05);
+      --hover-bg: var(--primary-light);
       --modal-bg: rgba(20, 24, 40, 0.95);
       --toast-bg: rgba(0, 0, 0, 0.85);
       --toast-color: #ffffff;
       --font-scale: 1;
+
+      /* 间距令牌 */
+      --spacer-4: 4px;
+      --spacer-8: 8px;
+      --spacer-12: 12px;
+      --spacer-16: 16px;
+      --spacer-20: 20px;
+      --spacer-24: 24px;
+
+      /* 阴影令牌 */
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+      --shadow-brand: 0 4px 16px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.2);
+      --shadow-brand-lg: 0 8px 24px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.3);
+
+      /* 语义化颜色令牌 */
+      --danger: #ff6b6b;
+      --danger-light: rgba(255, 107, 107, 0.08);
+      --danger-border: rgba(255, 107, 107, 0.15);
+      --secondary-glow: hsla(var(--secondary-h), var(--secondary-s), var(--secondary-l), 0.06);
+      --warning-light: var(--warning-light);
     }
 
     /* 强调色预设 */
@@ -107,6 +127,9 @@
       --modal-bg: #ffffff;
       --toast-bg: #1a1a2e;
       --toast-color: #ffffff;
+      --danger: #e74c3c;
+      --danger-light: rgba(231, 76, 60, 0.06);
+      --danger-border: rgba(231, 76, 60, 0.12);
     }
 
     html, body {
@@ -158,7 +181,7 @@
     .glow-orb.orb2 {
       width: 300px;
       height: 300px;
-      background: rgba(0, 181, 176, 0.06);
+      background: var(--secondary-glow);
       bottom: -50px;
       left: -50px;
       animation-delay: -7s;
@@ -453,11 +476,11 @@
       background-size: 300% 300%;
       color: var(--toast-color);
       animation: btnShimmer 3s ease-in-out infinite;
-      box-shadow: 0 4px 16px rgba(108, 92, 231, 0.2);
+      box-shadow: 0 4px 16px var(--shadow-brand);
     }
     .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(108, 92, 231, 0.3);
+      box-shadow: 0 8px 24px var(--shadow-brand-lg);
     }
     @keyframes btnShimmer {
       0%, 100% { background-position: 0% 50%; }
@@ -536,6 +559,12 @@
       color: var(--text-muted);
       opacity: 0.7;
     }
+    .form-group input[type="number"]::-webkit-inner-spin-button,
+    .form-group input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    .form-group input[type="number"] { -moz-appearance: textfield; }
     .form-group input:hover,
     .form-group select:hover {
       border-color: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.25);
@@ -553,21 +582,18 @@
       grid-template-columns: repeat(2, 1fr);
       gap: 8px;
     }
-    @media(min-width:600px) {
-      .params-grid { grid-template-columns: repeat(3, 1fr); }
-    }
     .tab-panel {
       display: none;
-      animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      animation: tabFadeIn 0.25s ease;
     }
     .tab-panel.active {
       display: flex;
       flex-direction: column;
       gap: 14px;
     }
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(30px) scale(0.96); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
+    @keyframes tabFadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     .hide { display: none !important; }
     .badge {
@@ -750,8 +776,8 @@
       text-align: center;
     }
     .time-segment .seg-del {
-      background: rgba(255, 80, 80, 0.08);
-      border: 1px solid rgba(255, 80, 80, 0.1);
+      background: var(--danger-light);
+      border: 1px solid var(--danger-border);
       border-radius: var(--radius-xl);
       padding: 2px 10px;
       cursor: pointer;
@@ -761,7 +787,7 @@
       min-width: 32px;
     }
     .time-segment .seg-del:hover {
-      background: rgba(255, 80, 80, 0.15);
+      background: var(--danger-border);
     }
     .time-segment label {
       font-size: 0.7rem;
@@ -807,7 +833,7 @@
       width: 100%;
       padding: 12px 16px;
       border-radius: var(--radius-xl);
-      border: 2px solid rgba(108, 92, 231, 0.2);
+      border: 2px solid var(--shadow-brand);
       background: var(--card-bg);
       color: var(--text-primary);
       font-size: 1.3rem;
@@ -829,7 +855,7 @@
     }
 
     .overtime-stats {
-      background: rgba(108, 92, 231, 0.04);
+      background: var(--primary-light);
       border-radius: var(--radius-md);
       padding: 6px 12px;
       display: flex;
@@ -846,12 +872,88 @@
       gap: 8px;
       justify-content: center;
       font-size: 0.85rem;
-      background: rgba(108, 92, 231, 0.04);
+      background: var(--primary-light);
       border-radius: var(--radius-md);
       padding: 4px 10px;
       margin-bottom: 4px;
     }
     .overtime-multiplier strong { color: var(--primary); }
+    .overtime-layout {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .overtime-calendar-col {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+    .overtime-sidebar {
+      flex: 0 0 300px;
+      max-width: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: sticky;
+      top: 20px;
+    }
+    .overtime-stats-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+    }
+    .overtime-stats-card-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .overtime-stats-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 0;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      border-bottom: 1px solid rgba(0,0,0,0.03);
+    }
+    .overtime-stats-row:last-child { border-bottom: none; }
+    .overtime-stats-row .osr-value { font-weight: 600; color: var(--text-primary); }
+    .overtime-stats-row.total {
+      border-top: 2px solid var(--primary-glow);
+      margin-top: 4px;
+      padding-top: 8px;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+    .overtime-stats-row.total .osr-value { color: var(--color-income); font-size: 1.05rem; }
+    .overtime-recent-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 0;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      border-bottom: 1px solid rgba(0,0,0,0.03);
+    }
+    .overtime-recent-item:last-child { border-bottom: none; }
+    .overtime-recent-item .ori-date { color: var(--text-muted); min-width: 42px; }
+    .overtime-recent-item .ori-type { font-size: 0.75rem; }
+    .overtime-recent-item .ori-hours { margin-left: auto; font-weight: 600; color: var(--primary); }
+    .overtime-sidebar .btn-calculate-sidebar {
+      width: 100%;
+      min-height: 44px;
+    }
+    @media (max-width: 768px) {
+      .overtime-layout { flex-direction: column; max-width: none; margin: 0; }
+      .overtime-calendar-col { flex: 1 1 auto; max-width: none; }
+      .overtime-sidebar { flex: 1 1 auto; max-width: none; position: static; }
+    }
     .overtime-toolbar {
       display: flex;
       flex-wrap: wrap;
@@ -859,6 +961,36 @@
       align-items: center;
       margin: 3px 0 6px;
     }
+    .export-dropdown { position: relative; display: inline-block; margin-left: auto; }
+    .export-dropdown-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      margin-top: 4px;
+      background: var(--modal-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 6px;
+      min-width: 160px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+      z-index: 100;
+      gap: 2px;
+      flex-direction: column;
+    }
+    .export-dropdown.open .export-dropdown-menu { display: flex; }
+    .export-dropdown-item {
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: var(--text-primary);
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .export-dropdown-item:hover { background: var(--hover-bg); }
 
     .calendar-grid {
       display: grid;
@@ -902,8 +1034,22 @@
     }
     .calendar-day.has-overtime {
       border-color: var(--color-warning);
-      background: rgba(253, 203, 110, 0.04);
-      box-shadow: 0 2px 8px rgba(253, 203, 110, 0.06);
+      background: var(--warning-light);
+      box-shadow: 0 2px 8px var(--warning-light);
+    }
+    .calendar-day.today {
+      box-shadow: 0 0 0 2px var(--primary), 0 2px 12px var(--primary-glow);
+    }
+    .calendar-day.today .day-number {
+      color: var(--primary);
+      font-weight: 800;
+    }
+    .calendar-day.today .day-number::after {
+      content: '●';
+      font-size: 0.5rem;
+      vertical-align: super;
+      margin-left: 2px;
+      color: var(--primary);
     }
     .calendar-day.in-range {
       background: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.08) !important;
@@ -966,7 +1112,7 @@
       transition: all 0.2s;
     }
     .calendar-nav button:hover {
-      background: rgba(108, 92, 231, 0.05);
+      background: var(--primary-light);
       border-color: var(--primary);
     }
     .month-picker {
@@ -991,7 +1137,7 @@
       justify-content: center;
     }
     .month-picker button:hover {
-      background: rgba(108, 92, 231, 0.05);
+      background: var(--primary-light);
       border-color: var(--primary);
     }
     .month-picker .display {
@@ -1042,10 +1188,18 @@
       transform: rotate(-90deg);
     }
     .section-content.collapsed {
-      display: none;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      padding-top: 0;
+      padding-bottom: 0;
     }
     .section-content {
       padding: 2px 0 6px;
+      max-height: 2000px;
+      opacity: 1;
+      overflow: hidden;
+      transition: max-height 0.3s ease, opacity 0.25s ease, padding 0.3s ease;
     }
     .history-table-wrap {
       overflow-x: auto;
@@ -1095,8 +1249,8 @@
       color: var(--color-expense);
     }
     .delete-record-btn {
-      background: rgba(255, 80, 80, 0.04);
-      border: 1px solid rgba(255, 80, 80, 0.08);
+      background: var(--danger-light);
+      border: 1px solid var(--danger-light);
       color: var(--color-expense);
       padding: 4px 10px;
       border-radius: var(--radius-xl);
@@ -1110,10 +1264,10 @@
       gap: 2px;
     }
     .delete-record-btn:hover {
-      background: rgba(255, 80, 80, 0.12);
-      border-color: rgba(255, 80, 80, 0.2);
+      background: var(--danger-border);
+      border-color: var(--danger-border);
       transform: scale(1.05);
-      box-shadow: 0 2px 8px rgba(255, 80, 80, 0.1);
+      box-shadow: 0 2px 8px var(--danger-border);
     }
     .delete-record-btn:active {
       transform: scale(0.95);
@@ -2161,7 +2315,9 @@
     .menu-item { position: relative; padding: 4px 12px; border-radius: 4px; cursor: pointer; color: var(--text-secondary); font-size: 0.8rem; transition: all 0.15s; }
     .menu-item:hover { background: var(--hover-bg); color: var(--text-primary); }
     .menu-dropdown { display: none; position: absolute; top: 100%; left: 0; background: var(--modal-bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 6px; min-width: 220px; box-shadow: 0 12px 40px rgba(0,0,0,0.3); z-index: 1000; margin-top: 2px; }
-    .menu-item:hover .menu-dropdown { display: block; }
+    .menu-item:hover .menu-dropdown, .menu-item:focus-within .menu-dropdown { display: block; }
+    .menu-item { outline: none; }
+    .menu-item:focus-visible { background: var(--hover-bg); }
     .menu-dropdown-item { padding: 8px 12px; border-radius: 6px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--text-primary); gap: 16px; }
     .menu-dropdown-item:hover { background: var(--hover-bg); }
     .menu-dropdown-item .shortcut { font-size: 0.7rem; color: var(--text-muted); background: rgba(255,255,255,0.04); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--card-border); }
@@ -2179,6 +2335,10 @@
     .sidebar-nav .nav-btn.active { background: var(--primary-light); color: var(--primary); }
     .sidebar-nav .nav-btn .tab-icon { font-size: 1.1rem; width: 22px; text-align: center; }
     .sidebar-footer { margin-top: auto; padding: 12px 10px 0; border-top: 1px solid var(--card-border); font-size: 0.7rem; color: var(--text-muted); text-align: center; }
+    .sidebar-footer-actions { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--card-border); display: flex; flex-direction: column; gap: 2px; }
+    .sidebar-secondary-btn { padding: 6px 8px; font-size: 0.8rem; border-radius: 6px; width: 100%; justify-content: flex-start; color: var(--text-secondary); opacity: 0.8; }
+    .sidebar-secondary-btn:hover { opacity: 1; color: var(--primary); background: var(--primary-light); }
+    .bottom-nav .theme-toggle-btn { flex: 0 0 auto; border-left: 1px solid var(--card-border); }
 
     .main-content { flex: 1; overflow-y: auto; padding: 20px 28px; background: var(--bg); }
     .main-content .main-app { max-width: none; margin: 0; padding-bottom: 20px; }
@@ -2192,21 +2352,121 @@
     .context-menu-item:hover { background: var(--hover-bg); }
     .context-menu-separator { height: 1px; background: var(--card-border); margin: 4px 0; }
 
-    .settings-layout { display: grid; grid-template-columns: 1fr 260px; gap: 16px; }
+    .settings-layout { display: grid; grid-template-columns: 1fr; gap: 16px; max-width: 900px; margin: 0 auto; }
     .settings-main { min-width: 0; }
-    .settings-preview { position: sticky; top: 20px; align-self: start; height: fit-content; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-md); padding: 0; overflow: hidden; }
+    .settings-right {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .settings-info-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .info-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+    }
+    .info-card-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .info-card-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4px 0;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      border-bottom: 1px solid rgba(0,0,0,0.03);
+    }
+    .info-card-row:last-child { border-bottom: none; }
+    .info-card-row .icr-value { font-weight: 600; color: var(--text-primary); }
+    .info-card-row .icr-value.positive { color: var(--color-income); }
+    .info-card-row .icr-value.negative { color: var(--color-expense); }
+    .info-tip {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      padding-left: 4px;
+    }
+    .info-tip::before { content: '· '; font-weight: 700; color: var(--primary); }
+    .settings-card-group {
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .settings-card-group:hover {
+      border-color: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.2);
+      box-shadow: 0 2px 12px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.06);
+    }
+    .settings-card-group-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--input-border);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .settings-card-group-title .group-count {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-weight: 400;
+      margin-left: auto;
+    }
+    .settings-card-group .section-title { margin-top: 10px; }
+    .settings-card-group .section-title:first-child { margin-top: 0; }
+    .mobile-preview-bar {
+      display: none;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px) saturate(140%);
+      -webkit-backdrop-filter: blur(20px) saturate(140%);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 8px 16px;
+      margin-bottom: 12px;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.85rem;
+    }
+    .mobile-preview-bar .mpb-label { color: var(--text-secondary); }
+    .mobile-preview-bar .mpb-value { font-size: 1.2rem; font-weight: 800; color: var(--color-income); }
+    @media (max-width: 768px) {
+      .mobile-preview-bar { display: flex; }
+    }
+    .settings-preview { height: fit-content; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-md); padding: 0; overflow: hidden; }
     .preview-header { padding: 14px 16px; font-weight: 700; font-size: 0.95rem; border-bottom: 1px solid var(--card-border); background: linear-gradient(135deg, var(--primary-light) 0%, var(--card-bg) 100%); color: var(--primary); }
     .preview-body { padding: 16px; }
     .preview-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.03); font-size: 0.85rem; }
     .preview-row:last-child { border-bottom: none; }
     .preview-row .pr-label { color: var(--text-secondary); }
-    .preview-row .pr-value { font-weight: 600; color: var(--text-primary); }
+    .preview-row .pr-value { font-weight: 600; color: var(--text-primary); transition: color 0.3s ease, transform 0.2s ease; }
     .preview-row .pr-value.positive { color: var(--color-income); }
     .preview-row .pr-value.negative { color: var(--color-expense); }
     .preview-row .pr-value.primary { color: var(--primary); }
+    .preview-row .pr-value.flash { transform: scale(1.08); }
     .preview-total { margin-top: 12px; padding-top: 12px; border-top: 2px solid var(--primary-glow); display: flex; justify-content: space-between; align-items: center; }
     .preview-total .pt-label { font-size: 1rem; font-weight: 700; color: var(--text-primary); }
-    .preview-total .pt-value { font-size: 1.3rem; font-weight: 800; color: var(--color-income); }
+    .preview-total .pt-value { font-size: 1.3rem; font-weight: 800; color: var(--color-income); text-shadow: 0 0 20px hsla(145, 63%, 42%, 0.3); animation: netPulse 2.5s ease-in-out infinite; transition: transform 0.2s ease; }
+    .preview-total .pt-value.flash { transform: scale(1.12); }
+    @keyframes netPulse { 0%, 100% { text-shadow: 0 0 12px hsla(145, 63%, 42%, 0.2); } 50% { text-shadow: 0 0 24px hsla(145, 63%, 42%, 0.4); } }
 
     @media (min-width: 769px) {
       body { padding: 0; font-size: calc(13px * var(--font-scale)); }
@@ -2221,6 +2481,15 @@
       .main-content { padding: 28px 48px; }
       .card-body { padding: 20px 24px; }
       .card-header { padding: 16px 24px; }
+      .settings-layout { grid-template-columns: 1fr 260px; gap: 16px; align-items: stretch; }
+      .settings-main { min-width: 0; }
+      .settings-right { display: flex; flex-direction: column; gap: 10px; }
+      .settings-preview { flex: 0 0 auto; }
+      .settings-info-panel { flex: 1 1 0; display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+      .settings-info-panel .info-card:first-child { flex: 0 0 auto; }
+      .settings-info-panel .info-card:nth-child(2) { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+      .settings-info-panel .info-card:last-child { flex: 0 0 auto; }
+      .settings-actions { flex: 0 0 auto; }
     }
     @media (max-width: 768px) {
       .app-frame { display: block; height: auto; overflow: visible; }
@@ -2228,23 +2497,43 @@
       .main-content { padding: 8px; overflow: visible; }
       .settings-layout { grid-template-columns: 1fr; }
       .settings-preview { display: none; }
+      .settings-right { display: contents; }
+      .settings-info-panel { display: none; }
+      .settings-actions { display: flex !important; margin-top: 12px; }
       .main-content .main-app { max-width: 760px; margin: 0 auto; }
     }
     @media (min-width: 1024px) {
       .params-grid { grid-template-columns: repeat(3, 1fr); }
-      .settings-layout { grid-template-columns: 1fr 280px; }
-      .main-content { padding: 32px 80px; }
+      .settings-layout { grid-template-columns: 1fr 280px; max-width: 960px; align-items: stretch; }
+      .main-content { padding: 32px 48px; }
     }
     @media (min-width: 1280px) {
-      .settings-layout { grid-template-columns: 1fr 300px; }
-      .main-content { padding: 32px 120px; }
+      .settings-layout { grid-template-columns: 1fr 300px; max-width: 1000px; align-items: stretch; }
+      .main-content { padding: 32px 64px; }
+    }
+
+    /* ===== 可访问性：减弱动画 ===== */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      #particleCanvas, .glow-orb { display: none !important; }
+      .fab-calculate { animation: none !important; }
+      .fab-calculate::before { display: none !important; }
+      .app-header::before { display: none !important; }
+      .btn-primary { animation: none !important; }
+    }
+    @media (max-width: 640px) {
+      .annual-charts { grid-template-columns: 1fr !important; }
     }
 
   </style>
 </head>
 <body>
 
-  <canvas id="particleCanvas"></canvas>
+  <canvas id="particleCanvas" width="954" height="792"></canvas>
   <div class="glow-orb orb1"></div>
   <div class="glow-orb orb2"></div>
   <div class="glow-orb orb3"></div>
@@ -2253,7 +2542,7 @@
   <div class="app-frame">
     
     <div class="menubar">
-      <div class="menu-item">文件(F)
+      <div class="menu-item" tabindex="0">文件(F)
         <div class="menu-dropdown">
           <div class="menu-dropdown-item" onclick="handleCalculate()">💾 计算并保存<span class="shortcut">Ctrl+Enter</span></div>
           <div class="menu-dropdown-item" onclick="exportBackup()">📤 导出全量备份<span class="shortcut">Ctrl+Shift+S</span></div>
@@ -2261,27 +2550,32 @@
           <div class="menu-dropdown-item" onclick="document.getElementById('btnReset').click()">🔄 重置当前月<span class="shortcut"></span></div>
         </div>
       </div>
-      <div class="menu-item">编辑(E)
+      <div class="menu-item" tabindex="0">编辑(E)
         <div class="menu-dropdown">
           <div class="menu-dropdown-item" onclick="document.getElementById('btnImportData').click()">📥 导入数据<span class="shortcut">Ctrl+O</span></div>
           <div class="menu-dropdown-item" onclick="copySalarySlip()">📋 复制工资条<span class="shortcut">Ctrl+C</span></div>
         </div>
       </div>
-      <div class="menu-item">视图(V)
+      <div class="menu-item" tabindex="0">视图(V)
         <div class="menu-dropdown">
           <div class="menu-dropdown-item" onclick="switchThemeMode()">🌗 切换明暗主题<span class="shortcut">Ctrl+T</span></div>
           <div class="menu-dropdown-item" onclick="toggleSidebar()">📂 切换侧边栏<span class="shortcut">Ctrl+B</span></div>
         </div>
       </div>
-      <div class="menu-item">帮助(H)
+      <div class="menu-item" tabindex="0">帮助(H)
         <div class="menu-dropdown">
-          <div class="menu-dropdown-item" onclick="showToast('📋 智财管家 v6.0.0 | 快捷键: Ctrl+Enter 计算, Ctrl+1/2/3/4 切换标签')">ℹ️ 关于<span class="shortcut"></span></div>
+          <div class="menu-dropdown-item" onclick="showToast('📋 智财管家 v6.2.0 | 快捷键: Ctrl+Enter 计算, Ctrl+1/2/3/4 切换标签')">ℹ️ 关于<span class="shortcut"></span></div>
         </div>
       </div>
-      <div style="margin-left:auto;display:flex;align-items:center;gap:12px;font-size:0.75rem;color:var(--text-secondary);">
-        <span id="menubarMonth" style="display:flex;align-items:center;gap:4px;">📅 <strong style="color:var(--text-primary);" id="menubarMonthVal">—</strong></span>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:8px;font-size:0.75rem;color:var(--text-secondary);">
+        <div class="global-month-picker" style="display:flex;align-items:center;gap:4px;">
+          <button onclick="window.switchMonth(-1)" style="background:transparent;border:none;cursor:pointer;color:var(--text-secondary);font-size:0.85rem;padding:2px 6px;border-radius:4px;" aria-label="上一月">‹</button>
+          <span id="menubarMonthLabel" style="cursor:pointer;font-weight:600;color:var(--text-primary);min-width:70px;text-align:center;" title="点击选择月份">2026年9月</span>
+          <button onclick="window.switchMonth(1)" style="background:transparent;border:none;cursor:pointer;color:var(--text-secondary);font-size:0.85rem;padding:2px 6px;border-radius:4px;" aria-label="下一月">›</button>
+        </div>
+        <input type="month" id="globalMonthPickerInput" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none;">
         <span class="statusbar-separator"></span>
-        <span id="menubarNet" style="display:flex;align-items:center;gap:4px;">💵 实发 <strong style="color:var(--color-income);" id="menubarNetVal">—</strong></span>
+        <span id="menubarNet" style="display:flex;align-items:center;gap:4px;">💵 实发 <strong style="color:var(--color-income);" id="menubarNetVal">未计算</strong></span>
       </div>
     </div>
     <div class="app-body">
@@ -2290,21 +2584,23 @@
           <div class="sidebar-brand">
             <span>📋</span>
             <span>智财管家</span>
-            <span class="sidebar-version">v6.0.0</span>
+            <span class="sidebar-version">v6.2.0</span>
           </div>
           <div class="sidebar-subtitle">工资核算 · 计时模式</div>
         </div>
-        <nav class="sidebar-nav">
-          <button class="nav-btn active" data-tab="settings"><span class="tab-icon">⚙️</span><span>参数设置</span></button>
-          <button class="nav-btn" data-tab="overtime"><span class="tab-icon">📆</span><span>加班日历</span></button>
-          <button class="nav-btn" data-tab="salary"><span class="tab-icon">📊</span><span>工资数据</span></button>
-          <button class="nav-btn" data-tab="theme"><span class="tab-icon">🎨</span><span>主题中心</span></button>
+        <nav class="sidebar-nav" id="sidebarNav">
+          <button class="nav-btn active" data-tab="settings" aria-label="参数设置"><span class="tab-icon">⚙️</span><span>参数设置</span></button>
+          <button class="nav-btn" data-tab="overtime" aria-label="加班日历"><span class="tab-icon">📆</span><span>加班日历</span></button>
+          <button class="nav-btn" data-tab="salary" aria-label="工资数据"><span class="tab-icon">📊</span><span>工资数据</span></button>
         </nav>
         <div class="sidebar-footer">
           <div>💾 数据本地存储</div>
           <div style="margin-top:2px;">Ctrl+Enter 快速计算</div>
-          <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--card-border);">
-            <button class="nav-btn" id="btnChangelog" style="padding:6px 8px;font-size:0.8rem;border-radius:6px;width:100%;justify-content:center;">
+          <div class="sidebar-footer-actions">
+            <button class="nav-btn sidebar-secondary-btn" data-tab="theme" aria-label="主题与外观">
+              <span class="tab-icon">🎨</span><span>主题外观</span>
+            </button>
+            <button class="nav-btn sidebar-secondary-btn" id="btnChangelog" aria-label="更新日志">
               <span class="tab-icon">📜</span><span>更新日志</span>
             </button>
           </div>
@@ -2319,15 +2615,15 @@
         <div class="brand" style="position:relative;">
           <span class="brand-icon">📋</span>
           <span>智财管家</span>
-          <span class="version">v6.0.0</span>
+          <span class="version">v6.2.0</span>
         </div>
         <div class="subtitle">工资核算 · 计时模式 <span class="badge" style="background:var(--primary);color:#fff;">⚡ 专业版</span></div>
       </div>
       <nav class="bottom-nav" id="bottomNav">
-        <button class="nav-btn active" data-tab="settings"><span class="tab-icon">⚙️</span><span class="tab-label">设置</span></button>
-        <button class="nav-btn" data-tab="overtime"><span class="tab-icon">📆</span><span class="tab-label">加班</span></button>
-        <button class="nav-btn" data-tab="salary"><span class="tab-icon">📊</span><span class="tab-label">工资数据</span></button>
-        <button class="nav-btn" data-tab="theme" title="主题中心"><span class="tab-icon" id="themeToggleIcon">🌙</span><span class="tab-label">主题</span></button>
+        <button class="nav-btn active" data-tab="settings" aria-label="参数设置"><span class="tab-icon">⚙️</span><span class="tab-label">设置</span></button>
+        <button class="nav-btn" data-tab="overtime" aria-label="加班日历"><span class="tab-icon">📆</span><span class="tab-label">加班</span></button>
+        <button class="nav-btn" data-tab="salary" aria-label="工资数据"><span class="tab-icon">📊</span><span class="tab-label">工资数据</span></button>
+        <button class="nav-btn theme-toggle-btn" onclick="switchThemeMode()" aria-label="切换明暗主题"><span class="tab-icon" id="themeToggleIcon">🌙</span><span class="tab-label">切换</span></button>
       </nav>
     </div>
 
@@ -2338,100 +2634,104 @@
     <span class="fab-label">计算</span>
   </button>
 
-  <div class="toast" id="toast"></div>
+  <div class="toast" id="toast">📋 工资核算 已就绪</div>
 
     <!-- ===== 设置面板 ===== -->
     <div class="tab-panel active" id="tab-settings">
-      <div class="card">
+      <div class="card visible">
         <div class="card-header">
           <span>⚙️ 参数设置</span>
+          <div class="month-picker" style="margin-left:12px;margin-bottom:0;">
+            <button id="monthDownBtn">‹</button>
+            <span class="display" id="monthDisplayLabel" style="cursor:pointer;" title="点击选择月份">2026年9月</span>
+            <button id="monthUpBtn">›</button>
+          </div>
+          <div style="margin-left:auto;display:flex;gap:6px;">
+            <button id="btnReset" title="重置参数" style="background:transparent;border:1px solid var(--border);border-radius:6px;padding:4px 10px;cursor:pointer;font-size:0.8rem;color:var(--text-secondary);">🔄 重置</button>
+            <button id="btnExportSettings" title="导出参数" style="background:transparent;border:1px solid var(--border);border-radius:6px;padding:4px 10px;cursor:pointer;font-size:0.8rem;color:var(--text-secondary);">📤 导出</button>
+            <button id="btnImportData" title="导入参数" style="background:transparent;border:1px solid var(--border);border-radius:6px;padding:4px 10px;cursor:pointer;font-size:0.8rem;color:var(--text-secondary);">📥 导入</button>
+          </div>
+          <input type="hidden" id="salaryMonth" value="2026-09">
+          <input type="month" id="monthPickerInput" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none;">
         </div>
         <div class="card-body">
           <div class="settings-layout">
             <div class="settings-main">
-          <div class="month-picker">
-            <button id="monthDownBtn">‹</button>
-            <span class="display" id="monthDisplayLabel"></span>
-            <button id="monthUpBtn">›</button>
-          </div>
-          <input type="hidden" id="salaryMonth">
-
-          <div class="section-title" id="toggleIncomeParams"><span>💰 收入</span><span class="toggle-icon">▼</span></div>
-          <div class="section-content" id="incomeParamsContent">
-            <div class="params-grid">
-              <div class="form-group"><label>底薪</label><input type="number" id="baseSalary" step="100" min="0" inputmode="decimal" pattern="[0-9]*"></div>
-              <div class="form-group"><label>其他收入</label><input type="number" id="otherIncome" step="50" min="0" inputmode="decimal" pattern="[0-9]*"></div>
-              <div class="form-group"><label>月计薪天数</label><input type="number" id="workDaysPerMonth" step="0.25" min="0.1"></div>
-              <div class="form-group"><label>日工时</label><input type="number" id="workHoursPerDay" step="0.5" min="0.1"></div>
-            </div>
-            <div style="font-size:0.8rem;color:var(--text-secondary);margin:6px 0;">⚡ 时薪 ≈ <strong id="hourlyRatePreview" style="color:var(--primary);">0.00</strong> 元/小时</div>
+          <!-- 移动端吸顶预览条 -->
+          <div class="mobile-preview-bar" id="mobilePreviewBar">
+            <span class="mpb-label">💵 实发工资</span>
+            <span class="mpb-value" id="mobilePreviewNet">¥0.00</span>
           </div>
 
-          <div class="section-title" id="toggleOvertimeParams"><span>⏱️ 加班倍率</span><span class="toggle-icon">▼</span></div>
-          <div class="section-content" id="overtimeParamsContent">
-            <div class="params-grid">
-              <div class="form-group"><label>工作日</label><input type="number" id="multiplierWeekday" step="0.1" min="0"></div>
-              <div class="form-group"><label>休息日</label><input type="number" id="multiplierWeekend" step="0.1" min="0"></div>
-              <div class="form-group"><label>节假日</label><input type="number" id="multiplierHoliday" step="0.1" min="0"></div>
-              <div class="form-group" style="grid-column:span 2;"><label>加班费合计</label><div style="font-size:1.1rem;font-weight:700;color:var(--primary);" id="overtimeTotalDisplay">¥0.00</div></div>
-            </div>
-          </div>
-
-          <div class="section-title" id="toggleDeductParams"><span>📉 扣除项</span><span class="toggle-icon">▼</span></div>
-          <div class="section-content" id="deductParamsContent">
-            <div class="params-grid">
-              <div class="form-group"><label>社保</label><input type="number" id="socialInsurance" step="0.01" min="0" inputmode="decimal" pattern="[0-9]*"></div>
-              <div class="form-group"><label>公积金</label><input type="number" id="housingFund" step="0.01" min="0" inputmode="decimal" pattern="[0-9]*"></div>
-              <div class="form-group"><label>其他扣除</label><input type="number" id="otherDeduction" step="10" min="0" inputmode="decimal" pattern="[0-9]*"></div>
-              <div class="form-group"><label>个税起征点</label><input type="number" id="taxThreshold" step="100" min="0"></div>
-            </div>
-            <div style="margin-top:6px;border-top:1px solid rgba(255,255,255,0.02);padding-top:6px;">
-              <div style="font-size:0.8rem;font-weight:600;color:var(--text-secondary);margin-bottom:4px;">📋 专项附加扣除</div>
+          <!-- 分组卡片 1：收入参数 -->
+          <div class="settings-card-group">
+            <div class="settings-card-group-title">💰 收入参数 <span class="group-count">4 项</span></div>
+            <div class="section-title" id="toggleIncomeParams"><span>基础收入</span><span class="toggle-icon">▼</span></div>
+            <div class="section-content" id="incomeParamsContent">
               <div class="params-grid">
-                <div class="form-group"><label>子女教育</label><input type="number" id="deduct_child" step="100" min="0" value="0"></div>
-                <div class="form-group"><label>继续教育</label><input type="number" id="deduct_education" step="100" min="0" value="0"></div>
-                <div class="form-group"><label>大病医疗</label><input type="number" id="deduct_medical" step="100" min="0" value="0"></div>
-                <div class="form-group"><label>住房贷款</label><input type="number" id="deduct_loan" step="100" min="0" value="0"></div>
-                <div class="form-group"><label>住房租金</label><input type="number" id="deduct_rent" step="100" min="0" value="0"></div>
-                <div class="form-group"><label>赡养老人</label><input type="number" id="deduct_elder" step="100" min="0" value="0"></div>
-                <div class="form-group"><label>婴幼儿照护</label><input type="number" id="deduct_infant" step="100" min="0" value="0"></div>
+                <div class="form-group"><label>底薪</label><input type="number" id="baseSalary" min="0" inputmode="decimal" pattern="[0-9]*"></div>
+                <div class="form-group"><label>其他收入</label><input type="number" id="otherIncome" min="0" inputmode="decimal" pattern="[0-9]*"></div>
+                <div class="form-group"><label>月计薪天数</label><input type="number" id="workDaysPerMonth" min="0.1"></div>
+                <div class="form-group"><label>日工时</label><input type="number" id="workHoursPerDay" min="0.1"></div>
+              </div>
+              <div style="font-size:0.8rem;color:var(--text-secondary);margin:6px 0;">⚡ 时薪 ≈ <strong id="hourlyRatePreview" style="color:var(--primary);">0.00</strong> 元/小时</div>
+            </div>
+            <input type="hidden" id="multiplierWeekday" value="1.5">
+            <input type="hidden" id="multiplierWeekend" value="2.0">
+            <input type="hidden" id="multiplierHoliday" value="3.0">
+          </div>
+
+          <!-- 分组卡片 2：扣除与税务 -->
+          <div class="settings-card-group">
+            <div class="settings-card-group-title">📉 扣除与税务 <span class="group-count">11 项</span></div>
+            <div class="section-title" id="toggleDeductParams"><span>社保与公积金</span><span class="toggle-icon">▼</span></div>
+            <div class="section-content" id="deductParamsContent">
+              <div class="params-grid">
+                <div class="form-group"><label>社保</label><input type="number" id="socialInsurance" min="0" inputmode="decimal" pattern="[0-9]*"></div>
+                <div class="form-group"><label>公积金</label><input type="number" id="housingFund" min="0" inputmode="decimal" pattern="[0-9]*"></div>
+                <div class="form-group"><label>其他扣除</label><input type="number" id="otherDeduction" min="0" inputmode="decimal" pattern="[0-9]*"></div>
+                <div class="form-group"><label>个税起征点</label><input type="number" id="taxThreshold" min="0"></div>
+              </div>
+            </div>
+            <div class="section-title" id="toggleSpecialDeduct"><span>📋 专项附加扣除</span><span class="toggle-icon">▼</span></div>
+            <div class="section-content" id="specialDeductContent">
+              <div class="params-grid">
+                <div class="form-group"><label>子女教育</label><input type="number" id="deduct_child" min="0" value="0"></div>
+                <div class="form-group"><label>继续教育</label><input type="number" id="deduct_education" min="0" value="0"></div>
+                <div class="form-group"><label>大病医疗</label><input type="number" id="deduct_medical" min="0" value="0"></div>
+                <div class="form-group"><label>住房贷款</label><input type="number" id="deduct_loan" min="0" value="0"></div>
+                <div class="form-group"><label>住房租金</label><input type="number" id="deduct_rent" min="0" value="0"></div>
+                <div class="form-group"><label>赡养老人</label><input type="number" id="deduct_elder" min="0" value="0"></div>
+                <div class="form-group"><label>婴幼儿照护</label><input type="number" id="deduct_infant" min="0" value="0"></div>
               </div>
               <div style="font-size:0.8rem;color:var(--text-secondary);margin-top:4px;">合计：<strong id="deductTotalDisplay">¥0.00</strong></div>
             </div>
-            <div style="margin-top:6px;border-top:1px solid rgba(255,255,255,0.02);padding-top:6px;">
-              <div class="section-title" id="toggleCustomItems" style="margin-top:0;"><span>🔧 自定义增减项</span><span class="toggle-icon">▼</span></div>
-              <div class="section-content" id="customItemsContent">
-                <div id="customItemsList"></div>
-                <div class="custom-item-input-group" style="margin-top:6px;">
-                  <input type="text" id="customItemName" placeholder="项目名称">
-                  <input type="number" id="customItemAmount" placeholder="金额" step="0.01">
-                  <select id="customItemType">
-                    <option value="add">➕ 增加</option>
-                    <option value="sub">➖ 扣除</option>
-                  </select>
-                  <button class="btn btn-sm btn-outline" id="btnAddCustomItem">添加</button>
-                </div>
+            <div class="section-title" id="toggleCustomItems"><span>🔧 自定义增减项</span><span class="toggle-icon">▼</span></div>
+            <div class="section-content" id="customItemsContent">
+              <div id="customItemsList"><div style="color:var(--text-secondary);font-size:0.8rem;padding:4px 0;">暂无自定义项目</div></div>
+              <div class="custom-item-input-group" style="margin-top:6px;">
+                <input type="text" id="customItemName" placeholder="项目名称">
+                <input type="number" id="customItemAmount" placeholder="金额">
+                <select id="customItemType">
+                  <option value="add">➕ 增加</option>
+                  <option value="sub">➖ 扣除</option>
+                </select>
+                <button class="btn btn-sm btn-outline" id="btnAddCustomItem">添加</button>
               </div>
             </div>
           </div>
 
-          <div style="margin-top:10px;text-align:center;display:flex;flex-direction:column;gap:8px;align-items:center;">
-            <button class="btn btn-primary" id="btnCalculate" style="width:100%;max-width:280px;">📊 计算并存入历史</button>
-            <div style="display:flex;gap:4px;flex-wrap:nowrap;justify-content:center;width:100%;max-width:280px;">
-              <button class="btn btn-ghost" id="btnReset" style="flex:1;min-width:0;padding:6px 4px;font-size:0.8rem;white-space:nowrap;">🔄 重置</button>
-              <button class="btn btn-outline" id="btnExportSettings" style="flex:1;min-width:0;padding:6px 4px;font-size:0.8rem;white-space:nowrap;">📤 导出</button>
-              <button class="btn btn-outline" id="btnImportData" style="flex:1;min-width:0;padding:6px 4px;font-size:0.8rem;white-space:nowrap;">📥 导入</button>
+          <button class="btn btn-primary" id="btnCalculate" style="width:100%;padding:14px;font-size:1rem;margin-top:14px;letter-spacing:1px;box-shadow:0 4px 20px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.4);">📊 计算并存入历史 <span style="font-size:0.72rem;opacity:0.8;">（Ctrl+Enter）</span></button>
+
             </div>
-          </div>
-          <div style="text-align:center;font-size:0.75rem;color:var(--text-secondary);margin-top:4px;">⌨️ Ctrl+Enter 快速计算</div>
-            </div>
-            <aside class="settings-preview">
+            <div class="settings-right">
+              <aside class="settings-preview">
               <div class="preview-header">📊 实时预览</div>
               <div class="preview-body" id="settingsPreviewBody">
-                <div class="preview-row"><span class="pr-label">时薪</span><span class="pr-value primary" id="previewHourlyRate">—</span></div>
+                <div class="preview-row"><span class="pr-label">时薪</span><span class="pr-value primary" id="previewHourlyRate">¥0.00/h</span></div>
                 <div class="preview-row"><span class="pr-label">加班费</span><span class="pr-value positive" id="previewOvertime">¥0.00</span></div>
                 <div class="preview-row"><span class="pr-label">其他收入</span><span class="pr-value positive" id="previewOtherIncome">¥0.00</span></div>
-                <div class="preview-row"><span class="pr-label">自定义增减</span><span class="pr-value" id="previewCustom" style="color:var(--color-warning);">¥0.00</span></div>
+                <div class="preview-row"><span class="pr-label">自定义增减</span><span class="pr-value" id="previewCustom" style="color:var(--color-warning);">+¥0.00</span></div>
                 <div class="preview-row"><span class="pr-label">应发工资</span><span class="pr-value primary" id="previewGross">¥0.00</span></div>
                 <div class="preview-row"><span class="pr-label">社保</span><span class="pr-value negative" id="previewSI">¥0.00</span></div>
                 <div class="preview-row"><span class="pr-label">公积金</span><span class="pr-value negative" id="previewHF">¥0.00</span></div>
@@ -2439,79 +2739,106 @@
                 <div class="preview-total"><span class="pt-label">💵 实发工资</span><span class="pt-value" id="previewNet">¥0.00</span></div>
               </div>
             </aside>
+            <div class="settings-info-panel" id="settingsInfoPanel">
+              <div class="info-card">
+                <div class="info-card-title">📈 月度对比</div>
+                <div class="info-card-row"><span>本月实发</span><span class="icr-value positive" id="infoThisMonth">¥0.00</span></div>
+                <div class="info-card-row"><span>上月实发</span><span class="icr-value" id="infoPrevMonth">—</span></div>
+                <div class="info-card-row"><span>差额</span><span class="icr-value" id="infoDiff">—</span></div>
+              </div>
+              <div class="info-card">
+                <div class="info-card-title">🕐 最近计算</div>
+                <div id="infoRecentRecords"><div style="font-size:0.75rem;color:var(--text-muted);text-align:center;padding:8px 0;">暂无记录</div></div>
+              </div>
+              <div class="info-card">
+                <div class="info-card-title">💡 操作提示</div>
+                <div class="info-tip">社保和公积金可设为固定月扣额，无需每月修改</div>
+                <div class="info-tip">专项附加扣除年度内通常不变，设好一次即可</div>
+                <div class="info-tip">修改参数后右侧预览实时更新</div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div style="margin-left:auto;display:flex;align-items:center;gap:12px;font-size:0.75rem;color:var(--text-secondary);">
-        <span id="menubarMonth" style="display:flex;align-items:center;gap:4px;">📅 <strong style="color:var(--text-primary);" id="menubarMonthVal">—</strong></span>
-        <span class="statusbar-separator"></span>
-        <span id="menubarNet" style="display:flex;align-items:center;gap:4px;">💵 实发 <strong style="color:var(--color-income);" id="menubarNetVal">—</strong></span>
+        </div>
       </div>
     </div>
 
     <!-- ===== 加班面板 ===== -->
     <div class="tab-panel" id="tab-overtime">
-      <div class="card">
+      <div class="card visible">
         <div class="card-header">📆 加班日历 <span class="badge">点击日期编辑</span></div>
         <div class="card-body">
-          <div class="overtime-toolbar">
-            <button class="btn btn-sm btn-outline" id="btnBatchSelect">📅 批量</button>
+          <div class="overtime-toolbar" style="">
+            <button class="btn btn-sm btn-outline" id="btnBatchSelect">📅 批量编辑</button>
             <button class="btn btn-sm btn-ghost" id="btnCancelSelect" style="display:none;">❌ 取消</button>
-            <span style="font-size:0.75rem;color:var(--text-secondary);">点击两个日期</span>
             <button class="btn btn-sm btn-outline" id="btnRefreshHolidays">🔄 刷新节假日</button>
             <button class="btn btn-sm btn-outline" id="btnImportOvertime">📥 导入</button>
-            <span id="holidayStatus" style="font-size:0.75rem;color:var(--text-secondary);margin-left:auto;"></span>
-            <button class="btn btn-sm btn-export" id="btnExportOvertime">📄 PDF</button>
-            <button class="btn btn-sm btn-outline" id="btnExportOvertimeCSV">📊 CSV</button>
-            <button class="btn btn-sm btn-outline" id="btnExportOvertimeExcel">📈 Excel</button>
-            <button class="btn btn-sm btn-outline" id="btnExportOvertimeJSON">💾 JSON</button>
+            <span id="holidayStatus" style="font-size:0.75rem;color:var(--text-secondary);"><span style="color: var(--color-warning); font-size: 0.7rem;">📌 使用本地节假日数据</span></span>
+            <div class="export-dropdown" id="exportDropdown">
+              <button class="btn btn-sm btn-export" id="btnExportToggle">📤 导出 ▾</button>
+              <div class="export-dropdown-menu">
+                <div class="export-dropdown-item" id="btnExportOvertime">📄 PDF 工资条</div>
+                <div class="export-dropdown-item" id="btnExportOvertimeCSV">📊 CSV 表格</div>
+                <div class="export-dropdown-item" id="btnExportOvertimeExcel">📈 Excel 表格</div>
+                <div class="export-dropdown-item" id="btnExportOvertimeJSON">💾 JSON 数据</div>
+              </div>
+            </div>
           </div>
-          <div class="overtime-multiplier">
-            <span>🏢 <strong id="dispMultWeekday">1.5</strong></span>
-            <span>🌙 <strong id="dispMultWeekend">2.0</strong></span>
-            <span>🎉 <strong id="dispMultHoliday">3.0</strong></span>
+          <div class="overtime-layout" style="">
+            <div class="overtime-calendar-col">
+              <div class="overtime-stats" style="font-size: 0.82rem; margin-bottom: 6px;">
+                <span>🏢 <strong id="sumWeekday">0.0</strong>h ×<strong id="dispMultWeekday">1.5</strong></span>
+                <span>🌙 <strong id="sumWeekend">0.0</strong>h ×<strong id="dispMultWeekend">2.0</strong></span>
+                <span>🎉 <strong id="sumHoliday">0.0</strong>h ×<strong id="dispMultHoliday">3.0</strong></span>
+              </div>
+              <div class="calendar-nav">
+                <button onclick="window.switchMonth(-1)">‹ 上一月</button>
+                <span id="currentMonthLabel">2026年9月</span>
+                <button onclick="window.switchMonth(1)">下一月 ›</button>
+              </div>
+          <div id="calendarContainer" class="calendar-grid"><div class="calendar-weekday">日</div><div class="calendar-weekday">一</div><div class="calendar-weekday">二</div><div class="calendar-weekday">三</div><div class="calendar-weekday">四</div><div class="calendar-weekday">五</div><div class="calendar-weekday">六</div><div class="calendar-day" style="background:transparent;visibility:hidden;min-height:58px;"></div><div class="calendar-day" style="background:transparent;visibility:hidden;min-height:58px;"></div><div class="calendar-day weekday" data-date="2026-09-01"><div class="day-number">1</div><div class="day-type-dot weekday"></div></div><div class="calendar-day weekday" data-date="2026-09-02"><div class="day-number">2</div><div class="day-type-dot weekday"></div></div><div class="calendar-day weekday" data-date="2026-09-03"><div class="day-number">3</div><div class="day-type-dot weekday"></div></div><div class="calendar-day weekday today" data-date="2026-09-04"><div class="day-number">4</div><div class="day-type-dot weekday"></div></div><div class="calendar-day weekend" data-date="2026-09-05"><div class="day-number">5</div><div class="day-type-dot weekend"></div></div><div class="calendar-day weekend" data-date="2026-09-06"><div class="day-number">6</div><div class="day-type-dot weekend"></div></div><div class="calendar-day weekday" data-date="2026-09-07"><div class="day-number">7</div><div class="day-type-dot weekday"></div></div><div class="calendar-day weekday" data-date="2026-09-08"><div class="day-number">8</div><div class="day-type-dot weekday"></div></div><div class="calendar-day weekday" data-date="2026-09-09"><div class="day-number">9</div><div class="day-type-dot weekday"></div></div><div class="calendar-day weekday" data-date="2026-09-10"><div class="day-number">10</div><div class="day-type-dot weekday"></div></div><div class="calendar-day weekday" data-date="2026-09-11"><div class="day-number">11</div><div class="day-type-dot weekday"></div></div><div class="calendar-day weekend" data-date="2026-09-12"><div class="day-number">12</div><div class="day-type-dot weekend"></div></div><div class="calendar-day weekend" data-date="2026-09-13"><div class="day-number">13</div><div class="day-type-dot weekend"></div></div><div class="calendar-day weekday" data-date="2026-09-14"><div class="day-number">14</div><div class="day-type-dot weekday"></div></div><div class="calendar-day weekday" data-date="2026-09-15"><div class="day-number">15</div><div class="day-type-dot weekday"></div></div><div class="calendar-day weekday" data-date="2026-09-16"><div class="day-number">16</div><div class="day-type-dot weekday"></div></div><div class="calendar-day weekday" data-date="2026-09-17"><div class="day-number">17</div><div class="day-type-dot weekday"></div></div><div class="calendar-day weekday" data-date="2026-09-18"><div class="day-number">18</div><div class="day-type-dot weekday"></div></div><div class="calendar-day weekend" data-date="2026-09-19"><div class="day-number">19</div><div class="day-type-dot weekend"></div></div><div class="calendar-day weekday" data-date="2026-09-20"><div class="day-number">20</div><div class="day-type-dot weekday"></div></div><div class="calendar-day weekday" data-date="2026-09-21"><div class="day-number">21</div><div class="day-type-dot weekday"></div></div><div class="calendar-day weekday" data-date="2026-09-22"><div class="day-number">22</div><div class="day-type-dot weekday"></div></div><div class="calendar-day weekday" data-date="2026-09-23"><div class="day-number">23</div><div class="day-type-dot weekday"></div></div><div class="calendar-day weekday" data-date="2026-09-24"><div class="day-number">24</div><div class="day-type-dot weekday"></div></div><div class="calendar-day holiday" data-date="2026-09-25"><div class="day-number">25</div><div class="day-type-dot holiday"></div></div><div class="calendar-day holiday" data-date="2026-09-26"><div class="day-number">26</div><div class="day-type-dot holiday"></div></div><div class="calendar-day holiday" data-date="2026-09-27"><div class="day-number">27</div><div class="day-type-dot holiday"></div></div><div class="calendar-day weekday" data-date="2026-09-28"><div class="day-number">28</div><div class="day-type-dot weekday"></div></div><div class="calendar-day weekday" data-date="2026-09-29"><div class="day-number">29</div><div class="day-type-dot weekday"></div></div><div class="calendar-day weekday" data-date="2026-09-30"><div class="day-number">30</div><div class="day-type-dot weekday"></div></div></div>
+            </div>
+            <div class="overtime-sidebar" id="overtimeSidebar">
+              <div class="overtime-stats-card">
+                <div class="overtime-stats-card-title">⏱️ 当月加班倍率</div>
+                <div class="overtime-stats-row"><span>🏢 工作日</span><span class="osr-value" id="otMultWeekday">×1.5</span></div>
+                <div class="overtime-stats-row"><span>🌙 休息日</span><span class="osr-value" id="otMultWeekend">×2.0</span></div>
+                <div class="overtime-stats-row"><span>🎉 节假日</span><span class="osr-value" id="otMultHoliday">×3.0</span></div>
+              </div>
+              <div class="overtime-stats-card">
+                <div class="overtime-stats-card-title">📊 本月汇总</div>
+                <div class="overtime-stats-row"><span>🏢 工作日</span><span class="osr-value" id="sidebarWeekday">0.0h ¥0</span></div>
+                <div class="overtime-stats-row"><span>🌙 休息日</span><span class="osr-value" id="sidebarWeekend">0.0h ¥0</span></div>
+                <div class="overtime-stats-row"><span>🎉 节假日</span><span class="osr-value" id="sidebarHoliday">0.0h ¥0</span></div>
+                <div class="overtime-stats-row total"><span>合计</span><span class="osr-value" id="sidebarTotal">0.0h ¥0</span></div>
+              </div>
+              <div class="overtime-stats-card">
+                <div class="overtime-stats-card-title">📈 环比上月</div>
+                <div class="overtime-stats-row"><span>工时变化</span><span class="osr-value" id="sidebarHoursDiff">—</span></div>
+                <div class="overtime-stats-row"><span>金额变化</span><span class="osr-value" id="sidebarAmountDiff">—</span></div>
+              </div>
+              <button class="btn btn-primary btn-calculate-sidebar" id="btnCalcFromOvertime">📊 计算本月工资</button>
+              <div style="font-size:0.72rem;color:var(--text-muted);text-align:center;">💡 合并设置参数计算</div>
+            </div>
           </div>
-          <div class="overtime-stats">
-            <span>🏢 <strong id="sumWeekday">0</strong>h</span>
-            <span>🌙 <strong id="sumWeekend">0</strong>h</span>
-            <span>🎉 <strong id="sumHoliday">0</strong>h</span>
-          </div>
-          <div class="calendar-nav">
-            <button onclick="window.switchMonth(-1)">‹ 上一月</button>
-            <span id="currentMonthLabel"></span>
-            <button onclick="window.switchMonth(1)">下一月 ›</button>
-          </div>
-          <div id="calendarContainer" class="calendar-grid"></div>
         </div>
-
-          <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(0,0,0,0.03);text-align:center;">
-            <button class="btn btn-primary" id="btnCalcFromOvertime" style="width:100%;max-width:280px;">📊 计算本月工资</button>
-            <div style="font-size:0.75rem;color:var(--text-secondary);margin-top:6px;">💡 将当前加班数据与设置参数合并计算</div>
-          </div>
 
       </div>
     </div>
 
     <!-- ===== 工资数据面板 ===== -->
     <div class="tab-panel" id="tab-salary">
-      <div class="card">
+      <div class="card visible">
         <div class="card-header">
           <span>📊 月工资数据</span>
           <div style="display:flex;align-items:center;gap:4px;margin-left:auto;">
             <button id="yearDownBtn" style="width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,0.03);background:rgba(255,255,255,0.02);cursor:pointer;color:var(--text-primary);font-size:0.8rem;display:flex;align-items:center;justify-content:center;">‹</button>
-            <span id="annualYearLabel" style="font-weight:600;font-size:0.9rem;min-width:60px;text-align:center;"></span>
+            <span id="annualYearLabel" style="font-weight:600;font-size:0.9rem;min-width:60px;text-align:center;">2026年</span>
             <button id="yearUpBtn" style="width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,0.03);background:rgba(255,255,255,0.02);cursor:pointer;color:var(--text-primary);font-size:0.8rem;display:flex;align-items:center;justify-content:center;">›</button>
           </div>
         </div>
         <div class="card-body">
-          <div id="annualSummaryContent">
-            <div class="empty-state">
-              <div class="empty-icon">📭</div>
-              <div class="empty-text">暂无工资数据</div>
-              <div class="empty-hint">您还没有保存任何工资记录<br>设置好参数并计算后，数据将在这里汇总展示</div>
-              <button class="empty-action" onclick="document.querySelector('[data-tab=\'settings\']').click();">⚙️ 前往设置开始计算</button>
-            </div>
-          </div>
+          <div id="annualSummaryContent"><div class="empty-state"><div class="empty-icon">📭</div><div class="empty-text">暂无数据</div><div class="empty-hint">前往「设置」页计算并保存第一条工资记录</div></div></div>
           <div style="margin-top:4px;text-align:center;"><button class="btn btn-sm btn-ghost" id="toggleAnnualHistory">📋 展开明细</button></div>
           <div id="annualHistoryContainer" style="margin-top:6px;display:none;"></div>
 
@@ -2529,17 +2856,12 @@
           </div>
         </div>
       </div>
-      <div style="margin-left:auto;display:flex;align-items:center;gap:12px;font-size:0.75rem;color:var(--text-secondary);">
-        <span id="menubarMonth" style="display:flex;align-items:center;gap:4px;">📅 <strong style="color:var(--text-primary);" id="menubarMonthVal">—</strong></span>
-        <span class="statusbar-separator"></span>
-        <span id="menubarNet" style="display:flex;align-items:center;gap:4px;">💵 实发 <strong style="color:var(--color-income);" id="menubarNetVal">—</strong></span>
-      </div>
     </div>
 
 
     <!-- ===== 主题中心面板 ===== -->
     <div class="tab-panel" id="tab-theme">
-      <div class="card">
+      <div class="card visible">
         <div class="card-header">🎨 主题中心 <span class="badge">个性化</span></div>
         <div class="card-body">
 
@@ -2568,7 +2890,7 @@
           <!-- 外观模式 -->
           <div class="section-title" style="margin-top:0;cursor:default;"><span>🌗 外观模式</span></div>
           <div class="theme-mode-grid">
-            <div class="theme-mode-option" data-mode="dark" id="modeDark">
+            <div class="theme-mode-option active" data-mode="dark" id="modeDark">
               <span class="mode-icon">🌙</span>
               <span class="mode-label">深色</span>
               <span class="mode-hint">护眼沉浸</span>
@@ -2626,7 +2948,7 @@
                 </div>
               </div>
               <label class="theme-switch">
-                <input type="checkbox" id="toggleParticles" checked>
+                <input type="checkbox" id="toggleParticles" checked="">
                 <span class="theme-switch-slider"></span>
               </label>
             </div>
@@ -2639,7 +2961,7 @@
                 </div>
               </div>
               <label class="theme-switch">
-                <input type="checkbox" id="toggleOrbs" checked>
+                <input type="checkbox" id="toggleOrbs" checked="">
                 <span class="theme-switch-slider"></span>
               </label>
             </div>
@@ -2652,7 +2974,7 @@
                 </div>
               </div>
               <label class="theme-switch">
-                <input type="checkbox" id="toggleGrid" checked>
+                <input type="checkbox" id="toggleGrid" checked="">
                 <span class="theme-switch-slider"></span>
               </label>
             </div>
@@ -2665,7 +2987,7 @@
                 </div>
               </div>
               <label class="theme-switch">
-                <input type="checkbox" id="toggleAnimations" checked>
+                <input type="checkbox" id="toggleAnimations" checked="">
                 <span class="theme-switch-slider"></span>
               </label>
             </div>
@@ -2685,38 +3007,24 @@
           </div>
         </div>
       </div>
-      <div style="margin-left:auto;display:flex;align-items:center;gap:12px;font-size:0.75rem;color:var(--text-secondary);">
-        <span id="menubarMonth" style="display:flex;align-items:center;gap:4px;">📅 <strong style="color:var(--text-primary);" id="menubarMonthVal">—</strong></span>
-        <span class="statusbar-separator"></span>
-        <span id="menubarNet" style="display:flex;align-items:center;gap:4px;">💵 实发 <strong style="color:var(--color-income);" id="menubarNetVal">—</strong></span>
-      </div>
     </div>
   </div>
 
   <!-- ===== 模态框 ===== -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal-box">
-      <h3 id="modalDateTitle" style="font-size:1rem;margin-bottom:10px;"></h3>
+      <h3 id="modalDateTitle" style="font-size:1rem;margin-bottom:10px;">09月2日</h3>
       <select id="modalDayType"><option value="weekday">工作日</option><option value="weekend">休息日</option><option value="holiday">节假日</option></select>
 
       <div class="time-segments-area">
         <span class="seg-label">⏱️ 加班时段（可选）</span>
-        <div id="timeSegmentsContainer">
-          <div class="time-segment" data-index="0">
-            <label>开始</label>
-            <input type="time" class="seg-start" value="">
-            <label>结束</label>
-            <input type="time" class="seg-end" value="">
-            <span class="seg-hours">0.0h</span>
-            <button class="seg-del">✕</button>
-          </div>
-        </div>
+        <div id="timeSegmentsContainer"><div class="time-segment" data-index="0"><label>开始</label><input type="time" class="seg-start" value=""><label>结束</label><input type="time" class="seg-end" value=""><span class="seg-hours">0.0h</span><button class="seg-del">✕</button></div></div>
         <button class="add-segment-btn" id="addSegmentBtn">➕ 添加时段</button>
       </div>
 
       <div class="modal-hours-input-wrap">
         <label>⏱️ 总加班小时数 <span style="font-weight:400;font-size:0.6rem;color:var(--text-muted);">（必填）</span></label>
-        <input type="number" id="modalDayHours" step="0.1" min="0" max="24" placeholder="输入小时数，如 2.5">
+        <input type="number" id="modalDayHours" step="0.1" min="0" max="24" placeholder="输入小时数，如 2.5" data-user-edited="false">
       </div>
 
       <div class="modal-actions">
@@ -2743,24 +3051,24 @@
   </div>
 
   
-        </div>
-      </main>
+        </main></div>
+      
     </div>
     <div class="statusbar">
       <div class="statusbar-left">
         <span id="statusText">✅ 就绪</span>
         <span class="statusbar-separator"></span>
-        <span id="statusMonth">—</span>
+        <span id="statusMonth">2026-09</span>
       </div>
       <div class="statusbar-right">
         <span id="statusRecords">工资记录: 0 条</span>
         <span id="statusAutoSave">💾 自动保存</span>
       </div>
     </div>
-  </div>
+  
 
   <!-- 右键菜单 -->
-  <div class="context-menu" id="contextMenu"></div>
+  <div class="context-menu" id="contextMenu" style="display: none;"></div>
 
   <!-- ===== 导入数据模态框 ===== -->
   <div class="modal-overlay" id="importModalOverlay">
@@ -2783,7 +3091,7 @@
         <div style="font-size:0.75rem;color:var(--text-secondary);margin-bottom:8px;">以下月份在本地已存在，请选择处理方式：</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <label style="display:flex;align-items:center;gap:4px;font-size:0.8rem;cursor:pointer;">
-            <input type="radio" name="importConflictMode" value="merge" checked style="accent-color:var(--primary);">
+            <input type="radio" name="importConflictMode" value="merge" checked="" style="accent-color:var(--primary);">
             <span>智能合并</span>
           </label>
           <label style="display:flex;align-items:center;gap:4px;font-size:0.8rem;cursor:pointer;">
@@ -2798,7 +3106,7 @@
       </div>
 
       <div class="modal-actions" style="margin-top:16px;">
-        <button class="btn btn-primary" id="importConfirmBtn" disabled>✅ 确认导入</button>
+        <button class="btn btn-primary" id="importConfirmBtn" disabled="">✅ 确认导入</button>
         <button class="btn btn-ghost" id="importCancelBtn">取消</button>
       </div>
     </div>
@@ -2809,10 +3117,18 @@
     // ============================================================
     // 工资核算 + 加班管理 + 数据汇总（仅计时模式）
     // ============================================================
+    // 全局错误捕获 - 确保用户能看到任何JS错误
+    window.addEventListener('error', function(e) {
+      var msg = '页面JS错误: ' + (e.message || '未知错误') + (e.filename ? ' (' + e.filename.split('/').pop() + ':' + e.lineno + ')' : '');
+      console.error(msg, e.error);
+      var t = document.getElementById('toast');
+      if (t) { t.textContent = '⚠️ ' + msg; t.classList.add('show'); setTimeout(function() { t.classList.remove('show'); }, 5000); }
+      else { alert(msg); }
+    });
     (function() {
       "use strict";
-      var APP_VERSION = '6.0.0';
-      var APP_VERSION_INT = 600;
+      var APP_VERSION = '6.2.0';
+      var APP_VERSION_INT = 620;
 
 
       var $ = function(id) { return document.getElementById(id); };
@@ -2975,10 +3291,11 @@
         clearTimeout(persistTimer);
         persistTimer = setTimeout(function() {
           try {
-            localStorage.setItem(meta.key, JSON.stringify(data));
+            if (typeof localStorage !== 'undefined' && localStorage) {
+              localStorage.setItem(meta.key, JSON.stringify(data));
+            }
           } catch (e) {
-            showToast('⚠️ 存储空间不足');
-            console.error('存储失败:', e);
+            console.warn('localStorage写入失败，数据仅保存在内存中:', e);
           }
         }, 200);
       }
@@ -2988,10 +3305,11 @@
         if (!meta) return;
         storage[category] = data;
         try {
-          localStorage.setItem(meta.key, JSON.stringify(data));
+          if (typeof localStorage !== 'undefined' && localStorage) {
+            localStorage.setItem(meta.key, JSON.stringify(data));
+          }
         } catch (e) {
-          showToast('⚠️ 存储空间不足');
-          console.error('立即存储失败:', e);
+          console.warn('localStorage写入失败(可能是file://协议限制)，数据仅保存在内存中:', e);
         }
       }
 
@@ -3123,18 +3441,8 @@
         var grossPay = roundToCent(baseSalary + otPay + otherIncome + customTotal);
         var specialDeduction = calcTotalSpecialDeduction(getSpecialDeductions());
         var thr = settings.taxThreshold;
-        var taxable = Math.max(0, grossPay - socialInsurance - housingFund - otherDeduction - specialDeduction - thr);
-        var tax = 0;
-        if (taxable > 0) {
-          if (taxable <= 36000) tax = taxable * 0.03;
-          else if (taxable <= 144000) tax = taxable * 0.10 - 2520;
-          else if (taxable <= 300000) tax = taxable * 0.20 - 16920;
-          else if (taxable <= 420000) tax = taxable * 0.25 - 31920;
-          else if (taxable <= 660000) tax = taxable * 0.30 - 52920;
-          else if (taxable <= 960000) tax = taxable * 0.35 - 85920;
-          else tax = taxable * 0.45 - 181920;
-          tax = Math.max(0, roundToCent(tax));
-        }
+        var taxResult = calcCumulativeTax(currentMonthKey, grossPay, socialInsurance, housingFund, otherDeduction, specialDeduction, thr);
+        var tax = taxResult.tax;
         var netPay = roundToCent(grossPay - socialInsurance - housingFund - otherDeduction - tax);
         if ($('previewHourlyRate')) $('previewHourlyRate').textContent = isNaN(hr) ? '—' : '¥' + hr.toFixed(2) + '/h';
         if ($('previewOvertime')) $('previewOvertime').textContent = '¥' + otPay.toFixed(2);
@@ -3145,13 +3453,89 @@
         if ($('previewHF')) $('previewHF').textContent = '¥' + housingFund.toFixed(2);
         if ($('previewTax')) $('previewTax').textContent = '¥' + tax.toFixed(2);
         if ($('previewNet')) $('previewNet').textContent = '¥' + netPay.toFixed(2);
+        if ($('mobilePreviewNet')) $('mobilePreviewNet').textContent = '¥' + netPay.toFixed(2);
+        // 预览数字闪烁动画
+        document.querySelectorAll('.preview-row .pr-value, .preview-total .pt-value').forEach(function(el) {
+          el.classList.add('flash');
+          setTimeout(function() { el.classList.remove('flash'); }, 200);
+        });
       }
 
       function updateStatusBar() {
         if ($('statusMonth')) $('statusMonth').textContent = currentMonthKey || '—';
         var recs = storage.history || {};
-        var count = Object.keys(recs).length;
+        var count = Object.keys(recs).filter(function(k) { return parseMonthKey(k) !== null; }).length;
         if ($('statusRecords')) $('statusRecords').textContent = '工资记录: ' + count + ' 条';
+      }
+
+      var THEME_CONFIG_KEY = 'theme_config_v3';
+      var themeConfig = {
+        mode: 'dark',
+        accent: 'purple',
+        particles: true,
+        orbs: true,
+        grid: true,
+        animations: true,
+        fontScale: 1
+      };
+
+      function loadThemeConfig() {
+        try {
+          var raw = localStorage.getItem(THEME_CONFIG_KEY);
+          if (raw) {
+            var saved = JSON.parse(raw);
+            Object.assign(themeConfig, saved);
+          }
+        } catch (e) {}
+      }
+
+      function saveThemeConfig() {
+        try {
+          localStorage.setItem(THEME_CONFIG_KEY, JSON.stringify(themeConfig));
+        } catch (e) {}
+      }
+
+      function applyThemeMode(mode) {
+        var effectiveMode = mode;
+        if (mode === 'auto') {
+          effectiveMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.classList.add('theme-transition');
+        document.documentElement.setAttribute('data-theme', effectiveMode);
+        if ($('themeToggleIcon')) $('themeToggleIcon').textContent = effectiveMode === 'dark' ? '🌙' : '☀️';
+        setTimeout(function() {
+          document.documentElement.classList.remove('theme-transition');
+        }, 600);
+        document.querySelectorAll('.theme-mode-option').forEach(function(el) {
+          el.classList.toggle('active', el.dataset.mode === mode);
+        });
+      }
+
+      function applyAccentColor(accent) {
+        document.documentElement.setAttribute('data-accent', accent);
+        document.querySelectorAll('.accent-color-option').forEach(function(el) {
+          el.classList.toggle('active', el.dataset.accent === accent);
+        });
+      }
+
+      function applyVisualEffects() {
+        var canvas = $('particleCanvas');
+        var orbs = document.querySelectorAll('.glow-orb');
+        var grid = document.querySelector('.bg-grid');
+        if (canvas) canvas.style.display = themeConfig.particles ? '' : 'none';
+        orbs.forEach(function(orb) { orb.style.display = themeConfig.orbs ? '' : 'none'; });
+        if (grid) grid.style.display = themeConfig.grid ? '' : 'none';
+        if (!themeConfig.animations) {
+          document.documentElement.style.setProperty('--transition', '0.01ms');
+        } else {
+          document.documentElement.style.setProperty('--transition', '0.4s cubic-bezier(0.34, 1.56, 0.64, 1)');
+        }
+      }
+
+      function applyFontScale(scale) {
+        document.documentElement.style.setProperty('--font-scale', scale);
+        if ($('fontSizeSlider')) $('fontSizeSlider').value = scale;
+        if ($('fontSizeValue')) $('fontSizeValue').textContent = Math.round(scale * 100) + '%';
       }
 
       function switchThemeMode() {
@@ -3210,20 +3594,7 @@
           e.preventDefault();
           var tabs = ['settings', 'overtime', 'salary', 'theme'];
           var tab = tabs[parseInt(e.key) - 1];
-          if (tab) {
-            document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
-            document.querySelectorAll('.sidebar-nav .nav-btn').forEach(function(b) { b.classList.remove('active'); });
-            document.querySelectorAll('#bottomNav .nav-btn').forEach(function(b) { b.classList.remove('active'); });
-            var panel = $('tab-' + tab);
-            if (panel) panel.classList.add('active');
-            var sbBtn = document.querySelector('.sidebar-nav .nav-btn[data-tab="' + tab + '"]');
-            if (sbBtn) sbBtn.classList.add('active');
-            var mbBtn = document.querySelector('#bottomNav .nav-btn[data-tab="' + tab + '"]');
-            if (mbBtn) mbBtn.classList.add('active');
-            if (tab === 'overtime') renderCalendar();
-            if (tab === 'salary') updateAnnualSummary();
-            if (tab === 'theme') { applyThemeMode(themeConfig.mode); applyAccentColor(themeConfig.accent); applyFontScale(themeConfig.fontScale); }
-          }
+          if (tab && typeof window.switchToTab === 'function') window.switchToTab(tab);
           return;
         }
         if (e.key === 'F5' || (e.ctrlKey && e.key === 'r')) {
@@ -3286,6 +3657,54 @@
       }
 
       // ============================================================
+      // 累计预扣法个税计算（中国个人所得税法）
+      // ============================================================
+      function calcCumulativeTax(monthKey, grossPay, si, hf, od, specialDeduct, threshold) {
+        var parsed = parseMonthKey(monthKey);
+        if (!parsed) return { tax: 0, cumulativeTaxable: 0, cumulativeTax: 0, prevTax: 0 };
+        var year = parsed.year, month = parsed.month;
+        var recs = storage.history || {};
+        var cumulativeTaxable = 0;
+        var prevTax = 0;
+
+        for (var m = 1; m <= month; m++) {
+          var mk = year + '-' + String(m).padStart(2, '0');
+          if (m === month) {
+            var taxable = grossPay - si - hf - od - specialDeduct - threshold;
+            cumulativeTaxable += Math.max(0, taxable);
+          } else {
+            var rec = recs[mk];
+            if (rec) {
+              var prevSD = calcTotalSpecialDeduction(rec.deductionsDetail || {});
+              var prevTaxable = (rec.grossPay || 0) - (rec.socialInsurance || 0) - (rec.housingFund || 0) - (rec.otherDeduction || 0) - prevSD - threshold;
+              cumulativeTaxable += Math.max(0, prevTaxable);
+              prevTax += (rec.tax || 0);
+            }
+          }
+        }
+
+        var cumulativeTax = 0;
+        if (cumulativeTaxable > 0) {
+          if (cumulativeTaxable <= 36000) cumulativeTax = cumulativeTaxable * 0.03;
+          else if (cumulativeTaxable <= 144000) cumulativeTax = cumulativeTaxable * 0.10 - 2520;
+          else if (cumulativeTaxable <= 300000) cumulativeTax = cumulativeTaxable * 0.20 - 16920;
+          else if (cumulativeTaxable <= 420000) cumulativeTax = cumulativeTaxable * 0.25 - 31920;
+          else if (cumulativeTaxable <= 660000) cumulativeTax = cumulativeTaxable * 0.30 - 52920;
+          else if (cumulativeTaxable <= 960000) cumulativeTax = cumulativeTaxable * 0.35 - 85920;
+          else cumulativeTax = cumulativeTaxable * 0.45 - 181920;
+          cumulativeTax = Math.max(0, cumulativeTax);
+        }
+
+        var currentTax = Math.max(0, roundToCent(cumulativeTax - prevTax));
+        return {
+          tax: currentTax,
+          cumulativeTaxable: roundToCent(cumulativeTaxable),
+          cumulativeTax: roundToCent(cumulativeTax),
+          prevTax: roundToCent(prevTax)
+        };
+      }
+
+      // ============================================================
       // ★★★ 核心：自定义项合计计算（增加 - 扣除）★★★
       // ============================================================
       function getCustomItemsTotal(items) {
@@ -3326,8 +3745,73 @@
         if ($('dispMultWeekday')) $('dispMultWeekday').textContent = multW.toFixed(1);
         if ($('dispMultWeekend')) $('dispMultWeekend').textContent = multE.toFixed(1);
         if ($('dispMultHoliday')) $('dispMultHoliday').textContent = multH.toFixed(1);
+        if ($('otMultWeekday')) $('otMultWeekday').textContent = '×' + multW.toFixed(1);
+        if ($('otMultWeekend')) $('otMultWeekend').textContent = '×' + multE.toFixed(1);
+        if ($('otMultHoliday')) $('otMultHoliday').textContent = '×' + multH.toFixed(1);
         var pay = isNaN(hr) ? 0 : roundToCent((ot.weekday * multW + ot.weekend * multE + ot.holiday * multH) * hr);
         if ($('overtimeTotalDisplay')) $('overtimeTotalDisplay').textContent = '¥' + pay.toFixed(2);
+
+        // ---- 统计侧栏 ----
+        var payW = isNaN(hr) ? 0 : roundToCent(ot.weekday * multW * hr);
+        var payE = isNaN(hr) ? 0 : roundToCent(ot.weekend * multE * hr);
+        var payH = isNaN(hr) ? 0 : roundToCent(ot.holiday * multH * hr);
+        var totalH = ot.weekday + ot.weekend + ot.holiday;
+        if ($('sidebarWeekday')) $('sidebarWeekday').textContent = ot.weekday.toFixed(1) + 'h ¥' + payW.toFixed(0);
+        if ($('sidebarWeekend')) $('sidebarWeekend').textContent = ot.weekend.toFixed(1) + 'h ¥' + payE.toFixed(0);
+        if ($('sidebarHoliday')) $('sidebarHoliday').textContent = ot.holiday.toFixed(1) + 'h ¥' + payH.toFixed(0);
+        if ($('sidebarTotal')) $('sidebarTotal').textContent = totalH.toFixed(1) + 'h ¥' + pay.toFixed(0);
+
+        // 环比上月
+        var p = parseMonthKey(currentMonthKey);
+        var prevKey = null;
+        if (p) {
+          var pm = p.month - 1, py = p.year;
+          if (pm < 1) { pm = 12; py--; }
+          prevKey = py + '-' + String(pm).padStart(2, '0');
+        }
+        var prevOt = prevKey ? (storage.overtimeData && storage.overtimeData[prevKey]) : null;
+        if (prevOt) {
+          var prevH = (prevOt.weekday || 0) + (prevOt.weekend || 0) + (prevOt.holiday || 0);
+          var prevPay = isNaN(hr) ? 0 : roundToCent(((prevOt.weekday || 0) * multW + (prevOt.weekend || 0) * multE + (prevOt.holiday || 0) * multH) * hr);
+          var hDiff = totalH - prevH;
+          var pDiff = pay - prevPay;
+          if ($('sidebarHoursDiff')) {
+            $('sidebarHoursDiff').textContent = (hDiff >= 0 ? '+' : '') + hDiff.toFixed(1) + 'h';
+            $('sidebarHoursDiff').className = 'osr-value' + (hDiff >= 0 ? '' : '');
+          }
+          if ($('sidebarAmountDiff')) {
+            $('sidebarAmountDiff').textContent = (pDiff >= 0 ? '+' : '') + '¥' + pDiff.toFixed(0);
+          }
+        } else {
+          if ($('sidebarHoursDiff')) $('sidebarHoursDiff').textContent = '—';
+          if ($('sidebarAmountDiff')) $('sidebarAmountDiff').textContent = '—';
+        }
+
+        // 近5日加班记录
+        if ($('overtimeRecentList')) {
+          var entries = [];
+          if (storage.overtimeData && storage.overtimeData[currentMonthKey]) {
+            var data = storage.overtimeData[currentMonthKey];
+            for (var dk in data) {
+              if (data[dk] && data[dk].hours) {
+                entries.push({ date: dk, hours: data[dk].hours, type: data[dk].type || 'weekday' });
+              }
+            }
+          }
+          entries.sort(function(a, b) { return b.date.localeCompare(a.date); });
+          entries = entries.slice(0, 5);
+          if (entries.length === 0) {
+            $('overtimeRecentList').innerHTML = '<div style="font-size:0.75rem;color:var(--text-muted);text-align:center;padding:8px 0;">暂无记录</div>';
+          } else {
+            var rh = '';
+            var typeIcons = { weekday: '🏢', weekend: '🌙', holiday: '🎉' };
+            entries.forEach(function(e) {
+              var d = e.date.split('-')[2];
+              rh += '<div class="overtime-recent-item"><span class="ori-date">' + parseInt(d) + '日</span><span class="ori-type">' + (typeIcons[e.type] || '🏢') + '</span><span class="ori-hours">' + e.hours + 'h</span></div>';
+            });
+            $('overtimeRecentList').innerHTML = rh;
+          }
+        }
       }
 
       // ---- 日历 ----
@@ -3388,6 +3872,7 @@
 
           var item = currentDayDetails[dk];
           var cls = 'calendar-day ' + (item.type || defaultType);
+          if (dk === getLocalDateString()) cls += ' today';
           if (item.hours > 0) cls += ' has-overtime';
           if (batchSelectMode && rangeStart && rangeEnd) {
             var start = new Date(rangeStart);
@@ -3469,6 +3954,11 @@
         }
         monthStor[currentMonthKey] = monthParams;
         saveToStorageImmediate('monthParams', monthStor);
+
+        // 同步保存全局设置（workDaysPerMonth 等）到 settings
+        var globalSettings = getSettings();
+        saveToStorageImmediate('settings', globalSettings);
+
         console.log('✅ 参数已保存:', currentMonthKey, '自定义项:', customItems.length);
       }
 
@@ -3754,6 +4244,15 @@
         var startDate = new Date(+startParts[0], +startParts[1] - 1, +startParts[2]);
         var endParts = end.split('-');
         var endDate = new Date(+endParts[0], +endParts[1] - 1, +endParts[2]);
+        // 检查范围内是否有已存在的加班记录
+        var existingCount = 0;
+        for (var dc = new Date(startDate); dc <= endDate; dc.setDate(dc.getDate() + 1)) {
+          var dck = dc.getFullYear() + '-' + String(dc.getMonth() + 1).padStart(2, '0') + '-' + String(dc.getDate()).padStart(2, '0');
+          if (currentDayDetails[dck] && currentDayDetails[dck].hours > 0) existingCount++;
+        }
+        if (existingCount > 0) {
+          if (!confirm('⚠️ 所选范围内有 ' + existingCount + ' 天已存在加班记录，确定覆盖？')) return;
+        }
         var count = 0;
         for (var d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
           var dk = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
@@ -3802,6 +4301,7 @@
 
       // ---- 工资计算 ----
       function handleCalculate() {
+        try {
         if (!currentMonthKey) { showToast('请选择月份'); return; }
 
         // 验证负数
@@ -3834,20 +4334,10 @@
         // 应发工资 = 底薪 + 加班费 + 其他收入 + 自定义合计
         var grossPay = roundToCent(baseSalary + otPay + otherIncome + customTotal);
 
-        // 个税
+        // 个税（累计预扣法）
         var thr = settings.taxThreshold;
-        var taxable = Math.max(0, grossPay - socialInsurance - housingFund - otherDeduction - specialDeduction - thr);
-        var tax = 0;
-        if (taxable > 0) {
-          if (taxable <= 36000) tax = taxable * 0.03;
-          else if (taxable <= 144000) tax = taxable * 0.10 - 2520;
-          else if (taxable <= 300000) tax = taxable * 0.20 - 16920;
-          else if (taxable <= 420000) tax = taxable * 0.25 - 31920;
-          else if (taxable <= 660000) tax = taxable * 0.30 - 52920;
-          else if (taxable <= 960000) tax = taxable * 0.35 - 85920;
-          else tax = taxable * 0.45 - 181920;
-          tax = Math.max(0, roundToCent(tax));
-        }
+        var taxResult = calcCumulativeTax(currentMonthKey, grossPay, socialInsurance, housingFund, otherDeduction, specialDeduction, thr);
+        var tax = taxResult.tax;
 
         var netPay = roundToCent(grossPay - socialInsurance - housingFund - otherDeduction - tax);
 
@@ -3871,7 +4361,11 @@
           mode: 'time',
           workDaysPerMonth: settings.workDaysPerMonth,
           workHoursPerDay: settings.workHoursPerDay,
-          taxThreshold: settings.taxThreshold
+          taxThreshold: settings.taxThreshold,
+          cumulativeTaxable: taxResult.cumulativeTaxable,
+          cumulativeTax: taxResult.cumulativeTax,
+          prevTax: taxResult.prevTax,
+          taxMethod: 'cumulative'
         };
         saveToStorageImmediate('history', recs);
         updateStatusBar();
@@ -3882,20 +4376,31 @@
 
         updateAnnualSummary();
         updateMenubarInfo();
-        showToast('✅ 工资：实发 ¥' + netPay.toFixed(2) + '，个税 ¥' + tax.toFixed(2) + '，自定义 ¥' + customTotal.toFixed(2));
+        showToast('✅ 实发 ¥' + netPay.toFixed(2) + ' | 个税 ¥' + tax.toFixed(2) + '（累计预扣）| 自定义 ¥' + customTotal.toFixed(2));
 
         // 自动跳转到工资数据页
         setTimeout(function() {
-          document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
-          document.querySelectorAll('#bottomNav .nav-btn').forEach(function(b) { b.classList.remove('active'); });
-          var salaryPanel = $('tab-salary');
-          var salaryBtn = document.querySelector('[data-tab="salary"]');
-          if (salaryPanel) salaryPanel.classList.add('active');
-          if (salaryBtn) salaryBtn.classList.add('active');
+          if (typeof window.switchToTab === 'function') {
+            window.switchToTab('salary');
+          } else {
+            document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+            document.querySelectorAll('#bottomNav .nav-btn[data-tab]').forEach(function(b) { b.classList.remove('active'); });
+            document.querySelectorAll('#sidebarNav .nav-btn').forEach(function(b) { b.classList.remove('active'); });
+            var salaryPanel = $('tab-salary');
+            if (salaryPanel) salaryPanel.classList.add('active');
+            var sbBtn2 = document.querySelector('#sidebarNav .nav-btn[data-tab="salary"]');
+            if (sbBtn2) sbBtn2.classList.add('active');
+            var mbBtn2 = document.querySelector('#bottomNav .nav-btn[data-tab="salary"]');
+            if (mbBtn2) mbBtn2.classList.add('active');
+          }
           updateAnnualSummary();
-        updateMenubarInfo();
+          updateMenubarInfo();
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }, 800);
+        } catch(err) {
+          console.error('计算失败:', err);
+          showToast('⚠️ 计算出错: ' + (err.message || err));
+        }
       }
 
       // ---- 年度汇总 ----
@@ -3942,6 +4447,104 @@
           '<div class="annual-summary-item"><span class="alabel">个税</span><div class="avalue" style="color:var(--color-expense);">¥' + sumTax.toFixed(2) + '</div></div>' +
           '<div class="annual-summary-item"><span class="alabel">实发</span><div class="avalue" style="color:var(--primary);font-weight:700;">¥' + sumNet.toFixed(2) + '</div></div>' +
           '</div>';
+        // 月均与环比分析
+        var monthCount = yearKeys.length;
+        var avgNet = roundToCent(sumNet / monthCount);
+        var avgGross = roundToCent(sumGross / monthCount);
+        var lastRec = recs[yearKeys[yearKeys.length - 1]];
+        var prevRec = yearKeys.length >= 2 ? recs[yearKeys[yearKeys.length - 2]] : null;
+        var momGrowth = '—';
+        var momColor = 'var(--text-secondary)';
+        if (prevRec && parseFloat(prevRec.netPay) > 0 && lastRec) {
+          var growth = ((parseFloat(lastRec.netPay) - parseFloat(prevRec.netPay)) / parseFloat(prevRec.netPay) * 100);
+          momGrowth = (growth >= 0 ? '+' : '') + growth.toFixed(1) + '%';
+          momColor = growth >= 0 ? 'var(--color-income)' : 'var(--color-expense)';
+        }
+        html += '<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">' +
+          '<div style="flex:1;min-width:120px;background:var(--primary-light);border-radius:var(--radius-md);padding:8px 12px;text-align:center;">' +
+          '<div style="font-size:0.7rem;color:var(--text-secondary);">月均实发</div>' +
+          '<div style="font-size:1rem;font-weight:700;color:var(--primary);">¥' + avgNet.toFixed(2) + '</div></div>' +
+          '<div style="flex:1;min-width:120px;background:var(--primary-light);border-radius:var(--radius-md);padding:8px 12px;text-align:center;">' +
+          '<div style="font-size:0.7rem;color:var(--text-secondary);">月均应发</div>' +
+          '<div style="font-size:1rem;font-weight:700;color:var(--text-primary);">¥' + avgGross.toFixed(2) + '</div></div>' +
+          '<div style="flex:1;min-width:120px;background:var(--primary-light);border-radius:var(--radius-md);padding:8px 12px;text-align:center;">' +
+          '<div style="font-size:0.7rem;color:var(--text-secondary);">实发环比</div>' +
+          '<div style="font-size:1rem;font-weight:700;color:' + momColor + ';">' + momGrowth + '</div></div>' +
+          '</div>';
+
+        // ===== 数据可视化：SVG 图表 =====
+        html += '<div class="annual-charts" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;">';
+        // 1. 月度实发趋势折线图
+        var maxNet = 0, minNet = Infinity;
+        yearKeys.forEach(function(k) { var n = recs[k].netPay || 0; if (n > maxNet) maxNet = n; if (n < minNet) minNet = n; });
+        var range = maxNet - minNet || 1;
+        var pts = [];
+        yearKeys.forEach(function(k, i) {
+          var x = 10 + (i / Math.max(1, yearKeys.length - 1)) * 300;
+          var y = 55 - ((recs[k].netPay || 0) - minNet) / range * 40;
+          pts.push(x.toFixed(1) + ',' + y.toFixed(1));
+        });
+        var polyStr = pts.join(' ');
+        var dotsHtml = '';
+        yearKeys.forEach(function(k, i) {
+          var x = 10 + (i / Math.max(1, yearKeys.length - 1)) * 300;
+          var y = 55 - ((recs[k].netPay || 0) - minNet) / range * 40;
+          var isMax = recs[k].netPay >= maxNet;
+          dotsHtml += '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="' + (isMax ? 4 : 3) + '" fill="var(--primary)"' + (isMax ? ' stroke="var(--card-bg)" stroke-width="2"' : '') + '/>';
+        });
+        html += '<div style="background:var(--input-bg);border:1px solid var(--input-border);border-radius:var(--radius-md);padding:12px;">' +
+          '<div style="font-size:0.8rem;font-weight:600;color:var(--text-secondary);margin-bottom:8px;">📈 月度实发趋势</div>' +
+          '<svg viewBox="0 0 320 70" style="width:100%;height:auto;">' +
+          '<polyline points="' + polyStr + '" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>' +
+          dotsHtml +
+          '</svg></div>';
+        // 2. 收入构成环形图
+        var total = sumBase + sumOT + sumOther + sumCustom || 1;
+        var p1 = (sumBase / total * 360).toFixed(1);
+        var p2 = (sumOT / total * 360).toFixed(1);
+        var p3 = (sumOther / total * 360).toFixed(1);
+        var p4 = (sumCustom / total * 360).toFixed(1);
+        var circ = 2 * Math.PI * 36;
+        html += '<div style="background:var(--input-bg);border:1px solid var(--input-border);border-radius:var(--radius-md);padding:12px;display:flex;flex-direction:column;align-items:center;">' +
+          '<div style="font-size:0.8rem;font-weight:600;color:var(--text-secondary);margin-bottom:4px;align-self:flex-start;">🍩 收入构成</div>' +
+          '<svg viewBox="0 0 100 100" style="width:90px;height:90px;">' +
+          '<circle cx="50" cy="50" r="36" fill="none" stroke="var(--input-border)" stroke-width="14"/>' +
+          '<circle cx="50" cy="50" r="36" fill="none" stroke="var(--primary)" stroke-width="14" stroke-dasharray="' + (circ * sumBase / total).toFixed(1) + ' ' + circ + '" transform="rotate(-90 50 50)"/>' +
+          '<circle cx="50" cy="50" r="36" fill="none" stroke="var(--color-income)" stroke-width="14" stroke-dasharray="' + (circ * sumOT / total).toFixed(1) + ' ' + circ + '" stroke-dashoffset="' + (-circ * sumBase / total).toFixed(1) + '" transform="rotate(-90 50 50)"/>' +
+          '<circle cx="50" cy="50" r="36" fill="none" stroke="var(--color-warning)" stroke-width="14" stroke-dasharray="' + (circ * sumOther / total).toFixed(1) + ' ' + circ + '" stroke-dashoffset="' + (-(circ * (sumBase + sumOT) / total)).toFixed(1) + '" transform="rotate(-90 50 50)"/>' +
+          '</svg>' +
+          '<div style="font-size:0.65rem;color:var(--text-secondary);margin-top:4px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">' +
+          '<span style="color:var(--primary);">● 底薪 ' + (sumBase / total * 100).toFixed(0) + '%</span>' +
+          '<span style="color:var(--color-income);">● 加班 ' + (sumOT / total * 100).toFixed(0) + '%</span>' +
+          '<span style="color:var(--color-warning);">● 其他 ' + ((sumOther + sumCustom) / total * 100).toFixed(0) + '%</span>' +
+          '</div></div>';
+        html += '</div>';
+        // 3. 月度应发 vs 扣除柱状图
+        var maxBar = 0;
+        yearKeys.forEach(function(k) { var g = recs[k].grossPay || 0; if (g > maxBar) maxBar = g; });
+        maxBar = maxBar || 1;
+        var barW = Math.max(8, 280 / yearKeys.length - 4);
+        var barsHtml = '';
+        yearKeys.forEach(function(k, i) {
+          var g = recs[k].grossPay || 0;
+          var d = (recs[k].socialInsurance || 0) + (recs[k].housingFund || 0) + (recs[k].tax || 0) + (recs[k].otherDeduction || 0);
+          var x = 10 + i * (barW + 4);
+          var gH = (g / maxBar * 50).toFixed(1);
+          var dH = (d / maxBar * 50).toFixed(1);
+          barsHtml += '<rect x="' + x + '" y="' + (55 - gH) + '" width="' + (barW / 2 - 1) + '" height="' + gH + '" rx="2" fill="var(--primary)" opacity="0.85"/>';
+          barsHtml += '<rect x="' + (x + barW / 2) + '" y="' + (55 - dH) + '" width="' + (barW / 2 - 1) + '" height="' + dH + '" rx="2" fill="var(--color-expense)" opacity="0.85"/>';
+        });
+        html += '<div style="background:var(--input-bg);border:1px solid var(--input-border);border-radius:var(--radius-md);padding:12px;margin-top:12px;">' +
+          '<div style="font-size:0.8rem;font-weight:600;color:var(--text-secondary);margin-bottom:8px;">📊 月度应发 vs 扣除</div>' +
+          '<svg viewBox="0 0 300 65" style="width:100%;height:auto;">' +
+          '<line x1="5" y1="55" x2="295" y2="55" stroke="var(--input-border)" stroke-width="1"/>' +
+          barsHtml +
+          '</svg>' +
+          '<div style="font-size:0.65rem;color:var(--text-secondary);margin-top:4px;display:flex;gap:12px;">' +
+          '<span style="color:var(--primary);">■ 应发</span>' +
+          '<span style="color:var(--color-expense);">■ 扣除</span>' +
+          '</div></div>';
+
         container.innerHTML = html;
         renderAnnualHistory(year, recs);
       }
@@ -4106,7 +4709,7 @@
         var w = window.open('', '_blank');
         w.document.write(html);
         w.document.close();
-        setTimeout(function() { w.print(); w.close(); }, 500);
+        w.onload = function() { setTimeout(function() { w.print(); setTimeout(function() { w.close(); }, 500); }, 300); };
       }
 
       function exportOvertimeCSV() {
@@ -4247,6 +4850,9 @@
           '<span>日工时 <strong>' + settings.workHoursPerDay + '小时</strong></span>' +
           '<span>个税起征点 <strong>¥' + settings.taxThreshold + '</strong></span>' +
           '<span>计税模式 <strong>累计预扣</strong></span>' +
+          '<span>累计应纳税所得额 <strong>¥' + formatNumber(rec.cumulativeTaxable || 0) + '</strong></span>' +
+          '<span>累计应扣税额 <strong>¥' + formatNumber(rec.cumulativeTax || 0) + '</strong></span>' +
+          '<span>已预扣税额 <strong>¥' + formatNumber(rec.prevTax || 0) + '</strong></span>' +
           '</div>' +
           '</div>' +
           '<div class="net-pay-box">' +
@@ -4261,7 +4867,7 @@
         var w = window.open('', '_blank');
         w.document.write(html);
         w.document.close();
-        setTimeout(function() { w.print(); w.close(); }, 500);
+        w.onload = function() { setTimeout(function() { w.print(); setTimeout(function() { w.close(); }, 500); }, 300); };
       }
 
       function printYearlyReport() {
@@ -4367,7 +4973,7 @@
         var w = window.open('', '_blank');
         w.document.write(html);
         w.document.close();
-        setTimeout(function() { w.print(); w.close(); }, 500);
+        w.onload = function() { setTimeout(function() { w.print(); setTimeout(function() { w.close(); }, 500); }, 300); };
       }
 
       function downloadCSV(filename, rows) {
@@ -4457,7 +5063,7 @@
         var data = {
           _meta: {
             app: '智财管家',
-            version: '6.0.0',
+            version: APP_VERSION,
             type: 'settings',
             exportDate: new Date().toISOString(),
             exportTimeLocal: new Date().toLocaleString('zh-CN'),
@@ -4503,7 +5109,7 @@
         var data = {
           _meta: {
             app: '智财管家',
-            version: '6.0.0',
+            version: APP_VERSION,
             type: 'overtime',
             exportDate: new Date().toISOString(),
             exportTimeLocal: new Date().toLocaleString('zh-CN'),
@@ -4540,7 +5146,7 @@
         var data = {
           _meta: {
             app: '智财管家',
-            version: '6.0.0',
+            version: APP_VERSION,
             type: 'salary',
             exportDate: new Date().toISOString(),
             exportTimeLocal: new Date().toLocaleString('zh-CN'),
@@ -4567,13 +5173,13 @@
       }
 
       function exportBackup() {
-        var historyCount = Object.keys(storage.history || {}).length;
+        var historyCount = Object.keys(storage.history || {}).filter(function(k) { return parseMonthKey(k) !== null; }).length;
         var detailsCount = Object.keys(storage.details || {}).length;
         var monthParamsCount = Object.keys(storage.monthParams || {}).length;
         var backup = {
           _meta: {
             app: '智财管家',
-            version: '6.0.0',
+            version: APP_VERSION,
             backupVersion: '3.0',
             exportDate: new Date().toISOString(),
             exportTimeLocal: new Date().toLocaleString('zh-CN'),
@@ -4586,7 +5192,13 @@
             }
           },
           data: {
-            history: storage.history || {},
+            history: (function() {
+              var clean = {};
+              for (var k in storage.history || {}) {
+                if (parseMonthKey(k) !== null) clean[k] = storage.history[k];
+              }
+              return clean;
+            })(),
             details: storage.details || {},
             settings: storage.settings || {},
             monthParams: storage.monthParams || {},
@@ -4630,6 +5242,13 @@
       function validateBackupData(data) {
         if (!data || typeof data !== 'object') return { valid: false, error: '数据格式错误' };
         if (data.type && ['settings','overtime','salary'].indexOf(data.type) !== -1) {
+          // 验证单条记录
+          if (data.type === 'salary' && data.record) {
+            var r = data.record;
+            if (typeof r.grossPay !== 'number' || typeof r.netPay !== 'number') {
+              return { valid: false, error: '工资记录缺少必要数值字段' };
+            }
+          }
           return { valid: true, mode: 'single' };
         }
         if (data.data && typeof data.data === 'object') {
@@ -4639,6 +5258,26 @@
           if (d.settings !== undefined && typeof d.settings !== 'object') return { valid: false, error: 'settings 格式错误' };
           if (d.monthParams !== undefined && typeof d.monthParams !== 'object') return { valid: false, error: 'monthParams 格式错误' };
           if (d.customItems !== undefined && !Array.isArray(d.customItems)) return { valid: false, error: 'customItems 格式错误' };
+          // 验证历史记录中的关键字段
+          if (d.history) {
+            var badRecords = 0;
+            for (var mk in d.history) {
+              var rec = d.history[mk];
+              if (!rec || typeof rec !== 'object' || typeof rec.grossPay !== 'number' || typeof rec.netPay !== 'number') {
+                badRecords++;
+              }
+            }
+            if (badRecords > 0) return { valid: false, error: '发现 ' + badRecords + ' 条格式异常的工资记录' };
+          }
+          // 验证自定义项结构
+          if (d.customItems && Array.isArray(d.customItems)) {
+            for (var ci = 0; ci < d.customItems.length; ci++) {
+              var item = d.customItems[ci];
+              if (!item || !item.name || typeof item.amount !== 'number' || (item.type !== 'add' && item.type !== 'sub')) {
+                return { valid: false, error: '自定义项 #' + (ci + 1) + ' 格式异常' };
+              }
+            }
+          }
           return { valid: true, mode: 'full' };
         }
         return { valid: false, error: '无法识别的数据格式' };
@@ -4897,6 +5536,8 @@
         if ($('monthDisplayLabel')) {
           var p = parseMonthKey(newMK);
           if (p) $('monthDisplayLabel').textContent = p.year + '年' + p.month + '月';
+          if ($('menubarMonthLabel') && p) $('menubarMonthLabel').textContent = p.year + '年' + p.month + '月';
+          if ($('currentMonthLabel') && p) $('currentMonthLabel').textContent = p.year + '年' + p.month + '月';
         }
         // 切换月份时自动获取该年节假日数据
         fetchHolidayData(y).then(function() {
@@ -4925,6 +5566,47 @@
 
 
       var CHANGELOG_DATA = [
+        {
+          version: '6.2.0',
+          date: '2026-09-04',
+          highlights: ['导航架构重构', '工具栏精简', '设置页分组卡片化', '年度数据可视化', '设计令牌系统', '可访问性改进', '布局宽度优化'],
+          details: [
+            '🏗️ 主题中心从一级导航降级为侧边栏底部二级入口，导航收敛为 3 个核心标签',
+            '🔗 统一桌面侧边栏与移动底部导航的激活逻辑，消除两套导航不同步问题',
+            '📅 月份选择器提升为全局菜单栏组件，所有标签页均可快速切换月份',
+            '📋 加班工具栏从 7 个平铺按钮精简为 3 主操作 + 导出下拉菜单',
+            '🗂️ 设置页 5 个折叠区合并为 2 张分组卡片（收入参数 / 扣除与税务）',
+            '📌 移动端新增 sticky 吸顶预览条，实时显示实发工资',
+            '📐 设置页表单区 max-width 520px 约束，params-grid 固定 2 列，消除超宽拉伸',
+            '📈 设置页新增信息面板：月度对比、操作提示、最近计算记录',
+            '📆 加班日历页改为双栏布局：日历约束 680px + 统计侧栏 280px',
+            '📊 加班统计侧栏含分类汇总、环比上月、近 5 日记录、计算按钮',
+            '🎨 新增间距令牌（spacer-4/8/12/16/20/24）、阴影令牌和语义化颜色令牌',
+            '🎨 批量替换硬编码 RGBA 颜色为 CSS 变量引用',
+            '📊 年度汇总新增月度实发趋势折线图、收入构成环形图、月度应发 vs 扣除柱状图',
+            '♿ 菜单下拉增加 focus-within 键盘触发，菜单项添加 tabindex',
+            '♿ 补充 aria-label 到所有导航按钮',
+            '🔇 新增 prefers-reduced-motion 支持，自动关闭动画和视觉效果'
+          ]
+        },
+        {
+          version: '6.1.0',
+          date: '2026-09-04',
+          highlights: ['累计预扣法个税', '修复关键作用域BUG', '日历今日高亮', '月均环比分析', '快速月份选择', '批量覆盖警告', '导入数据验证'],
+          details: [
+            '🐛 修复 switchThemeMode/toggleSidebar 等函数因 IIFE 作用域导致菜单栏 onclick 全部失效的问题',
+            '🐛 修复 menubarMonthVal/menubarNetVal 重复 DOM ID 导致状态栏仅第一个实例可更新',
+            '🐛 修复 themeConfig 变量定义在 initApp 内部导致 switchThemeMode 引用未定义的问题',
+            '🔢 个税计算改用「累计预扣法」，符合中国个人所得税法最新规定',
+            '📅 日历增加今日高亮显示，便于快速定位当前日期',
+            '📊 年度汇总新增月均实发、月均应发和实发环比增长率',
+            '⌨️ 加班弹窗、批量设置弹窗、导入弹窗支持 Enter 键快速确认',
+            '📅 月份标签可点击直接弹出原生月份选择器，无需逐月翻页',
+            '⚠️ 批量设置加班时检测范围内已有记录并提示覆盖确认',
+            '🔒 导入数据增加记录结构验证，防止导入损坏数据导致应用异常',
+            '🖨️ 修复打印窗口时序问题，等待内容加载后再执行打印'
+          ]
+        },
         {
           version: '6.0.0',
           date: '2026-09-02',
@@ -5000,12 +5682,71 @@
       function updateMenubarInfo() {
         var recs = storage.history || {};
         var rec = recs[currentMonthKey];
+        var p = parseMonthKey(currentMonthKey);
+        var monthStr = p ? (p.year + '年' + p.month + '月') : (currentMonthKey || '—');
         if ($('menubarMonthVal')) $('menubarMonthVal').textContent = currentMonthKey || '—';
+        if ($('menubarMonthLabel')) $('menubarMonthLabel').textContent = monthStr;
         if ($('menubarNetVal')) {
-          if (rec && rec.netPay !== undefined) {
-            $('menubarNetVal').textContent = '¥' + rec.netPay.toFixed(2);
+          if (rec && rec.netPay !== undefined && rec.netPay !== null) {
+            $('menubarNetVal').textContent = '¥' + (parseFloat(rec.netPay) || 0).toFixed(2);
           } else {
             $('menubarNetVal').textContent = '未计算';
+          }
+        }
+        updateInfoPanel();
+      }
+
+      function updateInfoPanel() {
+        var recs = storage.history || {};
+        var thisRec = recs[currentMonthKey];
+        var p = parseMonthKey(currentMonthKey);
+        var prevKey = null;
+        if (p) {
+          var prevMonth = p.month - 1;
+          var prevYear = p.year;
+          if (prevMonth < 1) { prevMonth = 12; prevYear--; }
+          prevKey = prevYear + '-' + String(prevMonth).padStart(2, '0');
+        }
+        var prevRec = prevKey ? recs[prevKey] : null;
+
+        // 安全获取 netPay
+        var safeNum = function(v) { var n = parseFloat(v); return isNaN(n) ? 0 : n; };
+
+        if ($('infoThisMonth')) {
+          $('infoThisMonth').textContent = thisRec ? '¥' + safeNum(thisRec.netPay).toFixed(2) : '¥0.00';
+        }
+        if ($('infoPrevMonth')) {
+          $('infoPrevMonth').textContent = prevRec ? '¥' + safeNum(prevRec.netPay).toFixed(2) : '—';
+        }
+        if ($('infoDiff')) {
+          if (thisRec && prevRec) {
+            var diff = safeNum(thisRec.netPay) - safeNum(prevRec.netPay);
+            var sign = diff >= 0 ? '+' : '';
+            $('infoDiff').textContent = sign + '¥' + diff.toFixed(2);
+            $('infoDiff').className = 'icr-value ' + (diff >= 0 ? 'positive' : 'negative');
+          } else {
+            $('infoDiff').textContent = '—';
+            $('infoDiff').className = 'icr-value';
+          }
+        }
+
+        // 最近3条记录（仅显示有效的月份键，过滤掉非月份格式的键）
+        if ($('infoRecentRecords')) {
+          var keys = Object.keys(recs).filter(function(k) {
+            return parseMonthKey(k) !== null;
+          }).sort().reverse().slice(0, 3);
+          if (keys.length === 0) {
+            $('infoRecentRecords').innerHTML = '<div style="font-size:0.75rem;color:var(--text-muted);text-align:center;padding:8px 0;">暂无记录</div>';
+          } else {
+            var html = '';
+            keys.forEach(function(k) {
+              var r = recs[k];
+              if (!r) return;
+              var kp = parseMonthKey(k);
+              var label = kp ? kp.month + '月' : k;
+              html += '<div class="info-card-row"><span>' + label + '</span><span class="icr-value positive">¥' + safeNum(r.netPay).toFixed(2) + '</span></div>';
+            });
+            $('infoRecentRecords').innerHTML = html;
           }
         }
       }
@@ -5150,6 +5891,23 @@
         // 主题配置由 initThemeCenter() 统一处理
 
         loadStorage();
+        // 清理 history 中的无效键（非 YYYY-MM 格式的键，如误混入的设置项名称）
+        if (storage.history && typeof storage.history === 'object') {
+          var cleaned = false;
+          var newHistory = {};
+          for (var hk in storage.history) {
+            if (parseMonthKey(hk) !== null && storage.history[hk] && typeof storage.history[hk] === 'object') {
+              newHistory[hk] = storage.history[hk];
+            } else {
+              cleaned = true;
+              console.warn('🧹 清理无效历史记录键:', hk);
+            }
+          }
+          if (cleaned) {
+            storage.history = newHistory;
+            saveToStorageImmediate('history', newHistory);
+          }
+        }
         loadCustomItems();
         loadHolidayCache();
 
@@ -5204,28 +5962,108 @@
           }
         });
 
-        // ---- 导航 ----
-        document.querySelectorAll('#bottomNav .nav-btn').forEach(function(btn) {
-          btn.addEventListener('click', function() {
-            var tab = this.dataset.tab;
-            document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
-            document.querySelectorAll('#bottomNav .nav-btn').forEach(function(b) { b.classList.remove('active'); });
-            var panel = $('tab-' + tab);
-            if (panel) panel.classList.add('active');
-            this.classList.add('active');
-            if (tab === 'overtime') renderCalendar();
-            if (tab === 'salary') updateAnnualSummary();
-            if (tab === 'theme') {
-              applyThemeMode(themeConfig.mode);
-              applyAccentColor(themeConfig.accent);
-              applyFontScale(themeConfig.fontScale);
-            }
-          });
+        // ---- 导航（统一切换函数）----
+        function switchToTab(tab) {
+          document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+          document.querySelectorAll('#bottomNav .nav-btn[data-tab]').forEach(function(b) { b.classList.remove('active'); });
+          document.querySelectorAll('#sidebarNav .nav-btn').forEach(function(b) { b.classList.remove('active'); });
+          var panel = $('tab-' + tab);
+          if (panel) panel.classList.add('active');
+          var sbBtn = document.querySelector('#sidebarNav .nav-btn[data-tab="' + tab + '"]');
+          if (sbBtn) sbBtn.classList.add('active');
+          var mbBtn = document.querySelector('#bottomNav .nav-btn[data-tab="' + tab + '"]');
+          if (mbBtn) mbBtn.classList.add('active');
+          if (tab === 'overtime') renderCalendar();
+          if (tab === 'salary') updateAnnualSummary();
+          if (tab === 'theme') {
+            applyThemeMode(themeConfig.mode);
+            applyAccentColor(themeConfig.accent);
+            applyFontScale(themeConfig.fontScale);
+          }
+        }
+        window.switchToTab = switchToTab;
+        window.handleCalculate = handleCalculate;
+
+        document.querySelectorAll('#bottomNav .nav-btn[data-tab]').forEach(function(btn) {
+          btn.addEventListener('click', function() { switchToTab(this.dataset.tab); });
+        });
+        document.querySelectorAll('#sidebarNav .nav-btn').forEach(function(btn) {
+          btn.addEventListener('click', function() { switchToTab(this.dataset.tab); });
+        });
+        // 侧边栏底部二级按钮（主题外观）
+        document.querySelectorAll('.sidebar-secondary-btn[data-tab]').forEach(function(btn) {
+          btn.addEventListener('click', function() { switchToTab(this.dataset.tab); });
         });
 
         // ---- 月份按钮 ----
         if ($('monthDownBtn')) $('monthDownBtn').addEventListener('click', function() { window.switchMonth(-1); });
         if ($('monthUpBtn')) $('monthUpBtn').addEventListener('click', function() { window.switchMonth(1); });
+
+        // ---- 快速月份选择器 ----
+        if ($('monthDisplayLabel')) {
+          $('monthDisplayLabel').addEventListener('click', function() {
+            var picker = $('monthPickerInput');
+            if (picker) {
+              picker.style.pointerEvents = 'auto';
+              picker.value = currentMonthKey;
+              picker.showPicker ? picker.showPicker() : picker.click();
+            }
+          });
+        }
+        if ($('monthPickerInput')) {
+          $('monthPickerInput').addEventListener('change', function() {
+            if (this.value) {
+              if (currentMonthKey) { saveOvertimeData(); saveAllParams(); }
+              currentMonthKey = this.value;
+              if ($('salaryMonth')) $('salaryMonth').value = currentMonthKey;
+              var p = parseMonthKey(currentMonthKey);
+              if ($('monthDisplayLabel') && p) $('monthDisplayLabel').textContent = p.year + '年' + p.month + '月';
+              if (p) fetchHolidayData(p.year).then(function() { renderCalendar(); }).catch(function() { renderCalendar(); });
+              loadOvertimeData();
+              loadMonthParams(currentMonthKey);
+              updateAnnualSummary();
+              updateMenubarInfo();
+              showToast('📅 已切换到 ' + currentMonthKey);
+              this.style.pointerEvents = 'none';
+            }
+          });
+          $('monthPickerInput').addEventListener('blur', function() { this.style.pointerEvents = 'none'; });
+        }
+
+        // ---- 全局月份选择器（菜单栏）----
+        if ($('menubarMonthLabel')) {
+          $('menubarMonthLabel').addEventListener('click', function() {
+            var picker = $('globalMonthPickerInput');
+            if (picker) {
+              picker.style.pointerEvents = 'auto';
+              picker.value = currentMonthKey;
+              picker.showPicker ? picker.showPicker() : picker.click();
+            }
+          });
+        }
+        if ($('globalMonthPickerInput')) {
+          $('globalMonthPickerInput').addEventListener('change', function() {
+            if (this.value) {
+              if (currentMonthKey) { saveOvertimeData(); saveAllParams(); }
+              currentMonthKey = this.value;
+              if ($('salaryMonth')) $('salaryMonth').value = currentMonthKey;
+              var p = parseMonthKey(currentMonthKey);
+              if (p) {
+                if ($('monthDisplayLabel')) $('monthDisplayLabel').textContent = p.year + '年' + p.month + '月';
+                if ($('menubarMonthLabel')) $('menubarMonthLabel').textContent = p.year + '年' + p.month + '月';
+                if ($('currentMonthLabel')) $('currentMonthLabel').textContent = p.year + '年' + p.month + '月';
+                fetchHolidayData(p.year).then(function() { renderCalendar(); }).catch(function() { renderCalendar(); });
+              }
+              loadOvertimeData();
+              loadMonthParams(currentMonthKey);
+              updateAnnualSummary();
+              updateMenubarInfo();
+              showToast('📅 已切换到 ' + currentMonthKey);
+              this.style.pointerEvents = 'none';
+            }
+          });
+          $('globalMonthPickerInput').addEventListener('blur', function() { this.style.pointerEvents = 'none'; });
+        }
 
         // ---- 日历点击 ----
         if ($('calendarContainer')) {
@@ -5249,6 +6087,17 @@
           if (e.key === 'Escape') {
             if ($('modalOverlay') && $('modalOverlay').classList.contains('active')) $('modalOverlay').classList.remove('active');
             if ($('batchModalOverlay') && $('batchModalOverlay').classList.contains('active')) { $('batchModalOverlay').classList.remove('active'); exitBatchSelectMode(); }
+          }
+          if (e.key === 'Enter' && !e.shiftKey && !e.ctrlKey) {
+            if ($('modalOverlay') && $('modalOverlay').classList.contains('active')) {
+              if (e.target.tagName !== 'TEXTAREA') { e.preventDefault(); saveOvertimeFromModal(); }
+            }
+            if ($('batchModalOverlay') && $('batchModalOverlay').classList.contains('active')) {
+              if (e.target.tagName !== 'TEXTAREA') { e.preventDefault(); applyBatchSetting(); }
+            }
+            if ($('importModalOverlay') && $('importModalOverlay').classList.contains('active') && !$('importConfirmBtn').disabled) {
+              if (e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'INPUT' || e.target.type === 'radio') { e.preventDefault(); executeImport(); }
+            }
           }
         });
 
@@ -5332,7 +6181,19 @@
         // ---- PDF ----
         if ($('btnPrintSalarySlip')) $('btnPrintSalarySlip').addEventListener('click', printSalarySlip);
         if ($('btnPrintYearlyReport')) $('btnPrintYearlyReport').addEventListener('click', printYearlyReport);
-        if ($('btnExportOvertime')) $('btnExportOvertime').addEventListener('click', exportOvertimePdf);
+        if ($('btnExportOvertime')) $('btnExportOvertime').addEventListener('click', function() { exportOvertimePdf(); closeExportDropdown(); });
+
+        // ---- 导出下拉菜单 ----
+        function closeExportDropdown() { var dd = $('exportDropdown'); if (dd) dd.classList.remove('open'); }
+        if ($('btnExportToggle')) $('btnExportToggle').addEventListener('click', function(e) {
+          e.stopPropagation();
+          var dd = $('exportDropdown');
+          if (dd) dd.classList.toggle('open');
+        });
+        document.addEventListener('click', function(e) {
+          var dd = $('exportDropdown');
+          if (dd && dd.classList.contains('open') && !dd.contains(e.target)) dd.classList.remove('open');
+        });
 
         // ---- 年度 ----
         if ($('yearDownBtn')) $('yearDownBtn').addEventListener('click', function() { currentAnnualYear--; renderAnnualSummary(currentAnnualYear); });
@@ -5346,14 +6207,14 @@
 
         // ---- CSV ----
         if ($('btnExportSalaryCSV')) $('btnExportSalaryCSV').addEventListener('click', exportSalaryCSV);
-        if ($('btnExportOvertimeCSV')) $('btnExportOvertimeCSV').addEventListener('click', exportOvertimeCSV);
+        if ($('btnExportOvertimeCSV')) $('btnExportOvertimeCSV').addEventListener('click', function() { exportOvertimeCSV(); closeExportDropdown(); });
 
         // ---- 各模块 JSON 导出 ----
         if ($('btnExportSettings')) $('btnExportSettings').addEventListener('click', exportSettingsJSON);
-        if ($('btnExportOvertimeJSON')) $('btnExportOvertimeJSON').addEventListener('click', exportOvertimeJSON);
+        if ($('btnExportOvertimeJSON')) $('btnExportOvertimeJSON').addEventListener('click', function() { exportOvertimeJSON(); closeExportDropdown(); });
         if ($('btnExportSalaryJSON')) $('btnExportSalaryJSON').addEventListener('click', exportSalaryJSON);
         if ($('btnExportSalaryExcel')) $('btnExportSalaryExcel').addEventListener('click', exportSalaryExcel);
-        if ($('btnExportOvertimeExcel')) $('btnExportOvertimeExcel').addEventListener('click', exportOvertimeExcel);
+        if ($('btnExportOvertimeExcel')) $('btnExportOvertimeExcel').addEventListener('click', function() { exportOvertimeExcel(); closeExportDropdown(); });
         if ($('btnExportAllMonthsExcel')) $('btnExportAllMonthsExcel').addEventListener('click', exportBackup);
         if ($('btnExportBackup')) $('btnExportBackup').addEventListener('click', exportBackup);
 
@@ -5376,77 +6237,7 @@
         // ---- 复制 ----
         if ($('btnCopySalarySlip')) { $('btnCopySalarySlip').addEventListener('click', copySalarySlip); }
 
-        // ---- 主题中心功能 ----
-        var THEME_CONFIG_KEY = 'theme_config_v3';
-        var themeConfig = {
-          mode: 'dark',
-          accent: 'purple',
-          particles: true,
-          orbs: true,
-          grid: true,
-          animations: true,
-          fontScale: 1
-        };
-
-        function loadThemeConfig() {
-          try {
-            var raw = localStorage.getItem(THEME_CONFIG_KEY);
-            if (raw) {
-              var saved = JSON.parse(raw);
-              Object.assign(themeConfig, saved);
-            }
-          } catch (e) {}
-        }
-
-        function saveThemeConfig() {
-          try {
-            localStorage.setItem(THEME_CONFIG_KEY, JSON.stringify(themeConfig));
-          } catch (e) {}
-        }
-
-        function applyThemeMode(mode) {
-          var effectiveMode = mode;
-          if (mode === 'auto') {
-            effectiveMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-          }
-          document.documentElement.classList.add('theme-transition');
-          document.documentElement.setAttribute('data-theme', effectiveMode);
-          if ($('themeToggleIcon')) $('themeToggleIcon').textContent = effectiveMode === 'dark' ? '🌙' : '☀️';
-          setTimeout(function() {
-            document.documentElement.classList.remove('theme-transition');
-          }, 600);
-          document.querySelectorAll('.theme-mode-option').forEach(function(el) {
-            el.classList.toggle('active', el.dataset.mode === mode);
-          });
-        }
-
-        function applyAccentColor(accent) {
-          document.documentElement.setAttribute('data-accent', accent);
-          document.querySelectorAll('.accent-color-option').forEach(function(el) {
-            el.classList.toggle('active', el.dataset.accent === accent);
-          });
-        }
-
-        function applyVisualEffects() {
-          var canvas = $('particleCanvas');
-          var orbs = document.querySelectorAll('.glow-orb');
-          var grid = document.querySelector('.bg-grid');
-          if (canvas) canvas.style.display = themeConfig.particles ? '' : 'none';
-          orbs.forEach(function(orb) { orb.style.display = themeConfig.orbs ? '' : 'none'; });
-          if (grid) grid.style.display = themeConfig.grid ? '' : 'none';
-          if (!themeConfig.animations) {
-            document.documentElement.style.setProperty('--transition', '0.01ms');
-          } else {
-            document.documentElement.style.setProperty('--transition', '0.4s cubic-bezier(0.34, 1.56, 0.64, 1)');
-          }
-        }
-
-        function applyFontScale(scale) {
-          document.documentElement.style.setProperty('--font-scale', scale);
-          if ($('fontSizeSlider')) $('fontSizeSlider').value = scale;
-          if ($('fontSizeValue')) $('fontSizeValue').textContent = Math.round(scale * 100) + '%';
-        }
-
+        // ---- 主题中心功能（函数已移至外部作用域）----
         function initThemeCenter() {
           loadThemeConfig();
           applyThemeMode(themeConfig.mode);
@@ -5506,7 +6297,7 @@
           if ($('btnResetTheme')) {
             $('btnResetTheme').addEventListener('click', function() {
               if (!confirm('确定恢复默认主题设置吗？')) return;
-              themeConfig = { mode: 'dark', accent: 'purple', particles: true, orbs: true, grid: true, animations: true, fontScale: 1 };
+              Object.assign(themeConfig, { mode: 'dark', accent: 'purple', particles: true, orbs: true, grid: true, animations: true, fontScale: 1 });
               saveThemeConfig();
               applyThemeMode(themeConfig.mode);
               applyAccentColor(themeConfig.accent);
@@ -5598,20 +6389,7 @@
         if ($('changelogModalOverlay')) $('changelogModalOverlay').addEventListener('click', function(e) { if (e.target === this) this.classList.remove('active'); });
 
 
-        // ---- 桌面端导航 ----
-        document.querySelectorAll('.sidebar-nav .nav-btn').forEach(function(btn) {
-          btn.addEventListener('click', function() {
-            var tab = this.dataset.tab;
-            document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
-            document.querySelectorAll('.sidebar-nav .nav-btn').forEach(function(b) { b.classList.remove('active'); });
-            var panel = $('tab-' + tab);
-            if (panel) panel.classList.add('active');
-            this.classList.add('active');
-            if (tab === 'overtime') renderCalendar();
-            if (tab === 'salary') updateAnnualSummary();
-            if (tab === 'theme') { applyThemeMode(themeConfig.mode); applyAccentColor(themeConfig.accent); applyFontScale(themeConfig.fontScale); }
-          });
-        });
+        // ---- 桌面端导航（已由统一 switchToTab 处理）----
 
         // ---- 右键菜单 ----
         document.addEventListener('contextmenu', function(e) {
@@ -5744,6 +6522,15 @@
         setTimeout(checkUpdateFromGitee, 8000);
       })();
 
+      // ---- 暴露给内联 onclick 的函数 ----
+      window.handleCalculate = handleCalculate;
+      window.exportBackup = exportBackup;
+      window.switchThemeMode = switchThemeMode;
+      window.toggleSidebar = toggleSidebar;
+      window.copySalarySlip = copySalarySlip;
+      window.showToast = showToast;
+      window.showChangelog = showChangelog;
+
       document.addEventListener('DOMContentLoaded', initApp);
 
     })();
@@ -5754,7 +6541,7 @@
     <div class="modal-box" style="max-width:520px;text-align:left;max-height:80vh;">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
         <h3 style="font-size:1.1rem;display:flex;align-items:center;gap:8px;">📜 更新日志</h3>
-        <span style="font-size:0.75rem;color:var(--text-muted);background:var(--primary-light);padding:2px 10px;border-radius:20px;">v6.0.0</span>
+        <span style="font-size:0.75rem;color:var(--text-muted);background:var(--primary-light);padding:2px 10px;border-radius:20px;">v6.1.0</span>
       </div>
       <div id="changelogContent" style="max-height:55vh;overflow-y:auto;padding-right:8px;"></div>
       <div class="modal-actions" style="margin-top:16px;">
@@ -5763,5 +6550,5 @@
     </div>
   </div>
 
-</body>
-</html>
+
+</body></html>

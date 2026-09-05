@@ -5,7 +5,10 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="智财管家">
-  <title>智财管家 · 工资核算</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>智财管家 · 工资核算 v7.0</title>
   <style>
     * {
       margin: 0;
@@ -51,12 +54,13 @@
       --secondary: hsl(var(--secondary-h), var(--secondary-s), var(--secondary-l));
       --accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
       --bg: #0a0e1a;
-      --card-bg: rgba(255, 255, 255, 0.04);
-      --card-border: rgba(255, 255, 255, 0.06);
+      --card-bg: rgba(255, 255, 255, 0.06);
+      --card-border: rgba(255, 255, 255, 0.10);
+      --glass-blur: 20px;
       --text-primary: #e8ecf4;
       --text-secondary: #8892b0;
       --text-muted: #5a6a8a;
-      --shadow-glow: 0 8px 32px rgba(108, 92, 231, 0.10);
+      --shadow-glow: 0 8px 32px rgba(108, 92, 231, 0.15);
       --radius-sm: 12px;
       --radius-md: 20px;
       --radius-lg: 28px;
@@ -886,17 +890,23 @@
       margin: 0 auto;
     }
     .overtime-calendar-col {
-      flex: 1 1 auto;
+      flex: 1 1 0;
+      min-width: 0;
+    }
+    .calendar-grid {
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .calendar-day {
+      box-sizing: border-box;
       min-width: 0;
     }
     .overtime-sidebar {
-      flex: 0 0 300px;
-      max-width: 320px;
+      flex: 0 0 260px;
+      max-width: 260px;
       display: flex;
       flex-direction: column;
       gap: 10px;
-      position: sticky;
-      top: 20px;
     }
     .overtime-stats-card {
       background: var(--card-bg);
@@ -1270,8 +1280,10 @@
       box-shadow: 0 2px 8px var(--danger-border);
     }
     .delete-record-btn:active {
-      transform: scale(0.95);
+      transform: scale(0.9);
     }
+    .tax-detail-link { cursor: pointer; color: var(--color-expense); border-bottom: 1px dashed var(--color-expense); transition: all 0.15s; }
+    .tax-detail-link:hover { color: var(--primary); border-bottom-color: var(--primary); }
     .salary-export-group {
       display: flex;
       flex-wrap: wrap;
@@ -2311,17 +2323,6 @@
     }
     /* ===== 桌面应用骨架 ===== */
     .app-frame { display: flex; flex-direction: column; height: 100vh; overflow: hidden; position: relative; z-index: 1; border-radius: 12px; box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 20px 60px rgba(0,0,0,0.3); }
-    .menubar { height: 34px; background: var(--card-bg); border-bottom: 1px solid var(--card-border); display: flex; align-items: center; padding: 0 12px; gap: 2px; font-size: 0.8rem; flex-shrink: 0; user-select: none; border-radius: 12px 12px 0 0; }
-    .menu-item { position: relative; padding: 4px 12px; border-radius: 4px; cursor: pointer; color: var(--text-secondary); font-size: 0.8rem; transition: all 0.15s; }
-    .menu-item:hover { background: var(--hover-bg); color: var(--text-primary); }
-    .menu-dropdown { display: none; position: absolute; top: 100%; left: 0; background: var(--modal-bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 6px; min-width: 220px; box-shadow: 0 12px 40px rgba(0,0,0,0.3); z-index: 1000; margin-top: 2px; }
-    .menu-item:hover .menu-dropdown, .menu-item:focus-within .menu-dropdown { display: block; }
-    .menu-item { outline: none; }
-    .menu-item:focus-visible { background: var(--hover-bg); }
-    .menu-dropdown-item { padding: 8px 12px; border-radius: 6px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--text-primary); gap: 16px; }
-    .menu-dropdown-item:hover { background: var(--hover-bg); }
-    .menu-dropdown-item .shortcut { font-size: 0.7rem; color: var(--text-muted); background: rgba(255,255,255,0.04); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--card-border); }
-    .menu-separator { height: 1px; background: var(--card-border); margin: 6px 0; }
 
     .app-body { display: flex; flex: 1; overflow: hidden; }
     .sidebar { width: 210px; flex-shrink: 0; background: var(--card-bg); border-right: 1px solid var(--card-border); display: flex; flex-direction: column; padding: 16px 10px; overflow-y: auto; border-radius: 12px 0 0 0; }
@@ -2334,10 +2335,51 @@
     .sidebar-nav .nav-btn:hover { background: var(--hover-bg); color: var(--text-primary); }
     .sidebar-nav .nav-btn.active { background: var(--primary-light); color: var(--primary); }
     .sidebar-nav .nav-btn .tab-icon { font-size: 1.1rem; width: 22px; text-align: center; }
-    .sidebar-footer { margin-top: auto; padding: 12px 10px 0; border-top: 1px solid var(--card-border); font-size: 0.7rem; color: var(--text-muted); text-align: center; }
-    .sidebar-footer-actions { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--card-border); display: flex; flex-direction: column; gap: 2px; }
-    .sidebar-secondary-btn { padding: 6px 8px; font-size: 0.8rem; border-radius: 6px; width: 100%; justify-content: flex-start; color: var(--text-secondary); opacity: 0.8; }
-    .sidebar-secondary-btn:hover { opacity: 1; color: var(--primary); background: var(--primary-light); }
+    .sidebar-footer { margin-top: auto; padding: 14px 10px 12px; border-top: 1px solid var(--card-border); font-size: 0.7rem; color: var(--text-muted); text-align: center; display: flex; flex-direction: column; gap: 10px; }
+    .sidebar-footer-actions { display: flex; flex-direction: column; gap: 8px; padding: 0 4px; }
+    .sidebar-secondary-btn {
+      padding: 10px 14px;
+      font-size: 0.82rem;
+      border-radius: 10px;
+      width: 100%;
+      justify-content: flex-start;
+      color: var(--text-secondary);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.25s ease;
+      font-weight: 500;
+    }
+    .sidebar-secondary-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+      transition: left 0.4s ease;
+    }
+    .sidebar-secondary-btn:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+      background: var(--primary-light);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .sidebar-secondary-btn:hover::before {
+      left: 100%;
+    }
+    .sidebar-secondary-btn:active {
+      transform: translateY(0);
+    }
+    .sidebar-secondary-btn .tab-icon {
+      font-size: 1.15rem;
+      width: 26px;
+      text-align: center;
+      margin-right: 4px;
+    }
     .bottom-nav .theme-toggle-btn { flex: 0 0 auto; border-left: 1px solid var(--card-border); }
 
     .main-content { flex: 1; overflow-y: auto; padding: 20px 28px; background: var(--bg); }
@@ -2506,10 +2548,14 @@
       .params-grid { grid-template-columns: repeat(3, 1fr); }
       .settings-layout { grid-template-columns: 1fr 280px; max-width: 960px; align-items: stretch; }
       .main-content { padding: 32px 48px; }
+      .overtime-layout { max-width: 1000px; }
+      .overtime-sidebar { flex: 0 0 260px; max-width: 260px; }
     }
     @media (min-width: 1280px) {
       .settings-layout { grid-template-columns: 1fr 300px; max-width: 1000px; align-items: stretch; }
       .main-content { padding: 32px 64px; }
+      .overtime-layout { max-width: 1100px; }
+      .overtime-sidebar { flex: 0 0 280px; max-width: 280px; }
     }
 
     /* ===== 可访问性：减弱动画 ===== */
@@ -2529,9 +2575,604 @@
       .annual-charts { grid-template-columns: 1fr !important; }
     }
 
+    /* ===== 应用设置页面 ===== */
+    .settings-page-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 768px) {
+      .settings-page-grid { grid-template-columns: 1fr; }
+    }
+    .settings-group-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+    }
+    .sgc-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .sgc-subtitle {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin: 12px 0 8px;
+    }
+    .sgc-subtitle:first-of-type { margin-top: 0; }
+
+    .sgc-desc {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin: -4px 0 14px;
+    }
+
+    /* 跨全列的设置卡片 */
+    .settings-card-wide {
+      grid-column: 1 / -1;
+    }
+
+    /* AI 设置卡片专用样式 */
+    .ai-settings-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 768px) {
+      .ai-settings-row { grid-template-columns: 1fr; }
+    }
+    .ai-settings-col:first-child .sgc-subtitle { margin-top: 0; }
+
+    .ai-provider-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .ai-provider-btn {
+      display: flex !important;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+      padding: 10px 12px !important;
+      height: auto !important;
+      text-align: left;
+      line-height: 1.3;
+      transition: all 0.2s;
+    }
+    .ai-provider-btn.active {
+      background: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.15) !important;
+      border-color: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.5) !important;
+      color: var(--text-primary) !important;
+    }
+    .ai-provider-btn .prov-icon { font-size: 1.1rem; }
+    .ai-provider-btn .prov-name {
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+    .ai-provider-btn .prov-desc {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      opacity: 0.7;
+    }
+
+    .input-with-icon {
+      position: relative;
+    }
+    .input-with-icon input {
+      width: 100%;
+      padding: 8px 36px 8px 12px;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-size: 0.85rem;
+      font-family: inherit;
+      outline: none;
+      box-sizing: border-box;
+    }
+    .input-with-icon input:focus {
+      border-color: hsl(var(--primary-h), var(--primary-s), var(--primary-l));
+    }
+    .input-icon-btn {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      padding: 4px 6px;
+    }
+    .input-icon-btn:hover {
+      color: var(--text-primary);
+    }
+
+    #aiApiBase, #aiModelName {
+      width: 100%;
+      padding: 8px 12px;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-size: 0.85rem;
+      font-family: inherit;
+      outline: none;
+      box-sizing: border-box;
+    }
+    #aiApiBase:focus, #aiModelName:focus {
+      border-color: hsl(var(--primary-h), var(--primary-s), var(--primary-l));
+    }
+
+    .ai-settings-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+    .ai-test-result {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+    }
+
+    .sgc-action-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.03);
+    }
+    .sgc-action-row:last-child { border-bottom: none; }
+    .sgc-action-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 0;
+    }
+    .sgc-action-icon {
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .sgc-action-label {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+    .sgc-action-desc {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+    .sgc-action-row .btn {
+      flex-shrink: 0;
+    }
+
+    .sgc-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .sgc-stat-item {
+      text-align: center;
+      padding: 10px 4px;
+      background: var(--primary-light);
+      border-radius: var(--radius-sm);
+    }
+    .sgc-stat-value {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1.2;
+    }
+    .sgc-stat-label {
+      font-size: 0.68rem;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    .sgc-about {
+      text-align: center;
+      padding: 12px 0 16px;
+    }
+    .sgc-about-logo {
+      font-size: 2.5rem;
+      margin-bottom: 6px;
+      animation: sgcLogoFloat 3s ease-in-out infinite;
+    }
+    @keyframes sgcLogoFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+    .sgc-about-name {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .sgc-about-version {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* ===== 登录页面 ===== */
+    .login-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      backdrop-filter: blur(20px);
+    }
+    .login-overlay::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: 
+        radial-gradient(circle at 30% 20%, hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.15), transparent 50%),
+        radial-gradient(circle at 70% 80%, hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.1), transparent 50%);
+      animation: loginBgFloat 20s ease-in-out infinite;
+    }
+    @keyframes loginBgFloat {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(-2%, 2%); }
+    }
+    .login-card {
+      position: relative;
+      width: 100%;
+      max-width: 380px;
+      padding: 40px 32px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      text-align: center;
+      animation: loginCardIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes loginCardIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .login-logo {
+      font-size: 3rem;
+      margin-bottom: 8px;
+      animation: logoBounce 2s ease-in-out infinite;
+    }
+    @keyframes logoBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-6px); }
+      80% { transform: translateX(6px); }
+    }
+    .login-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .login-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+    .login-form {
+      text-align: left;
+    }
+    .login-input-wrap {
+      position: relative;
+      margin-bottom: 12px;
+    }
+    .login-input-wrap input {
+      width: 100%;
+      padding: 12px 40px 12px 14px;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-sizing: border-box;
+    }
+    .login-input-wrap input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.15);
+    }
+    .login-toggle-pw {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 0.9rem;
+      opacity: 0.6;
+      user-select: none;
+    }
+    .login-toggle-pw:hover {
+      opacity: 1;
+    }
+    .login-error {
+      font-size: 0.75rem;
+      color: var(--color-expense);
+      min-height: 18px;
+      margin-bottom: 4px;
+      text-align: center;
+    }
+    .login-btn {
+      width: 100%;
+      padding: 12px !important;
+      font-size: 0.95rem !important;
+      margin-top: 4px !important;
+    }
+    .login-hint {
+      text-align: center;
+      margin-top: 12px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .login-hint span {
+      cursor: pointer;
+      color: var(--primary);
+    }
+    .login-hint span:hover {
+      text-decoration: underline;
+    }
+    .login-section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 16px 0 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--input-border);
+    }
+    .login-section-title > span:first-child {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .login-section-hint {
+      font-size: 0.7rem !important;
+      color: var(--text-muted) !important;
+      font-weight: normal !important;
+    }
+    .login-select {
+      width: 100%;
+      padding: 12px 14px;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-sizing: border-box;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+    }
+    .login-select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.15);
+    }
+    .login-select option {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+    }
+
+    /* 主题中心 - 安全设置区 */
+    .security-section {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--input-border);
+    }
+    .security-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+    }
+    .security-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .security-icon {
+      font-size: 1.1rem;
+    }
+    .security-label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+    .security-desc {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
   </style>
 </head>
 <body>
+
+  <!-- ===== 登录遮罩层 ===== -->
+  <div class="login-overlay" id="loginOverlay">
+    <div class="login-card">
+      <div class="login-logo">💰</div>
+      <div class="login-title" id="loginTitle">智财管家 · 工资核算</div>
+      <div class="login-subtitle" id="loginSubtitle">请输入密码以解锁应用</div>
+
+      <!-- 登录模式 -->
+      <div class="login-form" id="loginForm">
+        <div class="login-input-wrap">
+          <input type="password" id="loginPassword" placeholder="请输入密码" autocomplete="current-password">
+          <span class="login-toggle-pw" id="toggleLoginPw">👁️</span>
+        </div>
+        <div class="login-error" id="loginError"></div>
+        <button class="btn btn-primary login-btn" id="btnLogin">🔓 解锁</button>
+        <div class="login-hint">
+          <span onclick="showForgotPassword()">忘记密码？</span>
+        </div>
+      </div>
+
+      <!-- 设置密码模式 -->
+      <div class="login-form" id="setupForm" style="display:none;">
+        <div class="login-input-wrap">
+          <input type="password" id="setupPassword1" placeholder="设置新密码（至少6位）" autocomplete="new-password">
+        </div>
+        <div class="login-input-wrap">
+          <input type="password" id="setupPassword2" placeholder="再次输入密码" autocomplete="new-password">
+        </div>
+        <div class="login-section-title">
+          <span>🛡️ 设置密保问题（可选）</span>
+          <span class="login-section-hint">忘记密码时可通过密保问题找回</span>
+        </div>
+        <div class="login-input-wrap">
+          <select id="setupSecurityQuestion" class="login-select">
+            <option value="">请选择密保问题</option>
+            <option value="您的小学名称是？">您的小学名称是？</option>
+            <option value="您的出生地是？">您的出生地是？</option>
+            <option value="您母亲的姓名是？">您母亲的姓名是？</option>
+            <option value="您父亲的姓名是？">您父亲的姓名是？</option>
+            <option value="您的第一只宠物叫什么？">您的第一只宠物叫什么？</option>
+            <option value="您的车牌号是？">您的车牌号是？</option>
+            <option value="您最喜欢的颜色是？">您最喜欢的颜色是？</option>
+          </select>
+        </div>
+        <div class="login-input-wrap">
+          <input type="text" id="setupSecurityAnswer" placeholder="请输入密保答案" autocomplete="off">
+        </div>
+        <div class="login-error" id="setupError"></div>
+        <button class="btn btn-primary login-btn" id="btnSetupPassword">✅ 设置密码并进入</button>
+        <div class="login-hint">
+          <span>密码用于保护您的工资数据，请妥善保管</span>
+        </div>
+      </div>
+
+      <!-- 修改密码模式 -->
+      <div class="login-form" id="changeForm" style="display:none;">
+        <div class="login-input-wrap">
+          <input type="password" id="changeOldPassword" placeholder="当前密码" autocomplete="current-password">
+        </div>
+        <div class="login-input-wrap">
+          <input type="password" id="changePassword1" placeholder="新密码（至少6位）" autocomplete="new-password">
+        </div>
+        <div class="login-input-wrap">
+          <input type="password" id="changePassword2" placeholder="再次输入新密码" autocomplete="new-password">
+        </div>
+        <div class="login-error" id="changeError"></div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-ghost login-btn" style="flex:1;" id="btnCancelChange">取消</button>
+          <button class="btn btn-primary login-btn" style="flex:1;" id="btnChangePassword">确认修改</button>
+        </div>
+      </div>
+
+      <!-- 设置/修改密保问题模式 -->
+      <div class="login-form" id="securityQuestionForm" style="display:none;">
+        <div class="login-input-wrap">
+          <input type="password" id="sqVerifyPassword" placeholder="请输入当前密码验证身份" autocomplete="current-password">
+        </div>
+        <div class="login-section-title">
+          <span>🛡️ 密保问题设置</span>
+          <span class="login-section-hint">忘记密码时可通过密保问题找回</span>
+        </div>
+        <div class="login-input-wrap">
+          <select id="sqQuestion" class="login-select">
+            <option value="">请选择密保问题</option>
+            <option value="您的小学名称是？">您的小学名称是？</option>
+            <option value="您的出生地是？">您的出生地是？</option>
+            <option value="您母亲的姓名是？">您母亲的姓名是？</option>
+            <option value="您父亲的姓名是？">您父亲的姓名是？</option>
+            <option value="您的第一只宠物叫什么？">您的第一只宠物叫什么？</option>
+            <option value="您的车牌号是？">您的车牌号是？</option>
+            <option value="您最喜欢的颜色是？">您最喜欢的颜色是？</option>
+          </select>
+        </div>
+        <div class="login-input-wrap">
+          <input type="text" id="sqAnswer" placeholder="请输入密保答案" autocomplete="off">
+        </div>
+        <div class="login-error" id="sqError"></div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-ghost login-btn" style="flex:1;" id="btnCancelSq">取消</button>
+          <button class="btn btn-primary login-btn" style="flex:1;" id="btnSaveSecurityQuestion">保存</button>
+        </div>
+        <div class="login-hint" style="margin-top:10px;">
+          <span onclick="clearSecurityQuestionConfirm()" id="clearSqLink" style="color:var(--color-expense);cursor:pointer;display:none;">清除密保问题</span>
+        </div>
+      </div>
+
+      <!-- 密保问题找回密码 -->
+      <div class="login-form" id="recoverForm" style="display:none;">
+        <div style="background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);border-radius:var(--radius-md);padding:12px;margin-bottom:12px;">
+          <div style="color:var(--color-primary);font-weight:600;font-size:0.85rem;margin-bottom:4px;">🛡️ 通过密保问题找回</div>
+          <div style="font-size:0.75rem;color:var(--text-secondary);line-height:1.6;" id="recoverQuestionText">请回答您预设的密保问题</div>
+        </div>
+        <div class="login-input-wrap">
+          <input type="text" id="recoverAnswer" placeholder="请输入您的答案" autocomplete="off">
+        </div>
+        <div class="login-error" id="recoverError"></div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-ghost login-btn" style="flex:1;" onclick="hideForgotPassword()">返回登录</button>
+          <button class="btn btn-primary login-btn" style="flex:1;" id="btnVerifyAnswer">验证答案</button>
+        </div>
+        <div class="login-hint" style="margin-top:10px;">
+          <span onclick="showLoginMode('reset')" style="color:var(--color-expense);cursor:pointer;">仍无法找回？重置所有数据</span>
+        </div>
+      </div>
+
+      <!-- 密保重置密码 -->
+      <div class="login-form" id="recoverResetForm" style="display:none;">
+        <div class="login-input-wrap">
+          <input type="password" id="recoverNewPassword1" placeholder="设置新密码（至少6位）" autocomplete="new-password">
+        </div>
+        <div class="login-input-wrap">
+          <input type="password" id="recoverNewPassword2" placeholder="再次输入新密码" autocomplete="new-password">
+        </div>
+        <div class="login-error" id="recoverResetError"></div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-ghost login-btn" style="flex:1;" onclick="showForgotPassword()">返回</button>
+          <button class="btn btn-primary login-btn" style="flex:1;" id="btnRecoverResetPassword">确认重置</button>
+        </div>
+      </div>
+
+      <!-- 重置密码确认 -->
+      <div class="login-form" id="resetForm" style="display:none;">
+        <div style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:var(--radius-md);padding:12px;margin-bottom:12px;">
+          <div style="color:var(--color-expense);font-weight:600;font-size:0.85rem;margin-bottom:4px;">⚠️ 重置将清除所有数据</div>
+          <div style="font-size:0.75rem;color:var(--text-secondary);line-height:1.6;">未设置密保问题或无法回答时，重置后所有工资记录、加班数据、参数设置将被清空，此操作不可撤销。</div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-ghost login-btn" style="flex:1;" onclick="hideForgotPassword()">返回登录</button>
+          <button class="btn login-btn" style="flex:1;background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;" id="btnResetData">确认重置</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <canvas id="particleCanvas" width="954" height="792"></canvas>
   <div class="glow-orb orb1"></div>
@@ -2541,50 +3182,13 @@
 
   <div class="app-frame">
     
-    <div class="menubar">
-      <div class="menu-item" tabindex="0">文件(F)
-        <div class="menu-dropdown">
-          <div class="menu-dropdown-item" onclick="handleCalculate()">💾 计算并保存<span class="shortcut">Ctrl+Enter</span></div>
-          <div class="menu-dropdown-item" onclick="exportBackup()">📤 导出全量备份<span class="shortcut">Ctrl+Shift+S</span></div>
-          <div class="menu-separator"></div>
-          <div class="menu-dropdown-item" onclick="document.getElementById('btnReset').click()">🔄 重置当前月<span class="shortcut"></span></div>
-        </div>
-      </div>
-      <div class="menu-item" tabindex="0">编辑(E)
-        <div class="menu-dropdown">
-          <div class="menu-dropdown-item" onclick="document.getElementById('btnImportData').click()">📥 导入数据<span class="shortcut">Ctrl+O</span></div>
-          <div class="menu-dropdown-item" onclick="copySalarySlip()">📋 复制工资条<span class="shortcut">Ctrl+C</span></div>
-        </div>
-      </div>
-      <div class="menu-item" tabindex="0">视图(V)
-        <div class="menu-dropdown">
-          <div class="menu-dropdown-item" onclick="switchThemeMode()">🌗 切换明暗主题<span class="shortcut">Ctrl+T</span></div>
-          <div class="menu-dropdown-item" onclick="toggleSidebar()">📂 切换侧边栏<span class="shortcut">Ctrl+B</span></div>
-        </div>
-      </div>
-      <div class="menu-item" tabindex="0">帮助(H)
-        <div class="menu-dropdown">
-          <div class="menu-dropdown-item" onclick="showToast('📋 智财管家 v6.2.0 | 快捷键: Ctrl+Enter 计算, Ctrl+1/2/3/4 切换标签')">ℹ️ 关于<span class="shortcut"></span></div>
-        </div>
-      </div>
-      <div style="margin-left:auto;display:flex;align-items:center;gap:8px;font-size:0.75rem;color:var(--text-secondary);">
-        <div class="global-month-picker" style="display:flex;align-items:center;gap:4px;">
-          <button onclick="window.switchMonth(-1)" style="background:transparent;border:none;cursor:pointer;color:var(--text-secondary);font-size:0.85rem;padding:2px 6px;border-radius:4px;" aria-label="上一月">‹</button>
-          <span id="menubarMonthLabel" style="cursor:pointer;font-weight:600;color:var(--text-primary);min-width:70px;text-align:center;" title="点击选择月份">2026年9月</span>
-          <button onclick="window.switchMonth(1)" style="background:transparent;border:none;cursor:pointer;color:var(--text-secondary);font-size:0.85rem;padding:2px 6px;border-radius:4px;" aria-label="下一月">›</button>
-        </div>
-        <input type="month" id="globalMonthPickerInput" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none;">
-        <span class="statusbar-separator"></span>
-        <span id="menubarNet" style="display:flex;align-items:center;gap:4px;">💵 实发 <strong style="color:var(--color-income);" id="menubarNetVal">未计算</strong></span>
-      </div>
-    </div>
     <div class="app-body">
       <aside class="sidebar">
         <div class="sidebar-header">
           <div class="sidebar-brand">
             <span>📋</span>
             <span>智财管家</span>
-            <span class="sidebar-version">v6.2.0</span>
+            <span class="sidebar-version">v6.3.0</span>
           </div>
           <div class="sidebar-subtitle">工资核算 · 计时模式</div>
         </div>
@@ -2594,15 +3198,17 @@
           <button class="nav-btn" data-tab="salary" aria-label="工资数据"><span class="tab-icon">📊</span><span>工资数据</span></button>
         </nav>
         <div class="sidebar-footer">
-          <div>💾 数据本地存储</div>
-          <div style="margin-top:2px;">Ctrl+Enter 快速计算</div>
           <div class="sidebar-footer-actions">
-            <button class="nav-btn sidebar-secondary-btn" data-tab="theme" aria-label="主题与外观">
-              <span class="tab-icon">🎨</span><span>主题外观</span>
+            <button class="nav-btn sidebar-secondary-btn" data-tab="theme" aria-label="应用设置">
+              <span class="tab-icon">⚙️</span><span>应用设置</span>
             </button>
             <button class="nav-btn sidebar-secondary-btn" id="btnChangelog" aria-label="更新日志">
               <span class="tab-icon">📜</span><span>更新日志</span>
             </button>
+          </div>
+          <div style="margin-top:8px;text-align:center;">
+            <div style="font-size:0.75rem;color:var(--text-muted);">💾 数据本地存储</div>
+            <div style="font-size:0.7rem;color:var(--text-muted);opacity:0.8;margin-top:2px;">Ctrl+Enter 快速计算</div>
           </div>
         </div>
       </aside>
@@ -2615,7 +3221,7 @@
         <div class="brand" style="position:relative;">
           <span class="brand-icon">📋</span>
           <span>智财管家</span>
-          <span class="version">v6.2.0</span>
+          <span class="version">v6.3.0</span>
         </div>
         <div class="subtitle">工资核算 · 计时模式 <span class="badge" style="background:var(--primary);color:#fff;">⚡ 专业版</span></div>
       </div>
@@ -2736,6 +3342,11 @@
                 <div class="preview-row"><span class="pr-label">社保</span><span class="pr-value negative" id="previewSI">¥0.00</span></div>
                 <div class="preview-row"><span class="pr-label">公积金</span><span class="pr-value negative" id="previewHF">¥0.00</span></div>
                 <div class="preview-row"><span class="pr-label">个税</span><span class="pr-value negative" id="previewTax">¥0.00</span></div>
+                <div id="taxSummaryWrap" style="display:none;padding:8px 10px;margin:4px 0;background:var(--hover-bg);border-radius:8px;font-size:0.78rem;color:var(--text-secondary);line-height:1.6;">
+                  <div style="display:flex;justify-content:space-between;"><span>累计应纳税所得额</span><span style="color:var(--text-primary);font-weight:600;" id="taxSumCumulative">¥0.00</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>适用税率档</span><span style="color:var(--primary);font-weight:600;" id="taxSumRate">3%</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>累计已缴税额</span><span style="color:var(--text-primary);" id="taxSumPrev">¥0.00</span></div>
+                </div>
                 <div class="preview-total"><span class="pt-label">💵 实发工资</span><span class="pt-value" id="previewNet">¥0.00</span></div>
               </div>
             </aside>
@@ -2838,6 +3449,13 @@
           </div>
         </div>
         <div class="card-body">
+          <div id="insightCard" style="display:none;margin-bottom:14px;padding:12px 14px;background:linear-gradient(135deg, hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.08), hsla(var(--secondary-h), var(--secondary-s), var(--secondary-l), 0.06));border:1px solid hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.15);border-radius:12px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+              <span style="font-size:1rem;">✨</span>
+              <span style="font-weight:700;font-size:0.9rem;color:var(--primary);">智能洞察</span>
+            </div>
+            <div id="insightContent" style="font-size:0.8rem;color:var(--text-secondary);line-height:1.7;"></div>
+          </div>
           <div id="annualSummaryContent"><div class="empty-state"><div class="empty-icon">📭</div><div class="empty-text">暂无数据</div><div class="empty-hint">前往「设置」页计算并保存第一条工资记录</div></div></div>
           <div style="margin-top:4px;text-align:center;"><button class="btn btn-sm btn-ghost" id="toggleAnnualHistory">📋 展开明细</button></div>
           <div id="annualHistoryContainer" style="margin-top:6px;display:none;"></div>
@@ -2851,160 +3469,318 @@
             <button class="btn btn-sm btn-outline" id="btnExportSalaryJSON">💾 导出JSON</button>
             <button class="btn btn-sm btn-outline" id="btnExportBackup">🗂️ 全量备份</button>
             <button class="btn btn-sm btn-outline" id="btnImportSalary">📥 导入单条</button>
-            <button class="btn btn-sm btn-export" id="btnExportAllMonthsExcel" style="background: linear-gradient(135deg, #10b981, #059669);">💾 导出全部数据备份</button>
-            <button class="btn btn-sm btn-primary" id="btnImportBackup">📥 导入全量备份</button>
           </div>
         </div>
       </div>
     </div>
 
 
-    <!-- ===== 主题中心面板 ===== -->
+    <!-- ===== 应用设置面板 ===== -->
     <div class="tab-panel" id="tab-theme">
       <div class="card visible">
-        <div class="card-header">🎨 主题中心 <span class="badge">个性化</span></div>
+        <div class="card-header">⚙️ 应用设置</div>
         <div class="card-body">
 
-          <!-- 预览卡片 -->
-          <div class="theme-preview-card">
-            <div class="preview-title">✨ 实时预览</div>
-            <div class="preview-sample">
-              <div class="preview-sample-item">
-                <div class="ps-label">底薪</div>
-                <div class="ps-value">¥8,500</div>
-                <div class="ps-bar"><div class="ps-bar-inner"></div></div>
-              </div>
-              <div class="preview-sample-item">
-                <div class="ps-label">加班费</div>
-                <div class="ps-value">¥1,200</div>
-                <div class="ps-bar"><div class="ps-bar-inner" style="width:40%"></div></div>
-              </div>
-              <div class="preview-sample-item">
-                <div class="ps-label">实发</div>
-                <div class="ps-value" style="color:var(--color-income)">¥7,890</div>
-                <div class="ps-bar"><div class="ps-bar-inner" style="width:80%"></div></div>
-              </div>
-            </div>
-          </div>
+          <div class="settings-page-grid">
 
-          <!-- 外观模式 -->
-          <div class="section-title" style="margin-top:0;cursor:default;"><span>🌗 外观模式</span></div>
-          <div class="theme-mode-grid">
-            <div class="theme-mode-option active" data-mode="dark" id="modeDark">
-              <span class="mode-icon">🌙</span>
-              <span class="mode-label">深色</span>
-              <span class="mode-hint">护眼沉浸</span>
-            </div>
-            <div class="theme-mode-option" data-mode="light" id="modeLight">
-              <span class="mode-icon">☀️</span>
-              <span class="mode-label">浅色</span>
-              <span class="mode-hint">清晰明亮</span>
-            </div>
-            <div class="theme-mode-option" data-mode="auto" id="modeAuto">
-              <span class="mode-icon">🌓</span>
-              <span class="mode-label">跟随系统</span>
-              <span class="mode-hint">自动切换</span>
-            </div>
-          </div>
+            <!-- 外观设置卡片 -->
+            <div class="settings-group-card">
+              <div class="sgc-title">🎨 外观设置</div>
 
-          <!-- 强调色 -->
-          <div class="section-title" style="cursor:default;"><span>🎨 强调色</span></div>
-          <div class="accent-color-grid">
-            <div class="accent-color-option active" data-accent="purple" style="--ac-preview:#8b5cf6;">
-              <div class="ac-swatch"></div>
-              <span class="ac-label">紫韵</span>
-            </div>
-            <div class="accent-color-option" data-accent="cyan" style="--ac-preview:#06b6d4;">
-              <div class="ac-swatch"></div>
-              <span class="ac-label">青岚</span>
-            </div>
-            <div class="accent-color-option" data-accent="pink" style="--ac-preview:#ec4899;">
-              <div class="ac-swatch"></div>
-              <span class="ac-label">桃夭</span>
-            </div>
-            <div class="accent-color-option" data-accent="blue" style="--ac-preview:#3b82f6;">
-              <div class="ac-swatch"></div>
-              <span class="ac-label">蔚蓝</span>
-            </div>
-            <div class="accent-color-option" data-accent="green" style="--ac-preview:#10b981;">
-              <div class="ac-swatch"></div>
-              <span class="ac-label">翠微</span>
-            </div>
-            <div class="accent-color-option" data-accent="orange" style="--ac-preview:#f59e0b;">
-              <div class="ac-swatch"></div>
-              <span class="ac-label">橘颂</span>
-            </div>
-          </div>
-
-          <!-- 视觉效果 -->
-          <div class="section-title" style="cursor:default;"><span>✨ 视觉效果</span></div>
-          <div class="theme-toggle-list">
-            <div class="theme-toggle-row">
-              <div class="theme-toggle-info">
-                <span class="tt-icon">🔮</span>
-                <div>
-                  <div class="tt-label">粒子背景</div>
-                  <div class="tt-hint">动态粒子连线效果</div>
+              <!-- 外观模式 -->
+              <div class="sgc-subtitle">🌗 外观模式</div>
+              <div class="theme-mode-grid">
+                <div class="theme-mode-option active" data-mode="dark" id="modeDark">
+                  <span class="mode-icon">🌙</span>
+                  <span class="mode-label">深色</span>
+                  <span class="mode-hint">护眼沉浸</span>
+                </div>
+                <div class="theme-mode-option" data-mode="light" id="modeLight">
+                  <span class="mode-icon">☀️</span>
+                  <span class="mode-label">浅色</span>
+                  <span class="mode-hint">清晰明亮</span>
+                </div>
+                <div class="theme-mode-option" data-mode="auto" id="modeAuto">
+                  <span class="mode-icon">🌓</span>
+                  <span class="mode-label">跟随系统</span>
+                  <span class="mode-hint">自动切换</span>
                 </div>
               </div>
-              <label class="theme-switch">
-                <input type="checkbox" id="toggleParticles" checked="">
-                <span class="theme-switch-slider"></span>
-              </label>
-            </div>
-            <div class="theme-toggle-row">
-              <div class="theme-toggle-info">
-                <span class="tt-icon">🫧</span>
-                <div>
-                  <div class="tt-label">光晕装饰</div>
-                  <div class="tt-hint">背景浮动光晕球</div>
-                </div>
-              </div>
-              <label class="theme-switch">
-                <input type="checkbox" id="toggleOrbs" checked="">
-                <span class="theme-switch-slider"></span>
-              </label>
-            </div>
-            <div class="theme-toggle-row">
-              <div class="theme-toggle-info">
-                <span class="tt-icon">📐</span>
-                <div>
-                  <div class="tt-label">网格纹理</div>
-                  <div class="tt-hint">背景网格线装饰</div>
-                </div>
-              </div>
-              <label class="theme-switch">
-                <input type="checkbox" id="toggleGrid" checked="">
-                <span class="theme-switch-slider"></span>
-              </label>
-            </div>
-            <div class="theme-toggle-row">
-              <div class="theme-toggle-info">
-                <span class="tt-icon">🎬</span>
-                <div>
-                  <div class="tt-label">入场动画</div>
-                  <div class="tt-hint">卡片滑入缩放效果</div>
-                </div>
-              </div>
-              <label class="theme-switch">
-                <input type="checkbox" id="toggleAnimations" checked="">
-                <span class="theme-switch-slider"></span>
-              </label>
-            </div>
-          </div>
 
-          <!-- 字体大小 -->
-          <div class="section-title" style="cursor:default;"><span>🔤 字体大小</span></div>
-          <div class="font-size-slider-wrap">
-            <span class="fs-label-small">A</span>
-            <input type="range" id="fontSizeSlider" min="0.85" max="1.15" step="0.05" value="1" class="font-size-slider">
-            <span class="fs-label-large">A</span>
+              <!-- 强调色 -->
+              <div class="sgc-subtitle">🎨 强调色</div>
+              <div class="accent-color-grid">
+                <div class="accent-color-option active" data-accent="purple" style="--ac-preview:#8b5cf6;">
+                  <div class="ac-swatch"></div>
+                  <span class="ac-label">紫韵</span>
+                </div>
+                <div class="accent-color-option" data-accent="cyan" style="--ac-preview:#06b6d4;">
+                  <div class="ac-swatch"></div>
+                  <span class="ac-label">青岚</span>
+                </div>
+                <div class="accent-color-option" data-accent="pink" style="--ac-preview:#ec4899;">
+                  <div class="ac-swatch"></div>
+                  <span class="ac-label">桃夭</span>
+                </div>
+                <div class="accent-color-option" data-accent="blue" style="--ac-preview:#3b82f6;">
+                  <div class="ac-swatch"></div>
+                  <span class="ac-label">蔚蓝</span>
+                </div>
+                <div class="accent-color-option" data-accent="green" style="--ac-preview:#10b981;">
+                  <div class="ac-swatch"></div>
+                  <span class="ac-label">翠微</span>
+                </div>
+                <div class="accent-color-option" data-accent="orange" style="--ac-preview:#f59e0b;">
+                  <div class="ac-swatch"></div>
+                  <span class="ac-label">橘颂</span>
+                </div>
+              </div>
+
+              <!-- 视觉效果 -->
+              <div class="sgc-subtitle">✨ 视觉效果</div>
+              <div class="theme-toggle-list">
+                <div class="theme-toggle-row">
+                  <div class="theme-toggle-info">
+                    <span class="tt-icon">🔮</span>
+                    <div>
+                      <div class="tt-label">粒子背景</div>
+                      <div class="tt-hint">动态粒子连线效果</div>
+                    </div>
+                  </div>
+                  <label class="theme-switch">
+                    <input type="checkbox" id="toggleParticles" checked="">
+                    <span class="theme-switch-slider"></span>
+                  </label>
+                </div>
+                <div class="theme-toggle-row">
+                  <div class="theme-toggle-info">
+                    <span class="tt-icon">🫧</span>
+                    <div>
+                      <div class="tt-label">光晕装饰</div>
+                      <div class="tt-hint">背景浮动光晕球</div>
+                    </div>
+                  </div>
+                  <label class="theme-switch">
+                    <input type="checkbox" id="toggleOrbs" checked="">
+                    <span class="theme-switch-slider"></span>
+                  </label>
+                </div>
+                <div class="theme-toggle-row">
+                  <div class="theme-toggle-info">
+                    <span class="tt-icon">📐</span>
+                    <div>
+                      <div class="tt-label">网格纹理</div>
+                      <div class="tt-hint">背景网格线装饰</div>
+                    </div>
+                  </div>
+                  <label class="theme-switch">
+                    <input type="checkbox" id="toggleGrid" checked="">
+                    <span class="theme-switch-slider"></span>
+                  </label>
+                </div>
+                <div class="theme-toggle-row">
+                  <div class="theme-toggle-info">
+                    <span class="tt-icon">🎬</span>
+                    <div>
+                      <div class="tt-label">入场动画</div>
+                      <div class="tt-hint">卡片滑入缩放效果</div>
+                    </div>
+                  </div>
+                  <label class="theme-switch">
+                    <input type="checkbox" id="toggleAnimations" checked="">
+                    <span class="theme-switch-slider"></span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- 字体大小 -->
+              <div class="sgc-subtitle">🔤 字体大小</div>
+              <div class="font-size-slider-wrap">
+                <span class="fs-label-small">A</span>
+                <input type="range" id="fontSizeSlider" min="0.85" max="1.15" step="0.05" value="1" class="font-size-slider">
+                <span class="fs-label-large">A</span>
+              </div>
+              <div style="text-align:center;font-size:0.75rem;color:var(--text-muted);margin-top:4px;">当前缩放: <strong id="fontSizeValue">100%</strong></div>
+            </div>
+
+            <!-- 安全设置卡片 -->
+            <div class="settings-group-card">
+              <div class="sgc-title">🔒 安全设置</div>
+
+              <div class="sgc-action-row">
+                <div class="sgc-action-info">
+                  <span class="sgc-action-icon">🔐</span>
+                  <div>
+                    <div class="sgc-action-label">应用密码</div>
+                    <div class="sgc-action-desc" id="securityPwStatus">已设置密码保护</div>
+                  </div>
+                </div>
+                <button class="btn btn-sm btn-outline" id="btnChangePw">修改密码</button>
+              </div>
+
+              <div class="sgc-action-row">
+                <div class="sgc-action-info">
+                  <span class="sgc-action-icon">🛡️</span>
+                  <div>
+                    <div class="sgc-action-label">密保问题</div>
+                    <div class="sgc-action-desc" id="securityQuestionStatus">未设置密保问题</div>
+                  </div>
+                </div>
+                <button class="btn btn-sm btn-outline" id="btnManageSecurityQuestion">设置</button>
+              </div>
+
+              <div class="sgc-action-row">
+                <div class="sgc-action-info">
+                  <span class="sgc-action-icon">🗑️</span>
+                  <div>
+                    <div class="sgc-action-label">重置应用</div>
+                    <div class="sgc-action-desc">清除所有数据并恢复初始状态</div>
+                  </div>
+                </div>
+                <button class="btn btn-sm btn-outline" id="btnResetApp" style="color:var(--color-expense);border-color:rgba(239,68,68,0.3);">重置</button>
+              </div>
+            </div>
+
+            <!-- 数据管理卡片 -->
+            <div class="settings-group-card">
+              <div class="sgc-title">📦 数据管理</div>
+
+              <div class="sgc-stats-grid">
+                <div class="sgc-stat-item">
+                  <div class="sgc-stat-value" id="statHistoryCount">0</div>
+                  <div class="sgc-stat-label">工资记录</div>
+                </div>
+                <div class="sgc-stat-item">
+                  <div class="sgc-stat-value" id="statOvertimeCount">0</div>
+                  <div class="sgc-stat-label">加班月份</div>
+                </div>
+                <div class="sgc-stat-item">
+                  <div class="sgc-stat-value" id="statCustomCount">0</div>
+                  <div class="sgc-stat-label">自定义项</div>
+                </div>
+              </div>
+
+              <div class="sgc-action-row">
+                <div class="sgc-action-info">
+                  <span class="sgc-action-icon">💾</span>
+                  <div>
+                    <div class="sgc-action-label">导出全部数据备份</div>
+                    <div class="sgc-action-desc">导出工资、加班、参数等完整数据</div>
+                  </div>
+                </div>
+                <button class="btn btn-sm btn-export" id="btnSettingsExportBackup" style="background:linear-gradient(135deg,#10b981,#059669);">导出</button>
+              </div>
+
+              <div class="sgc-action-row">
+                <div class="sgc-action-info">
+                  <span class="sgc-action-icon">📥</span>
+                  <div>
+                    <div class="sgc-action-label">导入全量备份</div>
+                    <div class="sgc-action-desc">从备份文件恢复全部数据</div>
+                  </div>
+                </div>
+                <button class="btn btn-sm btn-primary" id="btnSettingsImportBackup">导入</button>
+              </div>
+            </div>
+
+            <!-- 关于卡片 -->
+            <div class="settings-group-card">
+              <div class="sgc-title">ℹ️ 关于应用</div>
+
+              <div class="sgc-about">
+                <div class="sgc-about-logo">💰</div>
+                <div class="sgc-about-name">智财管家 · 工资核算</div>
+                <div class="sgc-about-version" id="aboutVersion">v1.0.0</div>
+              </div>
+
+              <div class="sgc-action-row">
+                <div class="sgc-action-info">
+                  <span class="sgc-action-icon">📜</span>
+                  <div>
+                    <div class="sgc-action-label">更新日志</div>
+                    <div class="sgc-action-desc">查看版本更新记录</div>
+                  </div>
+                </div>
+                <button class="btn btn-sm btn-outline" id="btnSettingsChangelog">查看</button>
+              </div>
+
+              <div class="sgc-action-row">
+                <div class="sgc-action-info">
+                  <span class="sgc-action-icon">💾</span>
+                  <div>
+                    <div class="sgc-action-label">数据存储</div>
+                    <div class="sgc-action-desc">所有数据仅保存在本地设备</div>
+                  </div>
+                </div>
+                <span style="font-size:0.7rem;color:var(--color-income);">本地存储</span>
+              </div>
+            </div>
+
+            <!-- AI 大模型设置卡片 -->
+            <div class="settings-group-card settings-card-wide">
+              <div class="sgc-title">🤖 AI 大模型设置</div>
+              <div class="sgc-desc">配置大模型 API 后，AI 助手将使用真实大模型进行智能分析。API Key 仅保存在本地，不会上传。</div>
+
+              <div class="ai-settings-row">
+                <div class="ai-settings-col">
+                  <div class="sgc-subtitle">🔌 服务提供商</div>
+                  <div class="ai-provider-grid">
+                    <button class="btn btn-sm btn-outline ai-provider-btn active" data-provider="doubao">
+                      <span class="prov-icon">🫘</span>
+                      <span class="prov-name">豆包</span>
+                      <span class="prov-desc">字节跳动</span>
+                    </button>
+                    <button class="btn btn-sm btn-outline ai-provider-btn" data-provider="qwen">
+                      <span class="prov-icon">🤖</span>
+                      <span class="prov-name">通义千问</span>
+                      <span class="prov-desc">阿里</span>
+                    </button>
+                    <button class="btn btn-sm btn-outline ai-provider-btn" data-provider="deepseek">
+                      <span class="prov-icon">🔍</span>
+                      <span class="prov-name">DeepSeek</span>
+                      <span class="prov-desc">深度求索</span>
+                    </button>
+                    <button class="btn btn-sm btn-outline ai-provider-btn" data-provider="moonshot">
+                      <span class="prov-icon">🌙</span>
+                      <span class="prov-name">月之暗面</span>
+                      <span class="prov-desc">Kimi</span>
+                    </button>
+                    <button class="btn btn-sm btn-outline ai-provider-btn" data-provider="openai">
+                      <span class="prov-icon">⚙️</span>
+                      <span class="prov-name">自定义</span>
+                      <span class="prov-desc">OpenAI 兼容</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="ai-settings-col">
+                  <div class="sgc-subtitle">🔑 API Key</div>
+                  <div class="input-with-icon">
+                    <input type="password" id="aiApiKey" placeholder="请输入 API Key">
+                    <button id="toggleAiKey" class="input-icon-btn" type="button">👁️</button>
+                  </div>
+
+                  <div class="sgc-subtitle" style="margin-top:12px;">🌐 API 地址</div>
+                  <input type="text" id="aiApiBase" placeholder="https://ark.cn-beijing.volces.com/api/v3">
+
+                  <div class="sgc-subtitle" style="margin-top:12px;">🧠 模型名称</div>
+                  <input type="text" id="aiModelName" placeholder="doubao-1-5-pro-32k-250115">
+
+                  <div class="ai-settings-actions">
+                    <button class="btn btn-primary" id="btnSaveAiSettings">💾 保存设置</button>
+                    <button class="btn btn-outline" id="btnTestAiApi">🧪 测试连接</button>
+                    <span id="aiTestResult" class="ai-test-result"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
-          <div style="text-align:center;font-size:0.75rem;color:var(--text-muted);margin-top:4px;">当前缩放: <strong id="fontSizeValue">100%</strong></div>
 
           <div style="margin-top:16px;text-align:center;">
             <button class="btn btn-outline" id="btnResetTheme" style="width:100%;max-width:200px;">🔄 恢复默认主题</button>
           </div>
+
         </div>
       </div>
     </div>
@@ -3112,6 +3888,17 @@
     </div>
   </div>
 
+  <!-- 计税详情弹窗 -->
+  <div class="modal-overlay" id="taxDetailOverlay">
+    <div class="modal-box" style="max-width:520px;text-align:left;">
+      <h3 style="font-size:1.1rem;margin-bottom:4px;text-align:center;">🧮 计税详情</h3>
+      <p style="font-size:0.8rem;color:var(--text-secondary);text-align:center;margin-bottom:14px;" id="taxDetailMonth"></p>
+      <div id="taxDetailContent" style="font-size:0.85rem;line-height:1.8;"></div>
+      <div class="modal-actions" style="margin-top:16px;">
+        <button class="btn btn-ghost" id="taxDetailCloseBtn">关闭</button>
+      </div>
+    </div>
+  </div>
 
 <script>
     // ============================================================
@@ -3127,12 +3914,31 @@
     });
     (function() {
       "use strict";
-      var APP_VERSION = '6.2.0';
-      var APP_VERSION_INT = 620;
+      var APP_VERSION = '7.0.0';
+      var APP_VERSION_INT = 700;
 
 
       var $ = function(id) { return document.getElementById(id); };
       var roundToCent = function(v) { return Math.round((v || 0) * 100) / 100; };
+
+      // 数字滚动动画
+      function animateNumber(el, from, to, duration, prefix, suffix) {
+        if (!el) return;
+        prefix = prefix || '';
+        suffix = suffix || '';
+        duration = duration || 600;
+        from = from || 0;
+        var start = performance.now();
+        function step(now) {
+          var progress = Math.min((now - start) / duration, 1);
+          // easeOutCubic
+          var eased = 1 - Math.pow(1 - progress, 3);
+          var val = from + (to - from) * eased;
+          el.textContent = prefix + val.toFixed(2) + suffix;
+          if (progress < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      }
       var getLocalDateString = function(d) {
         d = d || new Date();
         return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
@@ -3451,11 +4257,43 @@
         if ($('previewGross')) $('previewGross').textContent = '¥' + grossPay.toFixed(2);
         if ($('previewSI')) $('previewSI').textContent = '¥' + socialInsurance.toFixed(2);
         if ($('previewHF')) $('previewHF').textContent = '¥' + housingFund.toFixed(2);
-        if ($('previewTax')) $('previewTax').textContent = '¥' + tax.toFixed(2);
-        if ($('previewNet')) $('previewNet').textContent = '¥' + netPay.toFixed(2);
-        if ($('mobilePreviewNet')) $('mobilePreviewNet').textContent = '¥' + netPay.toFixed(2);
-        // 预览数字闪烁动画
-        document.querySelectorAll('.preview-row .pr-value, .preview-total .pt-value').forEach(function(el) {
+        if ($('previewTax')) {
+          var prevTaxText = parseFloat($('previewTax').textContent.replace(/[^\d.-]/g, '')) || 0;
+          animateNumber($('previewTax'), prevTaxText, tax, 500, '¥');
+        }
+        // 计税摘要
+        var taxWrap = $('taxSummaryWrap');
+        if (taxWrap) {
+          if (tax > 0 || taxResult.cumulativeTaxable > 0) {
+            taxWrap.style.display = 'block';
+            if ($('taxSumCumulative')) $('taxSumCumulative').textContent = '¥' + taxResult.cumulativeTaxable.toFixed(2);
+            if ($('taxSumPrev')) $('taxSumPrev').textContent = '¥' + taxResult.prevTax.toFixed(2);
+            if ($('taxSumRate')) {
+              var ct = taxResult.cumulativeTaxable;
+              var rateStr = '3%';
+              if (ct > 960000) rateStr = '45%';
+              else if (ct > 660000) rateStr = '35%';
+              else if (ct > 420000) rateStr = '30%';
+              else if (ct > 300000) rateStr = '25%';
+              else if (ct > 144000) rateStr = '20%';
+              else if (ct > 36000) rateStr = '10%';
+              $('taxSumRate').textContent = rateStr;
+            }
+          } else {
+            taxWrap.style.display = 'none';
+          }
+        }
+        if ($('previewNet')) {
+          var prevNetText = parseFloat($('previewNet').textContent.replace(/[^\d.-]/g, '')) || 0;
+          animateNumber($('previewNet'), prevNetText, netPay, 700, '¥');
+        }
+        if ($('mobilePreviewNet')) {
+          var prevMobileNet = parseFloat($('mobilePreviewNet').textContent.replace(/[^\d.-]/g, '')) || 0;
+          animateNumber($('mobilePreviewNet'), prevMobileNet, netPay, 600, '¥');
+        }
+        // 预览数字闪烁动画（次要数字）
+        document.querySelectorAll('.preview-row .pr-value').forEach(function(el) {
+          if (el.id === 'previewTax' || el.id === 'previewNet') return;
           el.classList.add('flash');
           setTimeout(function() { el.classList.remove('flash'); }, 200);
         });
@@ -3659,41 +4497,46 @@
       // ============================================================
       // 累计预扣法个税计算（中国个人所得税法）
       // ============================================================
+      function calcTaxByRate(cumulativeTaxable) {
+        if (cumulativeTaxable <= 0) return 0;
+        var tax = 0;
+        if (cumulativeTaxable <= 36000) tax = cumulativeTaxable * 0.03;
+        else if (cumulativeTaxable <= 144000) tax = cumulativeTaxable * 0.10 - 2520;
+        else if (cumulativeTaxable <= 300000) tax = cumulativeTaxable * 0.20 - 16920;
+        else if (cumulativeTaxable <= 420000) tax = cumulativeTaxable * 0.25 - 31920;
+        else if (cumulativeTaxable <= 660000) tax = cumulativeTaxable * 0.30 - 52920;
+        else if (cumulativeTaxable <= 960000) tax = cumulativeTaxable * 0.35 - 85920;
+        else tax = cumulativeTaxable * 0.45 - 181920;
+        return Math.max(0, tax);
+      }
+
       function calcCumulativeTax(monthKey, grossPay, si, hf, od, specialDeduct, threshold) {
         var parsed = parseMonthKey(monthKey);
         if (!parsed) return { tax: 0, cumulativeTaxable: 0, cumulativeTax: 0, prevTax: 0 };
         var year = parsed.year, month = parsed.month;
         var recs = storage.history || {};
         var cumulativeTaxable = 0;
-        var prevTax = 0;
+        var prevCumulativeTaxable = 0;
 
         for (var m = 1; m <= month; m++) {
           var mk = year + '-' + String(m).padStart(2, '0');
           if (m === month) {
             var taxable = grossPay - si - hf - od - specialDeduct - threshold;
-            cumulativeTaxable += Math.max(0, taxable);
+            cumulativeTaxable += taxable;
           } else {
             var rec = recs[mk];
             if (rec) {
               var prevSD = calcTotalSpecialDeduction(rec.deductionsDetail || {});
               var prevTaxable = (rec.grossPay || 0) - (rec.socialInsurance || 0) - (rec.housingFund || 0) - (rec.otherDeduction || 0) - prevSD - threshold;
-              cumulativeTaxable += Math.max(0, prevTaxable);
-              prevTax += (rec.tax || 0);
+              cumulativeTaxable += prevTaxable;
+              prevCumulativeTaxable = cumulativeTaxable;
             }
           }
         }
 
-        var cumulativeTax = 0;
-        if (cumulativeTaxable > 0) {
-          if (cumulativeTaxable <= 36000) cumulativeTax = cumulativeTaxable * 0.03;
-          else if (cumulativeTaxable <= 144000) cumulativeTax = cumulativeTaxable * 0.10 - 2520;
-          else if (cumulativeTaxable <= 300000) cumulativeTax = cumulativeTaxable * 0.20 - 16920;
-          else if (cumulativeTaxable <= 420000) cumulativeTax = cumulativeTaxable * 0.25 - 31920;
-          else if (cumulativeTaxable <= 660000) cumulativeTax = cumulativeTaxable * 0.30 - 52920;
-          else if (cumulativeTaxable <= 960000) cumulativeTax = cumulativeTaxable * 0.35 - 85920;
-          else cumulativeTax = cumulativeTaxable * 0.45 - 181920;
-          cumulativeTax = Math.max(0, cumulativeTax);
-        }
+        // 用税率表统一计算累计税额，避免历史存储税额不一致
+        var cumulativeTax = calcTaxByRate(cumulativeTaxable);
+        var prevTax = calcTaxByRate(prevCumulativeTaxable);
 
         var currentTax = Math.max(0, roundToCent(cumulativeTax - prevTax));
         return {
@@ -4472,6 +5315,32 @@
           '<div style="font-size:1rem;font-weight:700;color:' + momColor + ';">' + momGrowth + '</div></div>' +
           '</div>';
 
+        // 年度收入预测
+        var currentMonth = parseInt(yearKeys[yearKeys.length - 1].split('-')[1]);
+        var monthsLeft = 12 - currentMonth;
+        if (monthsLeft > 0) {
+          var projGross = roundToCent(sumGross + avgGross * monthsLeft);
+          var projNet = roundToCent(sumNet + avgNet * monthsLeft);
+          // 预估全年个税：用累计预扣法推算
+          var lastCumTaxable = lastRec.cumulativeTaxable || 0;
+          var monthlyTaxable = avgGross - (sumSI / monthCount) - (sumHF / monthCount) - 0 - 0 - (getSettings().taxThreshold || 5000);
+          var projCumTaxable = lastCumTaxable + monthlyTaxable * monthsLeft;
+          var projTotalTax = calcTaxByRate(projCumTaxable);
+          // 已缴税额 + 推算剩余税额
+          var projTax = roundToCent(projTotalTax - (lastRec.cumulativeTax - lastRec.tax));
+          html += '<div style="margin-top:12px;padding:12px;background:linear-gradient(135deg, hsla(var(--secondary-h), var(--secondary-s), var(--secondary-l), 0.08), hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.06));border:1px solid hsla(var(--secondary-h), var(--secondary-s), var(--secondary-l), 0.15);border-radius:12px;">' +
+            '<div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">' +
+            '<span>🔮</span><span style="font-weight:700;font-size:0.85rem;color:var(--secondary);">全年预测（基于月均推算）</span>' +
+            '</div>' +
+            '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center;">' +
+            '<div><div style="font-size:0.65rem;color:var(--text-secondary);">预计应发</div><div style="font-size:0.85rem;font-weight:700;color:var(--text-primary);">¥' + projGross.toFixed(0) + '</div></div>' +
+            '<div><div style="font-size:0.65rem;color:var(--text-secondary);">预计个税</div><div style="font-size:0.85rem;font-weight:700;color:var(--color-expense);">¥' + Math.max(0, projTax).toFixed(0) + '</div></div>' +
+            '<div><div style="font-size:0.65rem;color:var(--text-secondary);">预计实发</div><div style="font-size:0.85rem;font-weight:700;color:var(--color-income);">¥' + projNet.toFixed(0) + '</div></div>' +
+            '</div>' +
+            '<div style="font-size:0.65rem;color:var(--text-muted);text-align:center;margin-top:6px;">剩余 ' + monthsLeft + ' 个月 · 仅供参考</div>' +
+            '</div>';
+        }
+
         // ===== 数据可视化：SVG 图表 =====
         html += '<div class="annual-charts" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;">';
         // 1. 月度实发趋势折线图
@@ -4546,7 +5415,83 @@
           '</div></div>';
 
         container.innerHTML = html;
+        // 生成智能洞察
+        generateInsights(year, recs, yearKeys);
         renderAnnualHistory(year, recs);
+      }
+
+      // ---- 智能洞察 ----
+      function generateInsights(year, recs, yearKeys) {
+        var card = $('insightCard');
+        var content = $('insightContent');
+        if (!card || !content) return;
+        if (yearKeys.length < 2) { card.style.display = 'none'; return; }
+
+        var insights = [];
+
+        // 1. 最高/最低收入月
+        var maxNet = 0, maxNetMonth = '', minNet = Infinity, minNetMonth = '';
+        yearKeys.forEach(function(k) {
+          var n = recs[k].netPay || 0;
+          if (n > maxNet) { maxNet = n; maxNetMonth = k.split('-')[1]; }
+          if (n < minNet && n > 0) { minNet = n; minNetMonth = k.split('-')[1]; }
+        });
+        if (maxNetMonth && minNetMonth && maxNetMonth !== minNetMonth) {
+          var diff = ((maxNet - minNet) / minNet * 100).toFixed(0);
+          insights.push('📈 ' + maxNetMonth + '月收入最高（¥' + maxNet.toFixed(0) + '），比最低的' + minNetMonth + '月高出 ' + diff + '%');
+        }
+
+        // 2. 税率档位变化检测
+        var lastKey = yearKeys[yearKeys.length - 1];
+        var lastRec = recs[lastKey];
+        var lastCumTaxable = lastRec.cumulativeTaxable || 0;
+        var curRate = '3%';
+        var prevRate = '3%';
+        if (lastCumTaxable > 36000) {
+          curRate = '10%';
+          // 检查上个月是否还在3%档
+          if (yearKeys.length >= 2) {
+            var prevKey = yearKeys[yearKeys.length - 2];
+            var prevCum = recs[prevKey]?.cumulativeTaxable || 0;
+            if (prevCum <= 36000) {
+              insights.push('⚠️ 本月起累计应纳税所得额已超 3.6 万，税率从 3% 跨入 10% 档，个税明显增加');
+            }
+          }
+        }
+        if (lastCumTaxable > 144000 && curRate === '10%') {
+          curRate = '20%';
+          if (yearKeys.length >= 2) {
+            var prevKey2 = yearKeys[yearKeys.length - 2];
+            var prevCum2 = recs[prevKey2]?.cumulativeTaxable || 0;
+            if (prevCum2 <= 144000) {
+              insights.push('⚠️ 本月累计应纳税所得额已超 14.4 万，税率跨入 20% 档');
+            }
+          }
+        }
+
+        // 3. 月均收入
+        var sumNet = 0;
+        yearKeys.forEach(function(k) { sumNet += recs[k].netPay || 0; });
+        var avgNet = sumNet / yearKeys.length;
+        insights.push('📊 月均实发 ¥' + avgNet.toFixed(0) + '，年度预计到手约 ¥' + (avgNet * 12).toFixed(0));
+
+        // 4. 加班费占比最高的月
+        var maxOTMonth = '', maxOTRatio = 0;
+        yearKeys.forEach(function(k) {
+          var ot = recs[k].totalOvertimePay || 0;
+          var gross = recs[k].grossPay || 0;
+          if (gross > 0) {
+            var ratio = ot / gross;
+            if (ratio > maxOTRatio) { maxOTRatio = ratio; maxOTMonth = k.split('-')[1]; }
+          }
+        });
+        if (maxOTMonth && maxOTRatio > 0.15) {
+          insights.push('💪 ' + maxOTMonth + '月加班费占比最高，达 ' + (maxOTRatio * 100).toFixed(0) + '%');
+        }
+
+        if (insights.length === 0) { card.style.display = 'none'; return; }
+        content.innerHTML = insights.map(function(i) { return '<div>' + i + '</div>'; }).join('');
+        card.style.display = 'block';
       }
 
       function renderAnnualHistory(year, recs) {
@@ -4559,7 +5504,7 @@
         yearKeys.forEach(function(k) {
           var r = recs[k];
           var monthNum = k.split('-')[1];
-          tableHtml += '<tr><td>' + monthNum + '月</td><td>¥' + (r.baseSalary || 0).toFixed(2) + '</td><td>¥' + (r.totalOvertimePay || 0).toFixed(2) + '</td><td>¥' + (r.otherIncome || 0).toFixed(2) + '</td><td>¥' + (r.customTotal || 0).toFixed(2) + '</td><td>¥' + (r.grossPay || 0).toFixed(2) + '</td><td>¥' + (r.socialInsurance || 0).toFixed(2) + '</td><td>¥' + (r.housingFund || 0).toFixed(2) + '</td><td class="tax">¥' + (r.tax || 0).toFixed(2) + '</td><td class="net-pay">¥' + (r.netPay || 0).toFixed(2) + '</td><td><button class="delete-record-btn" data-del="' + k + '">✕</button></td></tr>';
+          tableHtml += '<tr><td>' + monthNum + '月</td><td>¥' + (r.baseSalary || 0).toFixed(2) + '</td><td>¥' + (r.totalOvertimePay || 0).toFixed(2) + '</td><td>¥' + (r.otherIncome || 0).toFixed(2) + '</td><td>¥' + (r.customTotal || 0).toFixed(2) + '</td><td>¥' + (r.grossPay || 0).toFixed(2) + '</td><td>¥' + (r.socialInsurance || 0).toFixed(2) + '</td><td>¥' + (r.housingFund || 0).toFixed(2) + '</td><td class="tax"><span class="tax-detail-link" data-tax-detail="' + k + '" title="点击查看计税详情">¥' + (r.tax || 0).toFixed(2) + '</span></td><td class="net-pay">¥' + (r.netPay || 0).toFixed(2) + '</td><td><button class="delete-record-btn" data-del="' + k + '">✕</button></td></tr>';
           cardHtml += '<div class="salary-card">' +
             '<div class="sc-month">' + monthNum + '月</div>' +
             '<div class="sc-net">¥' + (r.netPay || 0).toFixed(2) + '</div>' +
@@ -4591,6 +5536,127 @@
             }
           });
         });
+        container.querySelectorAll('.tax-detail-link').forEach(function(el) {
+          el.addEventListener('click', function() {
+            var mk = this.dataset.taxDetail;
+            if (mk) showTaxDetail(mk);
+          });
+        });
+      }
+
+      // ---- 计税详情弹窗 ----
+      function showTaxDetail(monthKey) {
+        var parsed = parseMonthKey(monthKey);
+        if (!parsed) return;
+        var year = parsed.year, month = parsed.month;
+        var recs = storage.history || {};
+        var rec = recs[monthKey];
+        if (!rec) { showToast('未找到该月记录'); return; }
+
+        var settings = getSettings();
+        var threshold = settings.taxThreshold || 5000;
+        var sd = calcTotalSpecialDeduction(rec.deductionsDetail || {});
+
+        // 当月应纳税所得额
+        var monthlyTaxable = (rec.grossPay || 0) - (rec.socialInsurance || 0) - (rec.housingFund || 0) - (rec.otherDeduction || 0) - sd - threshold;
+
+        // 累计计算
+        var cumulativeTaxable = 0;
+        var monthlyBreakdown = [];
+        for (var m = 1; m <= month; m++) {
+          var mk = year + '-' + String(m).padStart(2, '0');
+          var r = recs[mk];
+          if (!r && m !== month) continue;
+          var g, si, hf, od, s;
+          if (m === month) {
+            g = rec.grossPay || 0; si = rec.socialInsurance || 0; hf = rec.housingFund || 0;
+            od = rec.otherDeduction || 0; s = sd;
+          } else {
+            g = r.grossPay || 0; si = r.socialInsurance || 0; hf = r.housingFund || 0;
+            od = r.otherDeduction || 0; s = calcTotalSpecialDeduction(r.deductionsDetail || {});
+          }
+          var t = g - si - hf - od - s - threshold;
+          cumulativeTaxable += t;
+          var cumTax = calcTaxByRate(cumulativeTaxable);
+          monthlyBreakdown.push({ m: m, gross: g, si: si, hf: hf, od: od, sd: s, taxable: t, cumTaxable: cumulativeTaxable, cumTax: cumTax, monthTax: 0 });
+        }
+        // 计算每月当月税额
+        for (var i = 0; i < monthlyBreakdown.length; i++) {
+          var prev = i > 0 ? monthlyBreakdown[i - 1].cumTax : 0;
+          monthlyBreakdown[i].monthTax = Math.max(0, roundToCent(monthlyBreakdown[i].cumTax - prev));
+        }
+
+        var curIdx = monthlyBreakdown.length - 1;
+        var curData = monthlyBreakdown[curIdx];
+        var ct = curData.cumTaxable;
+        var rateStr = '3%', deductStr = '0';
+        if (ct > 960000) { rateStr = '45%'; deductStr = '181,920'; }
+        else if (ct > 660000) { rateStr = '35%'; deductStr = '85,920'; }
+        else if (ct > 420000) { rateStr = '30%'; deductStr = '52,920'; }
+        else if (ct > 300000) { rateStr = '25%'; deductStr = '31,920'; }
+        else if (ct > 144000) { rateStr = '20%'; deductStr = '16,920'; }
+        else if (ct > 36000) { rateStr = '10%'; deductStr = '2,520'; }
+
+        var prevTax = curIdx > 0 ? monthlyBreakdown[curIdx - 1].cumTax : 0;
+
+        // 构建HTML
+        var fmt = function(v) { return '¥' + (v || 0).toFixed(2); };
+        var html = '';
+
+        // 当月计税要素
+        html += '<div style="background:var(--hover-bg);border-radius:10px;padding:12px;margin-bottom:12px;">';
+        html += '<div style="font-weight:700;font-size:0.9rem;margin-bottom:8px;color:var(--primary);">📋 当月计税要素</div>';
+        html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;">';
+        html += '<div>应发工资</div><div style="text-align:right;font-weight:600;">' + fmt(rec.grossPay) + '</div>';
+        html += '<div>社保</div><div style="text-align:right;color:var(--color-expense);">-' + fmt(rec.socialInsurance) + '</div>';
+        html += '<div>公积金</div><div style="text-align:right;color:var(--color-expense);">-' + fmt(rec.housingFund) + '</div>';
+        html += '<div>其他扣除</div><div style="text-align:right;color:var(--color-expense);">-' + fmt(rec.otherDeduction) + '</div>';
+        html += '<div>专项附加扣除</div><div style="text-align:right;color:var(--color-expense);">-' + fmt(sd) + '</div>';
+        html += '<div>起征点（减除费用）</div><div style="text-align:right;color:var(--color-expense);">-' + fmt(threshold) + '</div>';
+        html += '</div>';
+        html += '<div style="border-top:1px solid var(--card-border);margin-top:8px;padding-top:8px;display:flex;justify-content:space-between;font-weight:700;">';
+        html += '<span>当月应纳税所得额</span><span style="color:' + (monthlyTaxable > 0 ? 'var(--color-income)' : 'var(--color-expense)') + ';">' + fmt(monthlyTaxable) + '</span>';
+        html += '</div>';
+        html += '</div>';
+
+        // 累计预扣计算
+        html += '<div style="background:var(--hover-bg);border-radius:10px;padding:12px;margin-bottom:12px;">';
+        html += '<div style="font-weight:700;font-size:0.9rem;margin-bottom:8px;color:var(--primary);">📊 累计预扣计算</div>';
+        html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;">';
+        html += '<div>累计应纳税所得额</div><div style="text-align:right;font-weight:600;color:var(--primary);">' + fmt(ct) + '</div>';
+        html += '<div>适用税率</div><div style="text-align:right;font-weight:600;color:var(--primary);">' + rateStr + '</div>';
+        html += '<div>速算扣除数</div><div style="text-align:right;">¥' + deductStr + '</div>';
+        html += '<div>累计应纳税额</div><div style="text-align:right;font-weight:600;">' + fmt(curData.cumTax) + '</div>';
+        html += '<div>累计已缴税额</div><div style="text-align:right;color:var(--color-expense);">' + fmt(prevTax) + '</div>';
+        html += '</div>';
+        html += '<div style="border-top:1px solid var(--card-border);margin-top:8px;padding-top:8px;display:flex;justify-content:space-between;font-weight:700;">';
+        html += '<span>当月应缴税额</span><span style="color:var(--color-expense);font-size:1.05rem;">' + fmt(curData.monthTax) + '</span>';
+        html += '</div>';
+        html += '</div>';
+
+        // 月度明细表
+        if (monthlyBreakdown.length > 1) {
+          html += '<div style="background:var(--hover-bg);border-radius:10px;padding:12px;">';
+          html += '<div style="font-weight:700;font-size:0.9rem;margin-bottom:8px;color:var(--primary);">📅 月度累计明细</div>';
+          html += '<table style="width:100%;font-size:0.75rem;border-collapse:collapse;">';
+          html += '<thead><tr style="border-bottom:1px solid var(--card-border);"><th style="padding:4px;text-align:left;">月</th><th style="padding:4px;text-align:right;">应纳税所得</th><th style="padding:4px;text-align:right;">累计</th><th style="padding:4px;text-align:right;">当月税</th></tr></thead><tbody>';
+          monthlyBreakdown.forEach(function(mb, idx) {
+            var isCur = idx === curIdx;
+            html += '<tr style="' + (isCur ? 'font-weight:700;color:var(--primary);' : '') + 'border-bottom:1px solid rgba(0,0,0,0.03);">';
+            html += '<td style="padding:4px;">' + mb.m + '月' + (isCur ? ' ◀' : '') + '</td>';
+            html += '<td style="padding:4px;text-align:right;">' + fmt(mb.taxable) + '</td>';
+            html += '<td style="padding:4px;text-align:right;">' + fmt(mb.cumTaxable) + '</td>';
+            html += '<td style="padding:4px;text-align:right;color:var(--color-expense);">' + fmt(mb.monthTax) + '</td>';
+            html += '</tr>';
+          });
+          html += '</tbody></table>';
+          html += '</div>';
+        }
+
+        // 填充
+        if ($('taxDetailMonth')) $('taxDetailMonth').textContent = year + '年' + month + '月 · 累计预扣法';
+        if ($('taxDetailContent')) $('taxDetailContent').innerHTML = html;
+        if ($('taxDetailOverlay')) $('taxDetailOverlay').classList.add('active');
       }
 
       // ---- 加班导出 ----
@@ -5567,6 +6633,54 @@
 
       var CHANGELOG_DATA = [
         {
+          version: '7.0.0',
+          date: '2026-09-05',
+          highlights: ['AI引擎全面升级', '大模型API接入', '多意图智能识别', '上下文追问', '应用设置重构', '供应商选择器'],
+          details: [
+            '🧠 AI 助手引擎全面升级，从简单正则匹配升级为多意图评分系统',
+            '🎯 新增实体提取能力，自动识别问题中的月份、数量、时间词（"3月"、"近3个月"、"上个月"）',
+            '💬 新增上下文追问支持，问完"税为什么高"后再问"上个月呢"能理解话题延续',
+            '🔌 新增大模型 API 接入，支持豆包、通义千问、DeepSeek、月之暗面、OpenAI 兼容五大平台',
+            '⚙️ 应用设置新增「AI 大模型设置」卡片，可视化配置提供商、API Key、模型名称',
+            '🎨 提供商选择器卡片化设计，带图标+名称+说明，选中高亮效果',
+            '📐 收入构成分析新增文本条形图，直观展示到手比例和有效税率',
+            '📊 月度对比分析功能，支持任意两月逐项对比并自动分析差异原因',
+            '🏥 社保公积金分析功能，展示扣除占比、环比变化、偏低预警',
+            '💰 工资明细查询功能，完整展示工资条结构',
+            '📈 全年预估升级为累计预扣法精确估算，考虑税率跳档影响',
+            '🔄 大模型调用失败时自动回退到本地规则分析，确保可用性',
+            '🔐 API Key 仅保存在本地 localStorage，数据安全有保障',
+            '🧪 新增 API 连接测试功能，一键验证配置是否正确',
+            '✨ 应用设置页面布局重构，数据管理与关于应用并列，AI 设置跨全列展示',
+          ]
+        },
+        {
+          version: '6.3.0',
+          date: '2026-09-05',
+          highlights: ['密码保护功能', '密保问题找回', '应用设置中心', '数据备份管理', 'AI智能助手', '玻璃拟态UI', '智能洞察分析', '个税详情弹窗'],
+          details: [
+            '🤖 新增 AI 智能助手，支持自然语言查询工资数据、税务规则、节税建议、收入趋势分析',
+            '🔒 新增应用密码保护功能，使用 SHA-256 + salt 加密存储',
+            '🛡️ 新增密保问题找回密码机制，忘记密码无需清空所有数据',
+            '❓ 首次设置密码后智能提示用户配置密保问题',
+            '⚙️ 主题外观升级为「应用设置」，整合外观、安全、数据、关于四大分组卡片',
+            '📦 数据备份/恢复功能迁移至应用设置-数据管理页面',
+            '📊 数据管理新增统计展示：工资记录数、加班月份数、自定义项数',
+            '🗑️ 移除顶部菜单栏（文件/编辑/视图/帮助），功能入口全部下沉到页面内',
+            '🧹 移除顶部月份选择器和实发金额显示，精简界面元素',
+            '🔑 安全设置支持修改密码、管理密保问题、重置应用',
+            '💎 全新玻璃拟态（Glassmorphism）设计语言，卡片毛玻璃质感',
+            '🔮 新增浮动光晕背景动画，梦幻科技感十足',
+            '🔢 计算结果数字滚动动画，视觉效果更生动',
+            '💡 工资数据页新增智能洞察卡片，自动分析税档跨级、收入对比、加班占比',
+            '📈 年度汇总新增全年收入预测（基于月均推算）',
+            '🔍 个税金额支持点击查看计税详情弹窗，展示累计预扣计算过程',
+            '🐛 修复负数应纳税所得额被截断为零导致后续月份税额计算错误',
+            '🐛 修复个税读取存储值而非重新计算导致的数据不一致',
+            '💡 优化整体布局和视觉层次，内容区域更加聚焦'
+          ]
+        },
+        {
           version: '6.2.0',
           date: '2026-09-04',
           highlights: ['导航架构重构', '工具栏精简', '设置页分组卡片化', '年度数据可视化', '设计令牌系统', '可访问性改进', '布局宽度优化'],
@@ -5654,6 +6768,8 @@
       function showChangelog() {
         var container = $('changelogContent');
         if (!container) return;
+        var badge = $('changelogVersionBadge');
+        if (badge) badge.textContent = 'v' + APP_VERSION;
         var html = '';
         CHANGELOG_DATA.forEach(function(item, idx) {
           var isLatest = idx === 0;
@@ -5883,12 +6999,1536 @@
       }
 
 
-      
+      // ============================================================
+      // 登录与密码保护
+      // ============================================================
+      var PASSWORD_HASH_KEY = 'app_password_hash_v1';
+      var PASSWORD_SALT_KEY = 'app_password_salt_v1';
+      var SECURITY_QUESTION_KEY = 'app_security_question_v1';
+      var SECURITY_ANSWER_KEY = 'app_security_answer_v1';
+      var _appUnlocked = false;
+
+      // SHA-256 哈希
+      async function hashPassword(password, salt) {
+        var encoder = new TextEncoder();
+        var data = encoder.encode(salt + ':' + password);
+        var hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        var hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
+      }
+
+      function generateSalt() {
+        var arr = new Uint8Array(16);
+        crypto.getRandomValues(arr);
+        return Array.from(arr).map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
+      }
+
+      function hasPasswordSet() {
+        try {
+          return !!localStorage.getItem(PASSWORD_HASH_KEY);
+        } catch (e) { return false; }
+      }
+
+      async function verifyPassword(password) {
+        try {
+          var hash = localStorage.getItem(PASSWORD_HASH_KEY);
+          var salt = localStorage.getItem(PASSWORD_SALT_KEY) || '';
+          if (!hash) return false;
+          var inputHash = await hashPassword(password, salt);
+          return inputHash === hash;
+        } catch (e) { return false; }
+      }
+
+      async function setNewPassword(password) {
+        try {
+          var salt = generateSalt();
+          var hash = await hashPassword(password, salt);
+          localStorage.setItem(PASSWORD_HASH_KEY, hash);
+          localStorage.setItem(PASSWORD_SALT_KEY, salt);
+          return true;
+        } catch (e) { return false; }
+      }
+
+      // 密保问题相关
+      function hasSecurityQuestion() {
+        try {
+          return !!localStorage.getItem(SECURITY_QUESTION_KEY) && !!localStorage.getItem(SECURITY_ANSWER_KEY);
+        } catch (e) { return false; }
+      }
+
+      function getSecurityQuestion() {
+        try {
+          return localStorage.getItem(SECURITY_QUESTION_KEY) || '';
+        } catch (e) { return ''; }
+      }
+
+      async function verifySecurityAnswer(answer) {
+        try {
+          var storedAnswer = localStorage.getItem(SECURITY_ANSWER_KEY);
+          if (!storedAnswer) return false;
+          var salt = localStorage.getItem(PASSWORD_SALT_KEY) || 'security-salt';
+          var inputHash = await hashPassword(answer.trim(), salt + '_security');
+          return inputHash === storedAnswer;
+        } catch (e) { return false; }
+      }
+
+      async function setSecurityQuestion(question, answer) {
+        try {
+          var salt = localStorage.getItem(PASSWORD_SALT_KEY) || generateSalt();
+          var answerHash = await hashPassword(answer.trim(), salt + '_security');
+          localStorage.setItem(SECURITY_QUESTION_KEY, question);
+          localStorage.setItem(SECURITY_ANSWER_KEY, answerHash);
+          return true;
+        } catch (e) { return false; }
+      }
+
+      function clearSecurityQuestion() {
+        try {
+          localStorage.removeItem(SECURITY_QUESTION_KEY);
+          localStorage.removeItem(SECURITY_ANSWER_KEY);
+          return true;
+        } catch (e) { return false; }
+      }
+
+      function clearAllData() {
+        try {
+          Object.keys(STORAGE_META).forEach(function(cat) {
+            var meta = STORAGE_META[cat];
+            localStorage.removeItem(meta.key);
+            storage[cat] = JSON.parse(JSON.stringify(meta.default));
+          });
+          localStorage.removeItem(CUSTOM_ITEMS_KEY);
+          customItems = [];
+          localStorage.removeItem(PASSWORD_HASH_KEY);
+          localStorage.removeItem(PASSWORD_SALT_KEY);
+          localStorage.removeItem(SECURITY_QUESTION_KEY);
+          localStorage.removeItem(SECURITY_ANSWER_KEY);
+          localStorage.removeItem(HOLIDAY_CACHE_KEY);
+          localStorage.removeItem(THEME_CONFIG_KEY);
+          return true;
+        } catch (e) { return false; }
+      }
+
+      // 切换登录表单模式
+      function showLoginMode(mode) {
+        ['loginForm', 'setupForm', 'changeForm', 'resetForm', 'recoverForm', 'recoverResetForm', 'securityQuestionForm'].forEach(function(id) {
+          var el = $(id);
+          if (el) el.style.display = 'none';
+        });
+        var titleEl = $('loginTitle');
+        var subEl = $('loginSubtitle');
+        if (mode === 'login') {
+          $('loginForm').style.display = '';
+          if (titleEl) titleEl.textContent = '智财管家 · 工资核算';
+          if (subEl) subEl.textContent = '请输入密码以解锁应用';
+        } else if (mode === 'setup') {
+          $('setupForm').style.display = '';
+          if (titleEl) titleEl.textContent = '欢迎使用';
+          if (subEl) subEl.textContent = '设置一个密码以保护您的数据';
+        } else if (mode === 'change') {
+          $('changeForm').style.display = '';
+          if (titleEl) titleEl.textContent = '修改密码';
+          if (subEl) subEl.textContent = '请输入当前密码和新密码';
+        } else if (mode === 'reset') {
+          $('resetForm').style.display = '';
+          if (titleEl) titleEl.textContent = '重置应用';
+          if (subEl) subEl.textContent = '忘记密码？重置将清除所有数据';
+        } else if (mode === 'recover') {
+          $('recoverForm').style.display = '';
+          if (titleEl) titleEl.textContent = '找回密码';
+          if (subEl) subEl.textContent = '请回答您的密保问题';
+        } else if (mode === 'recoverReset') {
+          $('recoverResetForm').style.display = '';
+          if (titleEl) titleEl.textContent = '重置密码';
+          if (subEl) subEl.textContent = '请设置新密码';
+        } else if (mode === 'securityQuestion') {
+          $('securityQuestionForm').style.display = '';
+          if (titleEl) titleEl.textContent = '密保问题设置';
+          if (subEl) subEl.textContent = '设置或修改您的密保问题';
+        }
+        // 清空错误提示和输入框
+        ['loginError', 'setupError', 'changeError', 'recoverError', 'recoverResetError', 'sqError'].forEach(function(id) {
+          if ($(id)) $(id).textContent = '';
+        });
+      }
+
+      // 登录操作
+      async function doLogin() {
+        var pw = $('loginPassword')?.value || '';
+        if (!pw) {
+          $('loginError').textContent = '请输入密码';
+          return;
+        }
+        var ok = await verifyPassword(pw);
+        if (ok) {
+          unlockApp();
+        } else {
+          $('loginError').textContent = '密码错误，请重试';
+          $('loginPassword').value = '';
+          $('loginPassword').focus();
+          // 抖动效果
+          var card = document.querySelector('.login-card');
+          if (card) {
+            card.style.animation = 'none';
+            card.offsetHeight;
+            card.style.animation = 'shake 0.4s';
+          }
+        }
+      }
+
+      // 设置密码操作
+      async function doSetupPassword() {
+        var pw1 = $('setupPassword1')?.value || '';
+        var pw2 = $('setupPassword2')?.value || '';
+        var sq = $('setupSecurityQuestion')?.value || '';
+        var sa = $('setupSecurityAnswer')?.value || '';
+        if (pw1.length < 6) {
+          $('setupError').textContent = '密码至少需要 6 位';
+          return;
+        }
+        if (pw1 !== pw2) {
+          $('setupError').textContent = '两次输入的密码不一致';
+          return;
+        }
+        // 如果选择了密保问题但没填答案
+        if (sq && !sa.trim()) {
+          $('setupError').textContent = '请输入密保问题的答案';
+          return;
+        }
+        // 如果填了答案但没选问题
+        if (sa.trim() && !sq) {
+          $('setupError').textContent = '请选择密保问题';
+          return;
+        }
+        var ok = await setNewPassword(pw1);
+        if (ok) {
+          // 如果设置了密保问题，保存
+          if (sq && sa.trim()) {
+            await setSecurityQuestion(sq, sa.trim());
+            unlockApp();
+            showToast('✅ 密码设置成功');
+          } else {
+            // 没有设置密保问题，提示用户去设置
+            if (confirm('密码设置成功！\n\n建议您设置一个密保问题，忘记密码时可以通过密保问题找回，无需清空所有数据。\n\n是否现在去设置密保问题？')) {
+              // 先标记为已解锁，这样取消时也能正常进入应用
+              _appUnlocked = true;
+              // 切换到密保问题设置界面
+              showLoginMode('securityQuestion');
+              $('sqVerifyPassword').value = pw1;
+              $('sqQuestion').value = '';
+              $('sqAnswer').value = '';
+              if ($('clearSqLink')) $('clearSqLink').style.display = 'none';
+              $('sqQuestion').focus();
+            } else {
+              unlockApp();
+              showToast('✅ 密码设置成功');
+            }
+          }
+        } else {
+          $('setupError').textContent = '设置失败，请重试';
+        }
+      }
+
+      // 修改密码操作
+      async function doChangePassword() {
+        var oldPw = $('changeOldPassword')?.value || '';
+        var pw1 = $('changePassword1')?.value || '';
+        var pw2 = $('changePassword2')?.value || '';
+        if (!oldPw) {
+          $('changeError').textContent = '请输入当前密码';
+          return;
+        }
+        if (pw1.length < 6) {
+          $('changeError').textContent = '新密码至少需要 6 位';
+          return;
+        }
+        if (pw1 !== pw2) {
+          $('changeError').textContent = '两次输入的新密码不一致';
+          return;
+        }
+        var correct = await verifyPassword(oldPw);
+        if (!correct) {
+          $('changeError').textContent = '当前密码错误';
+          return;
+        }
+        var ok = await setNewPassword(pw1);
+        if (ok) {
+          $('loginOverlay').style.display = 'none';
+          _appUnlocked = true;
+          showToast('✅ 密码修改成功');
+          // 清空输入框
+          $('changeOldPassword').value = '';
+          $('changePassword1').value = '';
+          $('changePassword2').value = '';
+        } else {
+          $('changeError').textContent = '修改失败，请重试';
+        }
+      }
+
+      // 重置数据
+      function doResetData() {
+        if (!confirm('确定要重置所有数据吗？此操作不可撤销！')) return;
+        var ok = clearAllData();
+        if (ok) {
+          showToast('✅ 数据已重置，请重新设置密码');
+          // 重置后显示设置密码界面
+          showLoginMode('setup');
+          $('setupPassword1').value = '';
+          $('setupPassword2').value = '';
+        } else {
+          showToast('❌ 重置失败');
+        }
+      }
+
+      function showForgotPassword() {
+        if (hasSecurityQuestion()) {
+          // 有密保问题，显示密保找回界面
+          var q = getSecurityQuestion();
+          if ($('recoverQuestionText')) {
+            $('recoverQuestionText').textContent = q;
+          }
+          showLoginMode('recover');
+          $('recoverAnswer').value = '';
+          setTimeout(function() { $('recoverAnswer')?.focus(); }, 100);
+        } else {
+          // 没有密保问题，直接显示重置界面
+          showLoginMode('reset');
+        }
+      }
+      function hideForgotPassword() {
+        showLoginMode('login');
+      }
+
+      // 验证密保答案
+      async function doVerifySecurityAnswer() {
+        var answer = $('recoverAnswer')?.value || '';
+        if (!answer.trim()) {
+          $('recoverError').textContent = '请输入密保答案';
+          return;
+        }
+        var ok = await verifySecurityAnswer(answer);
+        if (ok) {
+          // 验证通过，进入重置密码界面
+          showLoginMode('recoverReset');
+          $('recoverNewPassword1').value = '';
+          $('recoverNewPassword2').value = '';
+          setTimeout(function() { $('recoverNewPassword1')?.focus(); }, 100);
+        } else {
+          $('recoverError').textContent = '答案错误，请重试';
+          $('recoverAnswer').value = '';
+          $('recoverAnswer').focus();
+          // 抖动效果
+          var card = document.querySelector('.login-card');
+          if (card) {
+            card.style.animation = 'none';
+            card.offsetHeight;
+            card.style.animation = 'shake 0.4s';
+          }
+        }
+      }
+
+      // 通过密保问题重置密码
+      async function doRecoverResetPassword() {
+        var pw1 = $('recoverNewPassword1')?.value || '';
+        var pw2 = $('recoverNewPassword2')?.value || '';
+        if (pw1.length < 6) {
+          $('recoverResetError').textContent = '新密码至少需要 6 位';
+          return;
+        }
+        if (pw1 !== pw2) {
+          $('recoverResetError').textContent = '两次输入的密码不一致';
+          return;
+        }
+        var ok = await setNewPassword(pw1);
+        if (ok) {
+          showToast('✅ 密码重置成功，请用新密码登录');
+          showLoginMode('login');
+          $('loginPassword').value = '';
+          setTimeout(function() { $('loginPassword')?.focus(); }, 100);
+        } else {
+          $('recoverResetError').textContent = '重置失败，请重试';
+        }
+      }
+      // 暴露到全局供 HTML 内联事件使用
+      window.showForgotPassword = showForgotPassword;
+      window.hideForgotPassword = hideForgotPassword;
+      window.showLoginMode = showLoginMode;
+      window.clearSecurityQuestionConfirm = clearSecurityQuestionConfirm;
+
+      // 打开修改密码（在应用内，从主题中心调用）
+      function openChangePassword() {
+        if (!$('loginOverlay')) return;
+        $('loginOverlay').style.display = 'flex';
+        showLoginMode('change');
+        $('changeOldPassword').value = '';
+        $('changePassword1').value = '';
+        $('changePassword2').value = '';
+        $('changeOldPassword').focus();
+      }
+
+      // 打开密保问题设置（在应用内，从主题中心调用）
+      function openSecurityQuestionSettings() {
+        if (!$('loginOverlay')) return;
+        $('loginOverlay').style.display = 'flex';
+        showLoginMode('securityQuestion');
+        $('sqVerifyPassword').value = '';
+        $('sqQuestion').value = '';
+        $('sqAnswer').value = '';
+        // 如果已有密保问题，预填充问题
+        if (hasSecurityQuestion()) {
+          $('sqQuestion').value = getSecurityQuestion();
+          if ($('clearSqLink')) $('clearSqLink').style.display = '';
+        } else {
+          if ($('clearSqLink')) $('clearSqLink').style.display = 'none';
+        }
+        $('sqVerifyPassword').focus();
+      }
+
+      // 保存密保问题
+      async function doSaveSecurityQuestion() {
+        var verifyPw = $('sqVerifyPassword')?.value || '';
+        var question = $('sqQuestion')?.value || '';
+        var answer = $('sqAnswer')?.value || '';
+        if (!verifyPw) {
+          $('sqError').textContent = '请输入当前密码验证身份';
+          return;
+        }
+        var correct = await verifyPassword(verifyPw);
+        if (!correct) {
+          $('sqError').textContent = '当前密码错误';
+          return;
+        }
+        if (!question) {
+          $('sqError').textContent = '请选择密保问题';
+          return;
+        }
+        if (!answer.trim()) {
+          $('sqError').textContent = '请输入密保答案';
+          return;
+        }
+        var ok = await setSecurityQuestion(question, answer.trim());
+        if (ok) {
+          $('loginOverlay').style.display = 'none';
+          showToast('✅ 密保问题设置成功');
+          // 更新设置页面显示
+          updateSecuritySettingsStatus();
+        } else {
+          $('sqError').textContent = '设置失败，请重试';
+        }
+      }
+
+      // 清除密保问题确认
+      function clearSecurityQuestionConfirm() {
+        if (!confirm('确定要清除密保问题吗？清除后忘记密码时将无法通过密保问题找回。')) return;
+        var ok = clearSecurityQuestion();
+        if (ok) {
+          showToast('✅ 密保问题已清除');
+          $('loginOverlay').style.display = 'none';
+          updateSecuritySettingsStatus();
+        }
+      }
+
+      // 更新安全设置状态显示
+      function updateSecuritySettingsStatus() {
+        if ($('securityPwStatus')) {
+          $('securityPwStatus').textContent = hasPasswordSet() ? '已设置密码保护' : '未设置密码';
+        }
+        if ($('securityQuestionStatus') && $('btnManageSecurityQuestion')) {
+          if (hasSecurityQuestion()) {
+            $('securityQuestionStatus').textContent = '已设置：' + getSecurityQuestion();
+            $('btnManageSecurityQuestion').textContent = '修改';
+          } else {
+            $('securityQuestionStatus').textContent = '未设置密保问题';
+            $('btnManageSecurityQuestion').textContent = '设置';
+          }
+        }
+      }
+
+      // 解锁应用
+      function unlockApp() {
+        _appUnlocked = true;
+        var overlay = $('loginOverlay');
+        if (overlay) {
+          overlay.style.transition = 'opacity 0.3s ease';
+          overlay.style.opacity = '0';
+          setTimeout(function() {
+            overlay.style.display = 'none';
+            overlay.style.opacity = '1';
+            // 登录成功后显示 AI 助手按钮
+            var fab = $('aiFab');
+            if (fab) {
+              fab.style.display = 'flex';
+              fab.style.animation = 'aiFabIn 0.5s cubic-bezier(0.34,1.56,0.64,1)';
+            }
+          }, 300);
+        }
+      }
+
+      // 初始化登录界面
+      function initLoginScreen() {
+        var overlay = $('loginOverlay');
+        if (!overlay) return;
+
+        // 检查是否已设置密码
+        if (hasPasswordSet()) {
+          showLoginMode('login');
+          setTimeout(function() { $('loginPassword')?.focus(); }, 100);
+        } else {
+          showLoginMode('setup');
+          setTimeout(function() { $('setupPassword1')?.focus(); }, 100);
+        }
+
+        // 登录按钮
+        if ($('btnLogin')) {
+          $('btnLogin').addEventListener('click', doLogin);
+        }
+        // 设置密码按钮
+        if ($('btnSetupPassword')) {
+          $('btnSetupPassword').addEventListener('click', doSetupPassword);
+        }
+        // 修改密码按钮
+        if ($('btnChangePassword')) {
+          $('btnChangePassword').addEventListener('click', doChangePassword);
+        }
+        // 取消修改
+        if ($('btnCancelChange')) {
+          $('btnCancelChange').addEventListener('click', function() {
+            $('loginOverlay').style.display = 'none';
+          });
+        }
+        // 重置数据按钮
+        if ($('btnResetData')) {
+          $('btnResetData').addEventListener('click', doResetData);
+        }
+        // 验证密保答案按钮
+        if ($('btnVerifyAnswer')) {
+          $('btnVerifyAnswer').addEventListener('click', doVerifySecurityAnswer);
+        }
+        // 密保重置密码按钮
+        if ($('btnRecoverResetPassword')) {
+          $('btnRecoverResetPassword').addEventListener('click', doRecoverResetPassword);
+        }
+        // 保存密保问题按钮
+        if ($('btnSaveSecurityQuestion')) {
+          $('btnSaveSecurityQuestion').addEventListener('click', doSaveSecurityQuestion);
+        }
+        // 取消密保问题设置
+        if ($('btnCancelSq')) {
+          $('btnCancelSq').addEventListener('click', function() {
+            $('loginOverlay').style.display = 'none';
+          });
+        }
+
+        // 密码显示切换
+        if ($('toggleLoginPw')) {
+          $('toggleLoginPw').addEventListener('click', function() {
+            var input = $('loginPassword');
+            if (!input) return;
+            if (input.type === 'password') {
+              input.type = 'text';
+              this.textContent = '🙈';
+            } else {
+              input.type = 'password';
+              this.textContent = '👁️';
+            }
+          });
+        }
+
+        // 回车键确认
+        ['loginPassword'].forEach(function(id) {
+          var el = $(id);
+          if (el) {
+            el.addEventListener('keydown', function(e) {
+              if (e.key === 'Enter') doLogin();
+            });
+          }
+        });
+        ['setupPassword1', 'setupPassword2'].forEach(function(id) {
+          var el = $(id);
+          if (el) {
+            el.addEventListener('keydown', function(e) {
+              if (e.key === 'Enter') doSetupPassword();
+            });
+          }
+        });
+        ['changeOldPassword', 'changePassword1', 'changePassword2'].forEach(function(id) {
+          var el = $(id);
+          if (el) {
+            el.addEventListener('keydown', function(e) {
+              if (e.key === 'Enter') doChangePassword();
+            });
+          }
+        });
+        // 密保找回回车
+        if ($('recoverAnswer')) {
+          $('recoverAnswer').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') doVerifySecurityAnswer();
+          });
+        }
+        ['recoverNewPassword1', 'recoverNewPassword2'].forEach(function(id) {
+          var el = $(id);
+          if (el) {
+            el.addEventListener('keydown', function(e) {
+              if (e.key === 'Enter') doRecoverResetPassword();
+            });
+          }
+        });
+      }
+
+      // ============================================================
+      // ===== AI 智能助手 =====
+      // ============================================================
+      var aiMessages = [];
+      var aiInitialized = false;
+
+      function aiInit() {
+        if (aiInitialized) return;
+        aiInitialized = true;
+        var fab = $('aiFab'), panel = $('aiPanel'), closeBtn = $('aiCloseBtn');
+        var sendBtn = $('aiSendBtn'), input = $('aiInput');
+        if (!fab || !panel || !closeBtn || !sendBtn || !input) {
+          console.warn('AI助手元素未找到，跳过初始化');
+          aiInitialized = false;
+          return;
+        }
+
+        // ---- 自动显示/隐藏 AI 按钮（跟随登录遮罩层状态）----
+        var loginOverlay = $('loginOverlay');
+        function syncFabVisibility() {
+          var loginVisible = loginOverlay ? window.getComputedStyle(loginOverlay).display !== 'none' : false;
+          if (!loginVisible) {
+            if (fab.style.display !== 'flex' && panel.style.display !== 'flex') {
+              fab.style.display = 'flex';
+              fab.style.animation = 'aiFabIn 0.5s cubic-bezier(0.34,1.56,0.64,1)';
+            }
+          } else {
+            fab.style.display = 'none';
+            panel.style.display = 'none';
+          }
+        }
+        // 初始检查
+        syncFabVisibility();
+        // 监听登录遮罩层变化
+        if (loginOverlay && window.MutationObserver) {
+          var observer = new MutationObserver(syncFabVisibility);
+          observer.observe(loginOverlay, { attributes: true, attributeFilter: ['style'] });
+        }
+        // 兜底：定时检查（防止 MutationObserver 未触发）
+        var syncCount = 0;
+        var syncTimer = setInterval(function() {
+          syncFabVisibility();
+          syncCount++;
+          if (syncCount > 20) clearInterval(syncTimer); // 10秒后停止
+        }, 500);
+
+        fab.addEventListener('click', function() {
+          panel.style.display = 'flex';
+          fab.style.display = 'none';
+          if (aiMessages.length === 0) {
+            aiAddMsg('bot', '你好！我是你的 AI 工资助手 ✨\n\n我可以帮你：\n• 分析工资数据和税额变化\n• 解释税务规则和计算方式\n• 提供节税建议\n• 分析收入趋势\n\n试试问我：「我这个月税为什么这么高？」');
+          }
+          setTimeout(function() { input.focus(); }, 100);
+        });
+        closeBtn.addEventListener('click', function() {
+          panel.style.display = 'none';
+          fab.style.display = 'flex';
+        });
+        sendBtn.addEventListener('click', aiSend);
+        input.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); aiSend(); }
+        });
+        input.addEventListener('input', function() {
+          this.style.height = 'auto';
+          this.style.height = Math.min(this.scrollHeight, 80) + 'px';
+        });
+        document.querySelectorAll('.ai-quick-btn').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            input.value = this.dataset.q;
+            aiSend();
+          });
+        });
+      }
+
+      // === AI 大模型 API 配置与调用 ===
+      var AI_PROVIDERS = {
+        doubao:   { name: '豆包', base: 'https://ark.cn-beijing.volces.com/api/v3', model: 'doubao-1-5-pro-32k-250115' },
+        qwen:     { name: '通义千问', base: 'https://dashscope.aliyuncs.com/compatible-mode/v1', model: 'qwen-plus' },
+        openai:   { name: 'OpenAI', base: 'https://api.openai.com/v1', model: 'gpt-4o-mini' },
+        deepseek: { name: 'DeepSeek', base: 'https://api.deepseek.com/v1', model: 'deepseek-chat' },
+        moonshot: { name: '月之暗面', base: 'https://api.moonshot.cn/v1', model: 'moonshot-v1-8k' },
+      };
+
+      function getAiConfig() {
+        try {
+          var raw = localStorage.getItem('ai_model_config');
+          if (raw) return JSON.parse(raw);
+        } catch(e) {}
+        return { provider: 'doubao', apiKey: '', baseUrl: '', model: '', enabled: false };
+      }
+
+      function saveAiConfig(cfg) {
+        try {
+          localStorage.setItem('ai_model_config', JSON.stringify(cfg));
+          return true;
+        } catch(e) { return false; }
+      }
+
+      function isAiApiEnabled() {
+        var cfg = getAiConfig();
+        return cfg.enabled && cfg.apiKey && cfg.apiKey.length > 0;
+      }
+
+      function buildAiSystemPrompt() {
+        var recs = storage.history || {};
+        var keys = Object.keys(recs).sort();
+        var settings = getSettings();
+        var lines = [];
+        lines.push('你是一个专业的工资和税务分析助手，名叫「小智」。');
+        lines.push('你的任务是根据用户提供的工资数据，用通俗易懂的中文回答用户关于工资、税务、社保公积金等方面的问题。');
+        lines.push('');
+        lines.push('【回答风格】');
+        lines.push('• 语气友好、专业，适当使用 emoji');
+        lines.push('• 用清晰的结构展示数据，适当使用列表、表格');
+        lines.push('• 重要结论放在前面，详细分析在后');
+        lines.push('• 如果涉及税额变化，一定要解释「累计预扣法」导致跨档的原因');
+        lines.push('• 结尾可以给出 1-2 条实用建议');
+        lines.push('• 回答控制在 500 字以内，简洁有力');
+        lines.push('');
+        lines.push('【用户当前设置】');
+        lines.push('• 个税起征点：¥' + (settings.taxThreshold || 5000) + '/月');
+        lines.push('• 月计薪天数：' + (settings.workDaysPerMonth || 21.75) + ' 天');
+        lines.push('• 日工时：' + (settings.workHoursPerDay || 8) + ' 小时');
+        lines.push('• 加班倍率：工作日' + (settings.multiplierWeekday || 1.5) + '倍 / 周末' + (settings.multiplierWeekend || 2) + '倍 / 节假日' + (settings.multiplierHoliday || 3) + '倍');
+        lines.push('');
+        if (keys.length > 0) {
+          lines.push('【用户工资数据（共 ' + keys.length + ' 个月）】');
+          lines.push('月份, 应发(¥), 实发(¥), 个税(¥), 社保(¥), 公积金(¥), 加班费(¥), 累计应纳税所得额(¥)');
+          keys.forEach(function(k) {
+            var r = recs[k];
+            lines.push(k + ', ' + (r.grossPay||0).toFixed(2) + ', ' + (r.netPay||0).toFixed(2) + ', ' + (r.tax||0).toFixed(2) + ', ' + (r.socialInsurance||0).toFixed(2) + ', ' + (r.housingFund||0).toFixed(2) + ', ' + (r.totalOvertimePay||0).toFixed(2) + ', ' + (r.cumulativeTaxable||0).toFixed(2));
+          });
+          lines.push('');
+          var last = recs[keys[keys.length-1]];
+          var sd = calcTotalSpecialDeduction(last.deductionsDetail || {});
+          if (sd > 0) {
+            lines.push('【专项附加扣除（最新月）】');
+            lines.push('• 合计：¥' + sd.toFixed(2) + '/月');
+            var dd = last.deductionsDetail || {};
+            if (dd.deduct_child > 0) lines.push('• 子女教育：¥' + dd.deduct_child + '/月');
+            if (dd.deduct_education > 0) lines.push('• 继续教育：¥' + dd.deduct_education + '/月');
+            if (dd.deduct_medical > 0) lines.push('• 大病医疗：¥' + dd.deduct_medical + '/月');
+            if (dd.deduct_loan > 0) lines.push('• 住房贷款利息：¥' + dd.deduct_loan + '/月');
+            if (dd.deduct_rent > 0) lines.push('• 住房租金：¥' + dd.deduct_rent + '/月');
+            if (dd.deduct_elder > 0) lines.push('• 赡养老人：¥' + dd.deduct_elder + '/月');
+            if (dd.deduct_infant > 0) lines.push('• 婴幼儿照护：¥' + dd.deduct_infant + '/月');
+            lines.push('');
+          }
+        } else {
+          lines.push('【用户工资数据】暂无，用户可能刚使用。');
+          lines.push('');
+        }
+        lines.push('【中国个税累计预扣法税率表】');
+        lines.push('不超过 36,000 元：3%，速算扣除 0');
+        lines.push('超过 36,000 至 144,000 元：10%，速算扣除 2,520');
+        lines.push('超过 144,000 至 300,000 元：20%，速算扣除 16,920');
+        lines.push('超过 300,000 至 420,000 元：25%，速算扣除 31,920');
+        lines.push('超过 420,000 至 660,000 元：30%，速算扣除 52,920');
+        lines.push('超过 660,000 至 960,000 元：35%，速算扣除 85,920');
+        lines.push('超过 960,000 元：45%，速算扣除 181,920');
+        lines.push('');
+        lines.push('现在请回答用户的问题：');
+        return lines.join('\n');
+      }
+
+      async function callAiApi(userMessage, chatHistory) {
+        var cfg = getAiConfig();
+        if (!cfg.apiKey) throw new Error('未配置 API Key');
+        var provider = AI_PROVIDERS[cfg.provider] || AI_PROVIDERS.doubao;
+        var baseUrl = cfg.baseUrl || provider.base;
+        var model = cfg.model || provider.model;
+        if (!baseUrl.endsWith('/')) baseUrl += '/';
+        var url = baseUrl + 'chat/completions';
+
+        // 构建消息列表（保留最近 6 条上下文）
+        var messages = [{ role: 'system', content: buildAiSystemPrompt() }];
+        var history = chatHistory || aiMessages || [];
+        var recent = history.slice(-6);
+        recent.forEach(function(m) {
+          messages.push({ role: m.role === 'user' ? 'user' : 'assistant', content: m.text });
+        });
+        messages.push({ role: 'user', content: userMessage });
+
+        var resp = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + cfg.apiKey
+          },
+          body: JSON.stringify({
+            model: model,
+            messages: messages,
+            temperature: 0.7,
+            max_tokens: 2000
+          })
+        });
+
+        if (!resp.ok) {
+          var errText = await resp.text();
+          throw new Error('API 错误 ' + resp.status + ': ' + errText.substring(0, 200));
+        }
+        var data = await resp.json();
+        if (data.choices && data.choices.length > 0 && data.choices[0].message) {
+          return data.choices[0].message.content || '';
+        }
+        throw new Error('API 返回格式异常');
+      }
+
+      function aiAddMsg(role, text) {
+        var container = $('aiMessages');
+        if (!container) return;
+        var div = document.createElement('div');
+        div.className = 'ai-msg ai-msg-' + role;
+        div.style.whiteSpace = 'pre-wrap';
+        div.textContent = text;
+        container.appendChild(div);
+        container.scrollTop = container.scrollHeight;
+        aiMessages.push({ role: role, text: text });
+      }
+
+      function aiAddTyping() {
+        var container = $('aiMessages');
+        var div = document.createElement('div');
+        div.className = 'ai-msg ai-msg-bot';
+        div.id = 'aiTypingIndicator';
+        div.innerHTML = '<div class="ai-typing"><span></span><span></span><span></span></div>';
+        container.appendChild(div);
+        container.scrollTop = container.scrollHeight;
+      }
+
+      function aiRemoveTyping() {
+        var t = $('aiTypingIndicator');
+        if (t) t.remove();
+      }
+
+      function aiSend() {
+        var input = $('aiInput');
+        var q = (input.value || '').trim();
+        if (!q) return;
+        aiAddMsg('user', q);
+        input.value = '';
+        input.style.height = 'auto';
+        aiAddTyping();
+
+        // 判断是否使用大模型 API
+        if (isAiApiEnabled()) {
+          callAiApi(q, aiMessages).then(function(answer) {
+            aiRemoveTyping();
+            aiAddMsg('bot', answer);
+          }).catch(function(err) {
+            aiRemoveTyping();
+            // API 失败时回退到本地规则
+            var fallback = aiGenerateResponse(q);
+            aiAddMsg('bot', fallback + '\n\n⚠️ 大模型调用失败，已使用本地分析（' + err.message + '）');
+          });
+        } else {
+          setTimeout(function() {
+            aiRemoveTyping();
+            var answer = aiGenerateResponse(q);
+            aiAddMsg('bot', answer);
+          }, 500 + Math.random() * 400);
+        }
+      }
+
+      // AI 核心引擎 — 智能升级版
+      var aiContext = { lastTopic: null, lastMonth: null, history: [] };
+
+      function aiGenerateResponse(q) {
+        var original = q;
+        q = q.toLowerCase().replace(/\s/g, '');
+        var recs = storage.history || {};
+        var keys = Object.keys(recs).sort();
+        var settings = getSettings();
+
+        // 无数据
+        if (keys.length === 0) {
+          return '暂无工资数据 😅\n\n请先在「参数设置」页面填写参数并点击「计算并保存」，之后我就能帮你分析了～';
+        }
+
+        // === 实体提取 ===
+        var entities = aiExtractEntities(q, keys);
+
+        // === 上下文追问处理 ===
+        if (aiContext.lastTopic && /呢|那|还有|再|也|具体|详细/.test(q) && q.length < 12 && !/\d/.test(q)) {
+          return aiHandleFollowup(q, recs, keys, settings, entities);
+        }
+
+        // === 多意图评分 ===
+        var intents = aiScoreIntents(q);
+        var best = intents[0];
+
+        // 记录上下文
+        aiContext.lastTopic = best.id;
+        aiContext.lastMonth = entities.month || keys[keys.length - 1];
+
+        switch (best.id) {
+          case 'tax_explain':   return aiExplainTax(recs, keys, settings, entities);
+          case 'trend':         return aiAnalyzeTrend(recs, keys, entities);
+          case 'tax_optimize':  return aiTaxOptimization(recs, keys, settings);
+          case 'tax_rules':     return aiExplainTaxRules(settings);
+          case 'overtime':      return aiAnalyzeOvertime(recs, keys, settings, entities);
+          case 'extreme':       return aiFindExtreme(recs, keys, entities);
+          case 'estimate':      return aiEstimate(recs, keys, entities);
+          case 'compare':       return aiCompareMonths(recs, keys, entities);
+          case 'social':        return aiAnalyzeSocial(recs, keys, settings);
+          case 'ratio':         return aiAnalyzeRatio(recs, keys);
+          case 'salary':        return aiQuerySalary(recs, keys, entities);
+          case 'help':          return aiHelp();
+          case 'greeting':      return aiGreeting();
+          case 'thanks':        return '不客气！有其他问题随时问我 😊';
+          default:              return aiGeneralAnalysis(recs, keys, original, entities);
+        }
+      }
+
+      // === 实体提取 ===
+      function aiExtractEntities(q, keys) {
+        var e = { month: null, month2: null, count: null, amount: null };
+        // 提取月份 "3月" "3月份" "2025-03"
+        var m1 = q.match(/(\d{1,2})月/);
+        if (m1) {
+          var mn = parseInt(m1[1]);
+          if (mn >= 1 && mn <= 12) {
+            // 找到对应 key
+            for (var i = keys.length - 1; i >= 0; i--) {
+              if (parseInt(keys[i].split('-')[1]) === mn) { e.month = keys[i]; break; }
+            }
+          }
+        }
+        // 第二个月份 "3月和5月" "3月vs5月"
+        var m2 = q.match(/(?:和|与|vs|对比|比较|跟).*(\d{1,2})月/);
+        if (m2) {
+          var mn2 = parseInt(m2[1]);
+          if (mn2 >= 1 && mn2 <= 12) {
+            for (var j = keys.length - 1; j >= 0; j--) {
+              if (parseInt(keys[j].split('-')[1]) === mn2) { e.month2 = keys[j]; break; }
+            }
+          }
+        }
+        // 提取数量 "近3个月" "最近半年" "全年"
+        if (/近(\d+)|最近(\d+)|前(\d+)/.test(q)) {
+          var cn = q.match(/(?:近|最近|前)(\d+)/);
+          if (cn) e.count = parseInt(cn[1]);
+        } else if (/半年/.test(q)) {
+          e.count = 6;
+        } else if (/全年|一年|12个月/.test(q)) {
+          e.count = 12;
+        }
+        // 时间词
+        if (/上个月|上月/.test(q) && keys.length >= 2) {
+          e.month = keys[keys.length - 2];
+        } else if (/这个月|本月|当月|最新/.test(q)) {
+          e.month = keys[keys.length - 1];
+        }
+        return e;
+      }
+
+      // === 上下文追问 ===
+      function aiHandleFollowup(q, recs, keys, settings, entities) {
+        var topic = aiContext.lastTopic;
+        var month = entities.month || aiContext.lastMonth;
+        if (/上个月|上月|前一个月/.test(q) && keys.length >= 2) {
+          month = keys[keys.length - 2];
+        }
+        // 根据上一个话题继续
+        if (topic === 'tax_explain') {
+          entities.month = month;
+          return aiExplainTax(recs, keys, settings, entities);
+        } else if (topic === 'trend') {
+          entities.count = entities.count || 6;
+          return aiAnalyzeTrend(recs, keys, entities);
+        } else if (topic === 'overtime') {
+          entities.month = month;
+          return aiAnalyzeOvertime(recs, keys, settings, entities);
+        } else if (topic === 'salary') {
+          entities.month = month;
+          return aiQuerySalary(recs, keys, entities);
+        }
+        return '你是在问关于上个话题的补充信息吗？可以再具体描述一下你的问题～';
+      }
+
+      // === 多意图评分 ===
+      function aiScoreIntents(q) {
+        var intents = [
+          { id: 'tax_explain',  keywords: ['税高','个税高','税多','为什么税','税额','税变化','税增加','税减少','交多少税','扣了多少税'], score: 0 },
+          { id: 'trend',        keywords: ['趋势','变化','收入分析','走势','涨了','降了','涨多少','降多少','增减','增长','下滑'], score: 0 },
+          { id: 'tax_optimize', keywords: ['节税','省税','优化','减税','避税','降低税','少交税','合理'], score: 0 },
+          { id: 'tax_rules',    keywords: ['累计预扣','预扣','税务规则','怎么算','计税','税率','速算','起征点','扣除','算法','计算方法'], score: 0 },
+          { id: 'overtime',     keywords: ['加班','加班费','加班费多少','加班多'], score: 0 },
+          { id: 'extreme',      keywords: ['最高','最低','哪个月','最多','最少','最高月','最低月'], score: 0 },
+          { id: 'estimate',     keywords: ['平均','月均','预估','预计','全年','一年多少','全年多少','总共有多少'], score: 0 },
+          { id: 'compare',      keywords: ['对比','比较','vs','和.*月','与.*月','跟.*月','差异','差多少'], score: 0 },
+          { id: 'social',       keywords: ['社保','公积金','五险一金','保险','扣除多少','扣了多少'], score: 0 },
+          { id: 'ratio',        keywords: ['到手','比例','占多少','百分比','实发率','税负率','有效税率'], score: 0 },
+          { id: 'salary',       keywords: ['工资多少','实发多少','发了多少','到手多少','发了多少钱','当月','这个月','工资条','明细'], score: 0 },
+          { id: 'help',         keywords: ['帮助','能做什么','功能','你会','可以','怎么用','能帮我'], score: 0 },
+          { id: 'greeting',     keywords: ['你好','hi','hello','嗨','早上好','晚上好','在吗'], score: 0 },
+          { id: 'thanks',       keywords: ['谢谢','thanks','感谢','辛苦了','多谢'], score: 0 },
+        ];
+        intents.forEach(function(intent) {
+          intent.keywords.forEach(function(kw) {
+            if (q.indexOf(kw) >= 0 || new RegExp(kw).test(q)) {
+              intent.score += 2;
+            }
+          });
+        });
+        intents.sort(function(a, b) { return b.score - a.score; });
+        return intents;
+      }
+
+      // === 月度对比分析（新）===
+      function aiCompareMonths(recs, keys, entities) {
+        var m1 = entities.month, m2 = entities.month2;
+        if (!m1 && !m2) {
+          // 默认对比最近两个月
+          if (keys.length < 2) return '至少需要2个月数据才能对比。';
+          m1 = keys[keys.length - 2];
+          m2 = keys[keys.length - 1];
+        }
+        if (!m2 && m1) { m2 = keys[keys.length - 1]; }
+        if (!m1 && m2) { m1 = keys[keys.length - 2]; }
+        var r1 = recs[m1], r2 = recs[m2];
+        if (!r1 || !r2) return '找不到对应月份的数据，请确认月份。';
+
+        var p1 = parseMonthKey(m1), p2 = parseMonthKey(m2);
+        var lines = ['📊 月度对比：' + p1.month + '月 vs ' + p2.month + '月\n'];
+
+        var fields = [
+          ['应发工资', 'grossPay', '元'],
+          ['实发工资', 'netPay', '元'],
+          ['个税', 'tax', '元'],
+          ['社保', 'socialInsurance', '元'],
+          ['公积金', 'housingFund', '元'],
+          ['加班费', 'totalOvertimePay', '元'],
+        ];
+        fields.forEach(function(f) {
+          var v1 = r1[f[1]] || 0, v2 = r2[f[1]] || 0;
+          var diff = v2 - v1;
+          var pct = v1 > 0 ? (diff / v1 * 100).toFixed(1) : 'N/A';
+          var arrow = diff > 0 ? '↑' : diff < 0 ? '↓' : '→';
+          lines.push(f[0] + ': ¥' + v1.toFixed(0) + ' → ¥' + v2.toFixed(0) + '  ' + arrow + (diff !== 0 ? ' ¥' + Math.abs(diff).toFixed(0) + ' (' + pct + '%)' : ''));
+        });
+        // 分析差异
+        var grossDiff = (r2.grossPay || 0) - (r1.grossPay || 0);
+        var taxDiff = (r2.tax || 0) - (r1.tax || 0);
+        if (Math.abs(grossDiff) < 50 && Math.abs(taxDiff) > 50) {
+          lines.push('\n💡 应发工资基本不变，但个税变化 ¥' + taxDiff.toFixed(0) + '，可能是累计预扣跨税率档导致。');
+        } else if (grossDiff > 0 && taxDiff > grossDiff * 0.2) {
+          lines.push('\n💡 个税增幅（¥' + taxDiff.toFixed(0) + '）占应发增量（¥' + grossDiff.toFixed(0) + '）的 ' + (taxDiff / grossDiff * 100).toFixed(0) + '%，税负较重。');
+        } else if (grossDiff > 0) {
+          lines.push('\n💡 应发增加 ¥' + grossDiff.toFixed(0) + '，个税增加 ¥' + taxDiff.toFixed(0) + '，到手增加 ¥' + ((r2.netPay||0) - (r1.netPay||0)).toFixed(0) + '。');
+        }
+        return lines.join('\n');
+      }
+
+      // === 社保公积金分析（新）===
+      function aiAnalyzeSocial(recs, keys, settings) {
+        var lastKey = keys[keys.length - 1];
+        var r = recs[lastKey];
+        var si = r.socialInsurance || 0;
+        var hf = r.housingFund || 0;
+        var gross = r.grossPay || 0;
+        var total = si + hf;
+        var lines = ['🏥 社保公积金分析（' + parseMonthKey(lastKey).month + '月）：\n'];
+        lines.push('• 社保扣除：¥' + si.toFixed(2));
+        lines.push('• 公积金扣除：¥' + hf.toFixed(2));
+        lines.push('• 合计扣除：¥' + total.toFixed(2));
+        if (gross > 0) {
+          lines.push('• 占应发比例：' + (total / gross * 100).toFixed(1) + '%');
+          lines.push('  社保占比 ' + (si / gross * 100).toFixed(1) + '% / 公积金占比 ' + (hf / gross * 100).toFixed(1) + '%');
+        }
+        // 多月趋势
+        if (keys.length >= 2) {
+          var prev = recs[keys[keys.length - 2]];
+          var prevTotal = (prev.socialInsurance || 0) + (prev.housingFund || 0);
+          var diff = total - prevTotal;
+          if (Math.abs(diff) > 1) {
+            lines.push('\n• 环比变化：¥' + (diff > 0 ? '+' : '') + diff.toFixed(2));
+          } else {
+            lines.push('\n• 社保公积金近月保持稳定。');
+          }
+        }
+        lines.push('\n💡 社保和公积金均可在税前扣除，是重要的减税项。');
+        if (gross > 0 && total / gross < 0.1) {
+          lines.push('⚠️ 五险一金扣除比例偏低（' + (total / gross * 100).toFixed(0) + '%），通常在 15%-25% 之间，请确认是否填写正确。');
+        }
+        return lines.join('\n');
+      }
+
+      // === 到手比例分析（新）===
+      function aiAnalyzeRatio(recs, keys) {
+        var lastKey = keys[keys.length - 1];
+        var r = recs[lastKey];
+        var gross = r.grossPay || 0;
+        var net = r.netPay || 0;
+        var tax = r.tax || 0;
+        var si = (r.socialInsurance || 0) + (r.housingFund || 0) + (r.otherDeduction || 0);
+        var sd = calcTotalSpecialDeduction(r.deductionsDetail || {});
+        var lines = ['📐 收入构成分析（' + parseMonthKey(lastKey).month + '月）：\n'];
+        if (gross <= 0) {
+          lines.push('该月应发工资为 0，可能尚未计算。');
+          lines.push('请先在「参数设置」页面填写参数并点击「计算并保存」。');
+          return lines.join('\n');
+        }
+        lines.push('应发工资：¥' + gross.toFixed(2) + ' (100%)');
+        lines.push('');
+        lines.push('扣除明细：');
+        lines.push('  社保+公积金+其他：¥' + si.toFixed(0) + ' (' + (si / gross * 100).toFixed(1) + '%)');
+        lines.push('  专项附加扣除：¥' + sd.toFixed(0) + ' (' + (sd / gross * 100).toFixed(1) + '%)');
+        lines.push('  起征点：¥5,000 (' + (5000 / gross * 100).toFixed(1) + '%)');
+        lines.push('  个税：¥' + tax.toFixed(0) + ' (' + (tax / gross * 100).toFixed(1) + '%)');
+        lines.push('  ────────');
+        lines.push('  合计扣除：¥' + (gross - net).toFixed(0) + ' (' + ((gross - net) / gross * 100).toFixed(1) + '%)');
+        lines.push('');
+        lines.push('💰 实发到手：¥' + net.toFixed(2) + ' (' + (net / gross * 100).toFixed(1) + '%)');
+
+        // 文本条形图
+        var barLen = Math.round(net / gross * 30);
+        lines.push('\n到手比例图：');
+        lines.push('到手  ' + '█'.repeat(barLen) + '░'.repeat(30 - barLen) + ' ' + (net / gross * 100).toFixed(0) + '%');
+        lines.push('扣除  ' + '█'.repeat(30 - barLen) + '░'.repeat(barLen) + ' ' + ((gross - net) / gross * 100).toFixed(0) + '%');
+
+        // 有效税率
+        var cumTaxable = r.cumulativeTaxable || 0;
+        var effRate = cumTaxable > 0 ? (tax / cumTaxable * 100).toFixed(1) : '0';
+        lines.push('\n📊 本月有效税率：' + (tax / gross * 100).toFixed(1) + '%（个税/应发）');
+
+        if (net / gross < 0.7) {
+          lines.push('⚠️ 到手比例低于70%，扣除项较多，建议检查社保公积金基数是否偏高。');
+        } else if (net / gross > 0.85) {
+          lines.push('✅ 到手比例较高，说明社保公积金扣除较少。');
+        }
+        return lines.join('\n');
+      }
+
+      // === 查询某月工资（新）===
+      function aiQuerySalary(recs, keys, entities) {
+        var mk = entities.month || keys[keys.length - 1];
+        var r = recs[mk];
+        if (!r) return '找不到该月份的数据。';
+        var p = parseMonthKey(mk);
+        var lines = ['💰 ' + p.year + '年' + p.month + '月工资明细：\n'];
+        lines.push('应发工资：¥' + (r.grossPay || 0).toFixed(2));
+        if (r.baseSalary) lines.push('  基本工资：¥' + (r.baseSalary || 0).toFixed(2));
+        if (r.totalOvertimePay) lines.push('  加班费：¥' + (r.totalOvertimePay || 0).toFixed(2));
+        if (r.otherIncome) lines.push('  其他收入：¥' + (r.otherIncome || 0).toFixed(2));
+        lines.push('');
+        lines.push('扣除项：');
+        lines.push('  社保：-¥' + (r.socialInsurance || 0).toFixed(2));
+        lines.push('  公积金：-¥' + (r.housingFund || 0).toFixed(2));
+        if (r.otherDeduction) lines.push('  其他扣除：-¥' + (r.otherDeduction || 0).toFixed(2));
+        var sd = calcTotalSpecialDeduction(r.deductionsDetail || {});
+        if (sd > 0) lines.push('  专项附加扣除：-¥' + sd.toFixed(2));
+        lines.push('  起征点：-¥5,000.00');
+        lines.push('  个税：-¥' + (r.tax || 0).toFixed(2));
+        lines.push('');
+        lines.push('━━━━━━━━━━━━━━');
+        lines.push('实发到手：¥' + (r.netPay || 0).toFixed(2) + ' ✅');
+        return lines.join('\n');
+      }
+
+      // === 智能帮助 ===
+      function aiHelp() {
+        return '🤖 我是你的 AI 工资助手，可以帮你：\n\n' +
+          '📊 数据分析\n' +
+          '  • "分析收入趋势" — 收入走势和波动\n' +
+          '  • "3月和5月对比" — 月度对比\n' +
+          '  • "到手比例" — 收入构成分析\n' +
+          '  • "社保公积金" — 五险一金分析\n\n' +
+          '🧮 税务相关\n' +
+          '  • "税为什么高" — 个税变化分析\n' +
+          '  • "节税建议" — 节税方案\n' +
+          '  • "解释累计预扣法" — 税务规则\n' +
+          '  • "有效税率" — 税负分析\n\n' +
+          '🔍 查询\n' +
+          '  • "这个月工资" — 查看明细\n' +
+          '  • "哪个月最高" — 极值统计\n' +
+          '  • "全年预估" — 年收入预测\n' +
+          '  • "加班费分析" — 加班统计\n\n' +
+          '💡 支持自然语言，直接问就行！';
+      }
+
+      function aiGreeting() {
+        var hour = new Date().getHours();
+        var greeting = hour < 6 ? '夜深了' : hour < 12 ? '早上好' : hour < 18 ? '下午好' : '晚上好';
+        var recs = storage.history || {};
+        var keys = Object.keys(recs).sort();
+        var tip;
+        if (keys.length > 0) {
+          var lastRec = recs[keys[keys.length-1]];
+          var lastNet = lastRec.netPay || 0;
+          if (lastNet > 0) {
+            tip = '目前已记录 ' + keys.length + ' 个月数据，最新实发 ¥' + lastNet.toFixed(0) + '。';
+          } else {
+            tip = '目前已记录 ' + keys.length + ' 个月数据。';
+          }
+        } else {
+          tip = '暂无数据，先去填写参数计算吧～';
+        }
+        return greeting + '！我是你的 AI 工资助手 👋\n\n' + tip + '\n\n有什么想了解的，尽管问我～';
+      }
+
+      function aiExplainTax(recs, keys, settings, entities) {
+        if (keys.length < 2) return '目前只有1个月的数据，无法对比。多记录几个月后我就能帮你分析税额变化了。';
+        var lastKey = entities && entities.month ? entities.month : keys[keys.length - 1];
+        var lastRec = recs[lastKey];
+        if (!lastRec) lastKey = keys[keys.length - 1], lastRec = recs[lastKey];
+        var lastIdx = keys.indexOf(lastKey);
+        var prevKey = lastIdx > 0 ? keys[lastIdx - 1] : null;
+        var prevRec = prevKey ? recs[prevKey] : null;
+        var lastTax = lastRec.tax || 0;
+        var prevTax = prevRec ? (prevRec.tax || 0) : 0;
+        var lastCum = lastRec.cumulativeTaxable || 0;
+        var prevCum = prevRec ? (prevRec.cumulativeTaxable || 0) : 0;
+        var monthNum = lastKey.split('-')[1];
+        var p = parseMonthKey(lastKey);
+
+        var lines = ['📊 ' + p.year + '年' + p.month + '月个税分析：\n'];
+        lines.push('• 本月个税：¥' + lastTax.toFixed(2));
+        if (prevRec) {
+          lines.push('• 上月个税：¥' + prevTax.toFixed(2));
+          if (lastTax > prevTax && prevTax > 0) {
+            lines.push('• 比上月增加：¥' + (lastTax - prevTax).toFixed(2) + '（+' + ((lastTax / prevTax - 1) * 100).toFixed(0) + '%）\n');
+          } else if (lastTax < prevTax) {
+            lines.push('• 比上月减少：¥' + (prevTax - lastTax).toFixed(2) + '（-' + ((1 - lastTax / prevTax) * 100).toFixed(0) + '%）\n');
+          } else {
+            lines.push('• 与上月持平\n');
+          }
+        }
+
+        // 税率档位
+        if (prevRec && prevCum <= 36000 && lastCum > 36000) {
+          lines.push('⚠️ 主要原因：累计应纳税所得额已超过 ¥36,000，税率从 3% 跨入 10% 档。');
+          lines.push('  上月累计：¥' + prevCum.toFixed(2) + '（3%档）');
+          lines.push('  本月累计：¥' + lastCum.toFixed(2) + '（10%档）\n');
+          lines.push('💡 跨档后，不仅新增部分按10%计税，还会「补缴」之前按3%少缴的部分，所以增幅明显。');
+        } else if (prevRec && prevCum <= 144000 && lastCum > 144000) {
+          lines.push('⚠️ 主要原因：累计应纳税所得额已超过 ¥144,000，税率从 10% 跨入 20% 档。');
+          lines.push('  上月累计：¥' + prevCum.toFixed(2));
+          lines.push('  本月累计：¥' + lastCum.toFixed(2) + '\n');
+          lines.push('💡 跨入20%档后税额增幅较大，这是累计预扣法的正常现象。');
+        } else if (prevRec && prevCum <= 300000 && lastCum > 300000) {
+          lines.push('⚠️ 累计应纳税所得额已超过 ¥300,000，税率从 20% 跨入 25% 档。');
+          lines.push('  上月累计：¥' + prevCum.toFixed(2));
+          lines.push('  本月累计：¥' + lastCum.toFixed(2) + '\n');
+        } else {
+          lines.push('累计应纳税所得额：¥' + lastCum.toFixed(2));
+          var rate = lastCum > 300000 ? '25%' : lastCum > 144000 ? '20%' : lastCum > 36000 ? '10%' : '3%';
+          lines.push('当前税率档：' + rate);
+          if (prevRec && lastTax > prevTax) {
+            lines.push('\n💡 本月税额增加主要是累计应纳税所得额增长导致的，未跨税率档。');
+          } else if (!prevRec) {
+            lines.push('\n💡 这是年度第一个月的记录，税额较低。');
+          }
+        }
+        // 下月预测
+        if (lastCum > 0) {
+          var monthlyAvg = lastCum / parseInt(p.month);
+          var projectedYearEnd = monthlyAvg * 12;
+          var projectedRate = projectedYearEnd > 960000 ? '45%' : projectedYearEnd > 660000 ? '30%' : projectedYearEnd > 420000 ? '25%' : projectedYearEnd > 300000 ? '20%' : projectedYearEnd > 144000 ? '10%' : projectedYearEnd > 36000 ? '10%' : '3%';
+          lines.push('\n📅 按当前节奏，年底累计应纳税所得额预计约 ¥' + projectedYearEnd.toFixed(0) + '（' + projectedRate + '档）。');
+        }
+        return lines.join('\n');
+      }
+
+      function aiAnalyzeTrend(recs, keys, entities) {
+        if (keys.length < 2) return '数据太少，至少需要2个月才能分析趋势。';
+        var count = entities && entities.count ? Math.min(entities.count, keys.length) : keys.length;
+        var useKeys = keys.slice(-count);
+        var lines = ['📈 收入趋势分析（近' + useKeys.length + '个月）：\n'];
+        var sumNet = 0, sumGross = 0;
+        var nets = [];
+        useKeys.forEach(function(k) {
+          var n = recs[k].netPay || 0;
+          var g = recs[k].grossPay || 0;
+          sumNet += n; sumGross += g;
+          nets.push({ month: k, monthNum: k.split('-')[1], net: n, gross: g });
+        });
+        var avgNet = sumNet / useKeys.length;
+        var avgGross = sumGross / useKeys.length;
+        lines.push('• 月均实发：¥' + avgNet.toFixed(2));
+        lines.push('• 月均应发：¥' + avgGross.toFixed(2));
+        lines.push('• 累计实发：¥' + sumNet.toFixed(2));
+
+        // 趋势方向
+        var first3 = nets.slice(0, Math.min(3, Math.floor(nets.length / 2)));
+        var last3 = nets.slice(-Math.min(3, Math.floor(nets.length / 2)));
+        var avgFirst = first3.reduce(function(s, n) { return s + n.net; }, 0) / first3.length;
+        var avgLast = last3.reduce(function(s, n) { return s + n.net; }, 0) / last3.length;
+        var change = ((avgLast - avgFirst) / avgFirst * 100);
+        if (change > 5) {
+          lines.push('• 趋势：📈 上升（近期比初期高 ' + change.toFixed(0) + '%）');
+        } else if (change < -5) {
+          lines.push('• 趋势：📉 下降（近期比初期低 ' + Math.abs(change).toFixed(0) + '%）');
+        } else {
+          lines.push('• 趋势：➡️ 平稳（波动 ' + change.toFixed(0) + '%）');
+        }
+
+        // 波动性
+        var maxNet = Math.max.apply(null, nets.map(function(n) { return n.net; }));
+        var minNet = Math.min.apply(null, nets.map(function(n) { return n.net; }));
+        var volatility = ((maxNet - minNet) / avgNet * 100);
+        lines.push('• 波动幅度：' + volatility.toFixed(0) + '%（最高 ¥' + maxNet.toFixed(0) + ' / 最低 ¥' + minNet.toFixed(0) + '）');
+
+        // 文本走势图
+        if (nets.length >= 3) {
+          lines.push('\n实发走势：');
+          var minVal = minNet, maxVal = maxNet;
+          var range = maxVal - minVal;
+          if (range < 1) range = 1;
+          nets.forEach(function(n) {
+            var barLen = Math.round((n.net - minVal) / range * 20);
+            if (barLen < 0) barLen = 0;
+            lines.push(n.monthNum + '月 ' + '▓'.repeat(barLen) + '░'.repeat(20 - barLen) + ' ¥' + (n.net).toFixed(0));
+          });
+        }
+
+        if (volatility > 30) {
+          lines.push('\n⚠️ 收入波动较大，建议关注加班费和「其他收入」的稳定性。');
+        } else if (volatility < 10) {
+          lines.push('\n✅ 收入非常稳定，波动不到10%。');
+        }
+        // 个税趋势
+        var sumTax = 0;
+        useKeys.forEach(function(k) { sumTax += recs[k].tax || 0; });
+        lines.push('\n🧮 期间累计个税：¥' + sumTax.toFixed(2) + '（月均 ¥' + (sumTax / useKeys.length).toFixed(0) + '）');
+        return lines.join('\n');
+      }
+
+      function aiTaxOptimization(recs, keys, settings) {
+        var lines = ['💡 节税建议：\n'];
+        var lastRec = recs[keys[keys.length - 1]];
+        var sd = calcTotalSpecialDeduction(lastRec.deductionsDetail || {});
+        lines.push('1. 📋 专项附加扣除');
+        lines.push('   当前合计：¥' + sd.toFixed(2) + '/月');
+        if (sd === 0) {
+          lines.push('   ⚠️ 你还没有设置任何专项附加扣除！');
+          lines.push('   可申报：子女教育(2000/月)、住房贷款(1000/月)、住房租金(1500/月)、赡养老人(3000/月)、继续教育(400/月)、婴幼儿照护(2000/月)');
+          lines.push('   → 每多扣1000元/月，年省税约 ' + (1000 * 12 * 0.1).toFixed(0) + ' 元（10%档）\n');
+        } else {
+          lines.push('   可检查是否已申报全部项目\n');
+        }
+
+        lines.push('2. 🏠 住房公积金');
+        lines.push('   公积金可在税前扣除，提高缴存比例可降低应纳税所得额\n');
+
+        lines.push('3. 📅 年终奖优化');
+        lines.push('   年终奖可单独计税，合理分配月度收入和年终奖比例可降低整体税负\n');
+
+        lines.push('4. 💼 其他扣除');
+        lines.push('   企业年金、商业健康保险等也可税前扣除\n');
+
+        // 税率档接近临界点
+        var cumTaxable = lastRec.cumulativeTaxable || 0;
+        if (cumTaxable > 32000 && cumTaxable < 36000) {
+          lines.push('⚠️ 你当前累计应纳税所得额 ¥' + cumTaxable.toFixed(0) + '，接近3.6万临界点。');
+          lines.push('   跨入10%档后税额会明显增加，可考虑在年底前增加专项附加扣除。');
+        }
+        return lines.join('\n');
+      }
+
+      function aiExplainTaxRules(settings) {
+        var thr = settings.taxThreshold || 5000;
+        return '📖 累计预扣法说明：\n\n' +
+          '中国个税采用「累计预扣法」，按年累计计算：\n\n' +
+          '1. 每月应纳税所得额 = 应发工资 - 社保 - 公积金 - 其他扣除 - 专项附加扣除 - 起征点(¥' + thr + ')\n\n' +
+          '2. 累计应纳税所得额 = 1月至当月的应纳税所得额之和\n\n' +
+          '3. 税率表（按年累计）：\n' +
+          '   • ≤ 36,000：3%（速算扣除0）\n' +
+          '   • ≤ 144,000：10%（速算扣除2,520）\n' +
+          '   • ≤ 300,000：20%（速算扣除16,920）\n' +
+          '   • ≤ 420,000：25%（速算扣除31,920）\n' +
+          '   • ≤ 660,000：30%（速算扣除52,920）\n' +
+          '   • ≤ 960,000：35%（速算扣除85,920）\n' +
+          '   • > 960,000：45%（速算扣除181,920）\n\n' +
+          '4. 当月税额 = 累计应纳税额 - 之前已缴税额\n\n' +
+          '💡 特点：年初税少，年末税多。跨越税率档的月份税额会突增，这是正常现象。';
+      }
+
+      function aiAnalyzeOvertime(recs, keys, settings, entities) {
+        var lines = ['💪 加班费分析：\n'];
+        var totalOT = 0, totalOTPay = 0, otMonths = 0;
+        var maxOTMonth = '', maxOTPay = 0;
+        keys.forEach(function(k) {
+          var r = recs[k];
+          var otp = r.totalOvertimePay || 0;
+          if (otp > 0) {
+            otMonths++;
+            totalOTPay += otp;
+            if (otp > maxOTPay) { maxOTPay = otp; maxOTMonth = k.split('-')[1]; }
+          }
+        });
+        lines.push('• 有加班记录的月份：' + otMonths + ' / ' + keys.length);
+        lines.push('• 加班费总计：¥' + totalOTPay.toFixed(2));
+        if (otMonths > 0) {
+          lines.push('• 月均加班费：¥' + (totalOTPay / otMonths).toFixed(2));
+          lines.push('• 加班费最高月：' + maxOTMonth + '月（¥' + maxOTPay.toFixed(2) + '）');
+        }
+        var targetKey = entities && entities.month ? entities.month : keys[keys.length - 1];
+        var lastRec = recs[targetKey] || recs[keys[keys.length - 1]];
+        var lastOT = lastRec.totalOvertimePay || 0;
+        var lastGross = lastRec.grossPay || 0;
+        if (lastGross > 0 && lastOT > 0) {
+          lines.push('• ' + parseMonthKey(targetKey).month + '月加班费占比：' + (lastOT / lastGross * 100).toFixed(1) + '%');
+        }
+        // 加班趋势
+        if (otMonths >= 2) {
+          var recentOT = 0, olderOT = 0, recentCnt = 0, olderCnt = 0;
+          var half = Math.floor(otMonths / 2);
+          var otKeys = keys.filter(function(k) { return (recs[k].totalOvertimePay || 0) > 0; });
+          otKeys.forEach(function(k, idx) {
+            if (idx < half) { olderOT += recs[k].totalOvertimePay; olderCnt++; }
+            else { recentOT += recs[k].totalOvertimePay; recentCnt++; }
+          });
+          if (olderCnt > 0 && recentCnt > 0) {
+            var avgOld = olderOT / olderCnt, avgNew = recentOT / recentCnt;
+            if (avgNew > avgOld * 1.2) lines.push('\n📈 近期加班费呈上升趋势。');
+            else if (avgNew < avgOld * 0.8) lines.push('\n📉 近期加班费有所减少。');
+          }
+        }
+        lines.push('\n⚙️ 加班费 = 时薪 × 加班小时 × 倍率');
+        lines.push('   工作日1.5倍 / 周末2.0倍 / 法定节假日3.0倍');
+        if (totalOTPay > 0) {
+          lines.push('\n💡 加班费也需缴纳个税，但跨税率档时加班费越多，边际税率越高。');
+        } else {
+          lines.push('\n📌 暂无加班记录，可在「加班日历」页面记录。');
+        }
+        return lines.join('\n');
+      }
+
+      function aiFindExtreme(recs, keys, entities) {
+        var maxNet = 0, maxKey = '', minNet = Infinity, minKey = '';
+        var maxTax = 0, maxTaxKey = '';
+        var maxGross = 0, maxGrossKey = '';
+        keys.forEach(function(k) {
+          var n = recs[k].netPay || 0;
+          var t = recs[k].tax || 0;
+          var g = recs[k].grossPay || 0;
+          if (n > maxNet) { maxNet = n; maxKey = k; }
+          if (n < minNet && n > 0) { minNet = n; minKey = k; }
+          if (t > maxTax) { maxTax = t; maxTaxKey = k; }
+          if (g > maxGross) { maxGross = g; maxGrossKey = k; }
+        });
+        var lines = ['📊 极值统计：\n'];
+        lines.push('💰 实发最高：' + maxKey.split('-')[0] + '年' + maxKey.split('-')[1] + '月 ¥' + maxNet.toFixed(2));
+        lines.push('💰 实发最低：' + minKey.split('-')[0] + '年' + minKey.split('-')[1] + '月 ¥' + minNet.toFixed(2));
+        lines.push('💵 应发最高：' + maxGrossKey.split('-')[1] + '月 ¥' + maxGross.toFixed(2));
+        lines.push('🧮 个税最高：' + maxTaxKey.split('-')[1] + '月 ¥' + maxTax.toFixed(2));
+        var diff = maxNet - minNet;
+        lines.push('\n最高与最低相差：¥' + diff.toFixed(2) + '（' + (diff / minNet * 100).toFixed(0) + '%）');
+        if (diff / minNet > 0.5) {
+          lines.push('💡 收入波动较大，最高月比最低月高出超过50%。');
+        }
+        return lines.join('\n');
+      }
+
+      function aiEstimate(recs, keys, entities) {
+        var count = entities && entities.count ? Math.min(entities.count, keys.length) : keys.length;
+        var useKeys = keys.slice(-count);
+        var sumNet = 0, sumGross = 0, sumTax = 0;
+        useKeys.forEach(function(k) {
+          sumNet += recs[k].netPay || 0;
+          sumGross += recs[k].grossPay || 0;
+          sumTax += recs[k].tax || 0;
+        });
+        var cnt = useKeys.length;
+        var avgNet = sumNet / cnt;
+        var avgGross = sumGross / cnt;
+        var avgTax = sumTax / cnt;
+        var lines = ['📅 全年预估（基于近' + cnt + '个月）：\n'];
+        lines.push('• 已记录：' + keys.length + '个月');
+        lines.push('• 月均实发：¥' + avgNet.toFixed(2));
+        lines.push('• 月均应发：¥' + avgGross.toFixed(2));
+        lines.push('• 月均个税：¥' + avgTax.toFixed(2) + '\n');
+        lines.push('🔮 按月均推算全年：');
+        lines.push('   预计应发：¥' + (avgGross * 12).toFixed(2));
+        lines.push('   预计实发：¥' + (avgNet * 12).toFixed(2));
+        lines.push('   预计个税：¥' + (avgTax * 12).toFixed(2));
+
+        // 更精确的预测（考虑累计预扣）
+        var lastKey = keys[keys.length - 1];
+        var lastRec = recs[lastKey];
+        var lastCum = lastRec.cumulativeTaxable || 0;
+        var p = parseMonthKey(lastKey);
+        if (lastCum > 0 && p.month < 12) {
+          var monthlyAvgTaxable = lastCum / p.month;
+          var projectedCum = monthlyAvgTaxable * 12;
+          // 简单估算全年税额
+          var projectedTax = 0;
+          if (projectedCum <= 36000) projectedTax = projectedCum * 0.03;
+          else if (projectedCum <= 144000) projectedTax = projectedCum * 0.1 - 2520;
+          else if (projectedCum <= 300000) projectedTax = projectedCum * 0.2 - 16920;
+          else if (projectedCum <= 420000) projectedTax = projectedCum * 0.25 - 31920;
+          else if (projectedCum <= 660000) projectedTax = projectedCum * 0.3 - 52920;
+          else if (projectedCum <= 960000) projectedTax = projectedCum * 0.35 - 85920;
+          else projectedTax = projectedCum * 0.45 - 181920;
+          if (projectedTax < 0) projectedTax = 0;
+          lines.push('\n📊 按累计预扣法精确估算：');
+          lines.push('   年底累计应纳税所得额：¥' + projectedCum.toFixed(0));
+          lines.push('   预计全年个税：¥' + projectedTax.toFixed(0));
+          lines.push('   预计全年实发：¥' + (avgGross * 12 - projectedTax - ((lastRec.socialInsurance||0) + (lastRec.housingFund||0)) * 12).toFixed(0));
+          lines.push('\n💡 此估算考虑了累计预扣法的税率跳档，比简单月均乘12更准确。');
+        }
+        return lines.join('\n');
+      }
+
+      function aiGeneralAnalysis(recs, keys, q, entities) {
+        var sumNet = 0, sumTax = 0, sumGross = 0;
+        keys.forEach(function(k) { sumNet += recs[k].netPay || 0; sumTax += recs[k].tax || 0; sumGross += recs[k].grossPay || 0; });
+        var lastRec = recs[keys[keys.length - 1]];
+        var lastNet = lastRec.netPay || 0;
+        var avgNet = sumNet / keys.length;
+        var lines = ['我收到了你的问题：「' + q + '」\n'];
+        lines.push('这个问题我暂时没有完全匹配的分析模式，但可以给你一份数据概览：\n');
+        lines.push('📊 数据概览（' + keys.length + '个月）：');
+        lines.push('• 累计实发：¥' + sumNet.toFixed(2));
+        lines.push('• 累计应发：¥' + sumGross.toFixed(2));
+        lines.push('• 累计个税：¥' + sumTax.toFixed(2));
+        lines.push('• 最新实发：¥' + lastNet.toFixed(2));
+        lines.push('• 月均实发：¥' + avgNet.toFixed(2) + '\n');
+
+        // 主动发现异常
+        var lastCum = lastRec.cumulativeTaxable || 0;
+        if (lastCum > 36000 && lastCum < 42000) {
+          lines.push('⚠️ 你当前累计应纳税所得额 ¥' + lastCum.toFixed(0) + '，已跨入10%税率档。');
+        }
+        if (lastNet < avgNet * 0.8) {
+          lines.push('⚠️ 最新月份实发低于月均20%，收入有所下降。');
+        }
+        lines.push('\n你可以试试问我：');
+        lines.push('• "分析收入趋势" — 收入走势');
+        lines.push('• "3月和5月对比" — 月度对比');
+        lines.push('• "到手比例" — 收入构成');
+        lines.push('• "社保公积金" — 五险一金');
+        lines.push('• "这个月工资明细" — 查看明细');
+        return lines.join('\n');
+      }
 
       function initApp() {
         console.log('📋 智财管家 工资核算 启动 v' + APP_VERSION);
         updateVersionDisplays();
+
+        // 版本变更时自动弹出更新日志
+        try {
+          var lastVer = localStorage.getItem('app_last_version');
+          if (lastVer && lastVer !== APP_VERSION) {
+            setTimeout(function() { showChangelog(); }, 800);
+          }
+          localStorage.setItem('app_last_version', APP_VERSION);
+        } catch(e) {}
+
         // 主题配置由 initThemeCenter() 统一处理
+
+        // 初始化登录界面（密码保护）
+        initLoginScreen();
 
         loadStorage();
         // 清理 history 中的无效键（非 YYYY-MM 格式的键，如误混入的设置项名称）
@@ -6311,6 +8951,178 @@
             });
           }
 
+          // 安全设置 - 修改密码
+          if ($('btnChangePw')) {
+            $('btnChangePw').addEventListener('click', function() {
+              if (typeof openChangePassword === 'function') {
+                openChangePassword();
+              }
+            });
+          }
+          // 安全设置 - 密保问题
+          if ($('btnManageSecurityQuestion')) {
+            $('btnManageSecurityQuestion').addEventListener('click', function() {
+              if (typeof openSecurityQuestionSettings === 'function') {
+                openSecurityQuestionSettings();
+              }
+            });
+          }
+          // 安全设置 - 重置应用
+          if ($('btnResetApp')) {
+            $('btnResetApp').addEventListener('click', function() {
+              if (!confirm('确定重置应用吗？所有数据将被清空且不可恢复！')) return;
+              if (!confirm('再次确认：真的要清除所有工资记录、加班数据、设置和密码吗？')) return;
+              var ok = clearAllData();
+              if (ok) {
+                showToast('✅ 应用已重置，即将刷新...');
+                setTimeout(function() { location.reload(); }, 1000);
+              } else {
+                showToast('❌ 重置失败');
+              }
+            });
+          }
+          // 更新密码状态显示
+          if ($('securityPwStatus')) {
+            $('securityPwStatus').textContent = hasPasswordSet() ? '已设置密码保护' : '未设置密码';
+          }
+          // 更新密保问题状态显示
+          if ($('securityQuestionStatus') && $('btnManageSecurityQuestion')) {
+            if (hasSecurityQuestion()) {
+              $('securityQuestionStatus').textContent = '已设置：' + getSecurityQuestion();
+              $('btnManageSecurityQuestion').textContent = '修改';
+            } else {
+              $('securityQuestionStatus').textContent = '未设置密保问题';
+              $('btnManageSecurityQuestion').textContent = '设置';
+            }
+          }
+
+          // 数据管理 - 更新统计
+          function updateSettingsStats() {
+            var historyCount = Object.keys(storage.history || {}).filter(function(k) { return parseMonthKey(k) !== null; }).length;
+            var detailsCount = Object.keys(storage.details || {}).length;
+            var customCount = (customItems || []).length;
+            if ($('statHistoryCount')) $('statHistoryCount').textContent = historyCount;
+            if ($('statOvertimeCount')) $('statOvertimeCount').textContent = detailsCount;
+            if ($('statCustomCount')) $('statCustomCount').textContent = customCount;
+          }
+          updateSettingsStats();
+
+          // 数据管理 - 导出全部数据备份
+          if ($('btnSettingsExportBackup')) {
+            $('btnSettingsExportBackup').addEventListener('click', function() {
+              if (typeof exportBackup === 'function') exportBackup();
+            });
+          }
+          // 数据管理 - 导入全量备份
+          if ($('btnSettingsImportBackup')) {
+            $('btnSettingsImportBackup').addEventListener('click', function() {
+              if (typeof openImportModal === 'function') openImportModal();
+            });
+          }
+
+          // 关于 - 版本号
+          if ($('aboutVersion')) {
+            $('aboutVersion').textContent = 'v' + APP_VERSION;
+          }
+          // 关于 - 更新日志
+          if ($('btnSettingsChangelog')) {
+            $('btnSettingsChangelog').addEventListener('click', function() {
+              if (typeof showChangelog === 'function') showChangelog();
+            });
+          }
+
+          // ---- AI 大模型设置 ----
+          (function() {
+            var cfg = getAiConfig();
+            var providerBtns = document.querySelectorAll('.ai-provider-btn');
+            var apiKeyInput = $('aiApiKey');
+            var apiBaseInput = $('aiApiBase');
+            var modelInput = $('aiModelName');
+            var toggleBtn = $('toggleAiKey');
+            var saveBtn = $('btnSaveAiSettings');
+            var testBtn = $('btnTestAiApi');
+            var testResult = $('aiTestResult');
+
+            function setActiveProvider(provider) {
+              providerBtns.forEach(function(b) {
+                b.classList.toggle('active', b.dataset.provider === provider);
+              });
+              var p = AI_PROVIDERS[provider];
+              if (p && apiBaseInput && !apiBaseInput.value) {
+                apiBaseInput.value = p.base;
+              }
+              if (p && modelInput && !modelInput.value) {
+                modelInput.value = p.model;
+              }
+            }
+
+            // 加载已保存的配置
+            if (cfg.provider) setActiveProvider(cfg.provider);
+            if (apiKeyInput && cfg.apiKey) apiKeyInput.value = cfg.apiKey;
+            if (apiBaseInput && cfg.baseUrl) apiBaseInput.value = cfg.baseUrl;
+            if (modelInput && cfg.model) modelInput.value = cfg.model;
+
+            // 提供商切换
+            providerBtns.forEach(function(btn) {
+              btn.addEventListener('click', function() {
+                setActiveProvider(this.dataset.provider);
+              });
+            });
+
+            // 显示/隐藏 API Key
+            if (toggleBtn) {
+              toggleBtn.addEventListener('click', function() {
+                if (!apiKeyInput) return;
+                if (apiKeyInput.type === 'password') {
+                  apiKeyInput.type = 'text';
+                  this.textContent = '🙈';
+                } else {
+                  apiKeyInput.type = 'password';
+                  this.textContent = '👁️';
+                }
+              });
+            }
+
+            // 保存设置
+            if (saveBtn) {
+              saveBtn.addEventListener('click', function() {
+                var activeProvider = document.querySelector('.ai-provider-btn.active');
+                var provider = activeProvider ? activeProvider.dataset.provider : 'doubao';
+                var newCfg = {
+                  provider: provider,
+                  apiKey: apiKeyInput ? apiKeyInput.value.trim() : '',
+                  baseUrl: apiBaseInput ? apiBaseInput.value.trim() : '',
+                  model: modelInput ? modelInput.value.trim() : '',
+                  enabled: true
+                };
+                if (!newCfg.apiKey) {
+                  showToast('⚠️ 请输入 API Key');
+                  return;
+                }
+                saveAiConfig(newCfg);
+                showToast('✅ AI 设置已保存');
+              });
+            }
+
+            // 测试连接
+            if (testBtn) {
+              testBtn.addEventListener('click', async function() {
+                if (testResult) testResult.textContent = '⏳ 测试中...';
+                testBtn.disabled = true;
+                try {
+                  var answer = await callAiApi('请用一句话介绍你自己');
+                  if (testResult) testResult.textContent = '✅ 连接成功！';
+                  showToast('✅ API 连接正常');
+                } catch(e) {
+                  if (testResult) testResult.textContent = '❌ 失败：' + e.message;
+                  showToast('❌ 连接失败');
+                } finally {
+                  testBtn.disabled = false;
+                }
+              });
+            }
+          })();
+
           if (window.matchMedia) {
             var mql = window.matchMedia('(prefers-color-scheme: dark)');
             mql.addEventListener('change', function() {
@@ -6388,6 +9200,18 @@
         if ($('changelogCloseBtn')) $('changelogCloseBtn').addEventListener('click', function() { $('changelogModalOverlay').classList.remove('active'); });
         if ($('changelogModalOverlay')) $('changelogModalOverlay').addEventListener('click', function(e) { if (e.target === this) this.classList.remove('active'); });
 
+        // 计税详情弹窗
+        if ($('taxDetailCloseBtn')) $('taxDetailCloseBtn').addEventListener('click', function() { $('taxDetailOverlay').classList.remove('active'); });
+        if ($('taxDetailOverlay')) $('taxDetailOverlay').addEventListener('click', function(e) { if (e.target === this) this.classList.remove('active'); });
+        // 个税详情点击（事件委托）
+        if ($('annualHistoryContainer')) $('annualHistoryContainer').addEventListener('click', function(e) {
+          var link = e.target.closest('.tax-detail-link');
+          if (link) {
+            var mk = link.dataset.taxDetail;
+            if (mk) showTaxDetail(mk);
+          }
+        });
+
 
         // ---- 桌面端导航（已由统一 switchToTab 处理）----
 
@@ -6424,6 +9248,9 @@
 
         updateSettingsPreview();
         updateStatusBar();
+
+        // ---- 初始化 AI 智能助手 ----
+        aiInit();
       }
 
       // ============================================================
@@ -6530,8 +9357,48 @@
       window.copySalarySlip = copySalarySlip;
       window.showToast = showToast;
       window.showChangelog = showChangelog;
+      window.aiInit = aiInit;
+      window.aiGenerateResponse = aiGenerateResponse;
+      window.isAiApiEnabled = isAiApiEnabled;
+      window.callAiApi = callAiApi;
 
+      // 在 initApp 中调用 AI 初始化
       document.addEventListener('DOMContentLoaded', initApp);
+
+      // ==== AI 助手独立初始化（不依赖 initApp 是否成功完成）====
+      document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+          if (typeof aiInit === 'function' && !aiInitialized) {
+            console.log('🤖 AI助手后备初始化触发');
+            aiInit();
+          }
+          // 额外保障：直接检查登录状态并显示按钮
+          var fab = document.getElementById('aiFab');
+          var loginO = document.getElementById('loginOverlay');
+          if (fab && loginO) {
+            var checkAndShow = function() {
+              var ls = window.getComputedStyle(loginO).display;
+              if (ls === 'none') {
+                if (fab.style.display !== 'flex') {
+                  fab.style.display = 'flex';
+                  fab.style.animation = 'aiFabIn 0.5s cubic-bezier(0.34,1.56,0.64,1)';
+                  console.log('🤖 AI按钮已显示（登录遮罩已关闭）');
+                }
+                return true;
+              }
+              return false;
+            };
+            // 立即检查
+            checkAndShow();
+            // 持续检查10秒
+            var cnt = 0;
+            var timer = setInterval(function() {
+              if (checkAndShow() || cnt > 20) clearInterval(timer);
+              cnt++;
+            }, 500);
+          }
+        }, 1500);
+      });
 
     })();
   </script>
@@ -6541,7 +9408,7 @@
     <div class="modal-box" style="max-width:520px;text-align:left;max-height:80vh;">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
         <h3 style="font-size:1.1rem;display:flex;align-items:center;gap:8px;">📜 更新日志</h3>
-        <span style="font-size:0.75rem;color:var(--text-muted);background:var(--primary-light);padding:2px 10px;border-radius:20px;">v6.1.0</span>
+        <span style="font-size:0.75rem;color:var(--text-muted);background:var(--primary-light);padding:2px 10px;border-radius:20px;" id="changelogVersionBadge">v7.0.0</span>
       </div>
       <div id="changelogContent" style="max-height:55vh;overflow-y:auto;padding-right:8px;"></div>
       <div class="modal-actions" style="margin-top:16px;">
@@ -6549,6 +9416,242 @@
       </div>
     </div>
   </div>
+
+  <!-- ===== AI 智能助手 ===== -->
+  <div id="aiFab" style="position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg, hsl(var(--primary-h),var(--primary-s),var(--primary-l)), hsl(var(--secondary-h),var(--secondary-s),var(--secondary-l)));cursor:pointer;z-index:9999;display:none;align-items:center;justify-content:center;box-shadow:0 4px 20px hsla(var(--primary-h),var(--primary-s),var(--primary-l),0.4);transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 1 7 7c0 2.4-1.2 4.5-3 5.7V18a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-3.3C6.2 13.5 5 11.4 5 9a7 7 0 0 1 7-7z"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+    <div style="position:absolute;top:-4px;right:-4px;width:14px;height:14px;border-radius:50%;background:#00b894;border:2px solid var(--bg);animation:aiPulse 2s ease-in-out infinite;"></div>
+  </div>
+
+  <div id="aiPanel" style="display:none;position:fixed;bottom:24px;right:24px;width:380px;max-width:calc(100vw - 32px);height:520px;max-height:calc(100vh - 48px);background:var(--modal-bg);backdrop-filter:blur(24px) saturate(160%);-webkit-backdrop-filter:blur(24px) saturate(160%);border:1px solid var(--card-border);border-radius:20px;z-index:9999;box-shadow:0 12px 48px rgba(0,0,0,0.3);flex-direction:column;overflow:hidden;">
+    <div style="display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--card-border);background:linear-gradient(135deg, hsla(var(--primary-h),var(--primary-s),var(--primary-l),0.1), hsla(var(--secondary-h),var(--secondary-s),var(--secondary-l),0.06));">
+      <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg, hsl(var(--primary-h),var(--primary-s),var(--primary-l)), hsl(var(--secondary-h),var(--secondary-s),var(--secondary-l)));display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 2a7 7 0 0 1 7 7c0 2.4-1.2 4.5-3 5.7V18a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-3.3C6.2 13.5 5 11.4 5 9a7 7 0 0 1 7-7z"></path></svg>
+      </div>
+      <div style="flex:1;">
+        <div style="font-weight:700;font-size:0.9rem;color:var(--text-primary);">AI 智能助手</div>
+        <div style="font-size:0.7rem;color:var(--text-secondary);">基于你的数据分析 · 随时提问</div>
+      </div>
+      <button id="aiCloseBtn" style="background:none;border:none;cursor:pointer;color:var(--text-secondary);font-size:1.2rem;padding:4px 8px;border-radius:8px;transition:all 0.15s;">✕</button>
+    </div>
+    <div id="aiMessages" style="flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;"></div>
+    <div style="padding:10px 14px;border-top:1px solid var(--card-border);">
+      <div id="aiQuickActions" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+        <button class="ai-quick-btn" data-q="税为什么这么高">税为什么高</button>
+        <button class="ai-quick-btn" data-q="分析近3个月收入趋势">收入趋势</button>
+        <button class="ai-quick-btn" data-q="到手比例分析">到手比例</button>
+        <button class="ai-quick-btn" data-q="最近两个月对比">月度对比</button>
+        <button class="ai-quick-btn" data-q="有什么节税建议">节税建议</button>
+        <button class="ai-quick-btn" data-q="这个月工资明细">工资明细</button>
+      </div>
+      <div style="display:flex;gap:8px;align-items:flex-end;">
+        <textarea id="aiInput" placeholder="输入你的问题..." rows="1" style="flex:1;resize:none;background:var(--input-bg);border:1px solid var(--input-border);border-radius:12px;padding:10px 12px;color:var(--text-primary);font-size:0.85rem;font-family:inherit;outline:none;max-height:80px;line-height:1.4;"></textarea>
+        <button id="aiSendBtn" style="width:38px;height:38px;border-radius:12px;border:none;background:linear-gradient(135deg, hsl(var(--primary-h),var(--primary-s),var(--primary-l)), hsl(var(--secondary-h),var(--secondary-s),var(--secondary-l)));color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @keyframes aiPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.3); opacity: 0.6; } }
+    @keyframes aiFabIn { from { transform: scale(0) rotate(-180deg); opacity: 0; } to { transform: scale(1) rotate(0deg); opacity: 1; } }
+    #aiFab:hover { transform: scale(1.1) rotate(5deg); box-shadow: 0 6px 28px hsla(var(--primary-h),var(--primary-s),var(--primary-l),0.5); }
+    .ai-quick-btn { font-size: 0.72rem; padding: 4px 10px; border-radius: 8px; border: 1px solid var(--card-border); background: var(--input-bg); color: var(--text-secondary); cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+    .ai-quick-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+    .ai-msg { max-width: 88%; padding: 10px 14px; border-radius: 14px; font-size: 0.82rem; line-height: 1.6; word-break: break-word; animation: aiMsgIn 0.3s ease; }
+    @keyframes aiMsgIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .ai-msg-user { align-self: flex-end; background: linear-gradient(135deg, hsl(var(--primary-h),var(--primary-s),var(--primary-l)), hsl(var(--secondary-h),var(--secondary-s),var(--secondary-l))); color: #fff; border-bottom-right-radius: 4px; }
+    .ai-msg-bot { align-self: flex-start; background: var(--hover-bg); color: var(--text-primary); border-bottom-left-radius: 4px; }
+    .ai-msg-bot a { color: var(--primary); text-decoration: none; }
+    .ai-typing { display: inline-flex; gap: 4px; padding: 4px 0; }
+    .ai-typing span { width: 7px; height: 7px; border-radius: 50%; background: var(--text-muted); animation: aiTyping 1.2s ease-in-out infinite; }
+    .ai-typing span:nth-child(2) { animation-delay: 0.2s; }
+    .ai-typing span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes aiTyping { 0%, 60%, 100% { transform: translateY(0); opacity: 0.4; } 30% { transform: translateY(-6px); opacity: 1; } }
+    @media (max-width: 768px) {
+      #aiFab { bottom: 72px; right: 16px; width: 48px; height: 48px; }
+      #aiPanel { bottom: 0; right: 0; width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; }
+    }
+  </style>
+
+  <!-- ===== AI 助手独立启动脚本（不依赖主 IIFE）===== -->
+  <script>
+    (function() {
+      var fabClickHandlerAttached = false;
+
+      function showAIFab() {
+        var fab = document.getElementById('aiFab');
+        var panel = document.getElementById('aiPanel');
+        var loginO = document.getElementById('loginOverlay');
+        if (!fab) return;
+        var loginVisible = loginO ? window.getComputedStyle(loginO).display !== 'none' : false;
+        if (!loginVisible) {
+          // 登录遮罩已关闭，显示 AI 按钮（除非面板已打开）
+          if (fab.style.display !== 'flex' && (!panel || panel.style.display !== 'flex')) {
+            fab.style.display = 'flex';
+            fab.style.animation = 'aiFabIn 0.5s cubic-bezier(0.34,1.56,0.64,1)';
+          }
+          // 确保点击事件已绑定
+          if (!fabClickHandlerAttached) {
+            attachFabClickHandler();
+          }
+        }
+      }
+
+      function attachFabClickHandler() {
+        var fab = document.getElementById('aiFab');
+        var panel = document.getElementById('aiPanel');
+        var closeBtn = document.getElementById('aiCloseBtn');
+        var sendBtn = document.getElementById('aiSendBtn');
+        var input = document.getElementById('aiInput');
+        if (!fab || !panel) return;
+        fabClickHandlerAttached = true;
+
+        // 点击浮动按钮打开面板
+        fab.addEventListener('click', function() {
+          panel.style.display = 'flex';
+          fab.style.display = 'none';
+          // 如果主 IIFE 的 aiInit 已绑定事件，不重复添加欢迎消息
+          var messages = document.getElementById('aiMessages');
+          if (messages && messages.children.length === 0) {
+            var div = document.createElement('div');
+            div.className = 'ai-msg ai-msg-bot';
+            div.style.whiteSpace = 'pre-wrap';
+            div.textContent = '你好！我是你的 AI 工资助手 ✨\n\n我可以帮你：\n• 分析工资数据和税额变化\n• 解释税务规则和计算方式\n• 提供节税建议\n• 分析收入趋势\n\n试试问我：「我这个月税为什么这么高？」';
+            messages.appendChild(div);
+            messages.scrollTop = messages.scrollHeight;
+          }
+          if (input) setTimeout(function() { input.focus(); }, 100);
+        });
+
+        // 关闭按钮
+        if (closeBtn) {
+          closeBtn.addEventListener('click', function() {
+            panel.style.display = 'none';
+            showAIFab();
+          });
+        }
+
+        // 发送按钮
+        if (sendBtn && input) {
+          sendBtn.addEventListener('click', function() {
+            var q = (input.value || '').trim();
+            if (!q) return;
+            // 添加用户消息
+            var messages = document.getElementById('aiMessages');
+            if (messages) {
+              var udiv = document.createElement('div');
+              udiv.className = 'ai-msg ai-msg-user';
+              udiv.style.whiteSpace = 'pre-wrap';
+              udiv.textContent = q;
+              messages.appendChild(udiv);
+              // 打字指示器
+              var tdiv = document.createElement('div');
+              tdiv.className = 'ai-msg ai-msg-bot';
+              tdiv.id = 'aiTypingIndicator';
+              tdiv.innerHTML = '<div class="ai-typing"><span></span><span></span><span></span></div>';
+              messages.appendChild(tdiv);
+              messages.scrollTop = messages.scrollHeight;
+            }
+            input.value = '';
+            input.style.height = 'auto';
+            // 调用主 IIFE 的 AI 响应生成
+            var sendAnswer = function(text) {
+              var typing = document.getElementById('aiTypingIndicator');
+              if (typing) typing.remove();
+              if (messages) {
+                var bdiv = document.createElement('div');
+                bdiv.className = 'ai-msg ai-msg-bot';
+                bdiv.style.whiteSpace = 'pre-wrap';
+                bdiv.textContent = text;
+                messages.appendChild(bdiv);
+                messages.scrollTop = messages.scrollHeight;
+              }
+            };
+
+            // 优先使用大模型 API
+            if (typeof window.isAiApiEnabled === 'function' && window.isAiApiEnabled() &&
+                typeof window.callAiApi === 'function') {
+              window.callAiApi(q, [])
+                .then(function(ans) { sendAnswer(ans); })
+                .catch(function(err) {
+                  var fallback = '抱歉，我暂时无法处理这个问题。';
+                  if (typeof window.aiGenerateResponse === 'function') {
+                    try { fallback = window.aiGenerateResponse(q); } catch(e) {}
+                  }
+                  sendAnswer(fallback + '\n\n⚠️ 大模型调用失败，已使用本地分析（' + err.message + '）');
+                });
+            } else {
+              setTimeout(function() {
+                var answer = '抱歉，我暂时无法处理这个问题。请尝试使用快捷按钮。';
+                if (typeof window.aiGenerateResponse === 'function') {
+                  try { answer = window.aiGenerateResponse(q); } catch(e) { answer = '处理时出错: ' + e.message; }
+                }
+                sendAnswer(answer);
+              }, 500 + Math.random() * 400);
+            }
+          });
+          input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendBtn.click(); }
+          });
+          input.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 80) + 'px';
+          });
+        }
+
+        // 快捷按钮
+        document.querySelectorAll('.ai-quick-btn').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            if (input) {
+              input.value = this.dataset.q || '';
+              if (sendBtn) sendBtn.click();
+            }
+          });
+        });
+
+        console.log('🤖 [独立脚本] AI按钮点击事件已绑定');
+      }
+
+      function tryInitAI() {
+        // 调用主 IIFE 暴露的 aiInit
+        if (typeof window.aiInit === 'function') {
+          console.log('🤖 [独立脚本] 调用 window.aiInit()');
+          try { window.aiInit(); } catch(e) { console.warn('🤖 aiInit error:', e); }
+        }
+        // 无论 aiInit 是否成功，都检查并显示按钮
+        showAIFab();
+      }
+
+      // DOM 加载后 1 秒尝试初始化
+      document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(tryInitAI, 1000);
+      });
+
+      // 如果 DOMContentLoaded 已经触发，直接执行
+      if (document.readyState === 'interactive' || document.readyState === 'complete') {
+        setTimeout(tryInitAI, 1000);
+      }
+
+      // 持续监控登录遮罩层状态（15秒内每500ms检查一次）
+      var checkCount = 0;
+      var checkTimer = setInterval(function() {
+        showAIFab();
+        checkCount++;
+        if (checkCount > 30) clearInterval(checkTimer);
+      }, 500);
+
+      // 监听 loginOverlay 的样式变化
+      var loginO = document.getElementById('loginOverlay');
+      if (loginO && window.MutationObserver) {
+        var observer = new MutationObserver(function() {
+          setTimeout(showAIFab, 50);
+        });
+        observer.observe(loginO, { attributes: true, attributeFilter: ['style', 'class'] });
+      }
+    })();
+  </script>
 
 
 </body></html>

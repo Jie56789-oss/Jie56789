@@ -1,14 +1,23 @@
 <!DOCTYPE html>
 <html lang="zh-CN" data-theme="dark" data-accent="purple" style="--transition: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); --font-scale: 1;"><head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="智财管家">
+  <meta name="theme-color" content="#8b5cf6">
+  <meta name="description" content="智财管家 · 工资核算 — 智能工资核算工具，支持个税计算、加班管理、AI分析">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>智财管家 · 工资核算 v7.0</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+  <title>智财管家 · 工资核算 v7.1</title>
   <style>
     * {
       margin: 0;
@@ -2846,6 +2855,14 @@
       text-align: center;
       animation: loginCardIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
+    @media (max-width: 640px) {
+      .login-card { max-width: 100%; margin: 0 12px; padding: 32px 20px; border-radius: 14px; }
+      .login-overlay { padding: 12px; }
+    }
+    @media (max-width: 440px) {
+      .login-card { padding: 24px 16px; }
+      .login-logo { font-size: 2.5rem; }
+    }
     @keyframes loginCardIn {
       from { opacity: 0; transform: translateY(20px) scale(0.95); }
       to { opacity: 1; transform: translateY(0) scale(1); }
@@ -3014,6 +3031,442 @@
       font-size: 0.7rem;
       color: var(--text-muted);
       margin-top: 2px;
+    }
+
+    /* ===== v7.1 手机端全面适配 ===== */
+
+    /* iPhone 安全区域变量 */
+    :root {
+      --safe-area-top: env(safe-area-inset-top, 0px);
+      --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+      --safe-area-left: env(safe-area-inset-left, 0px);
+      --safe-area-right: env(safe-area-inset-right, 0px);
+    }
+
+    /* ===== 平板 (768px) 基础适配增强 ===== */
+    @media (max-width: 768px) {
+      body {
+        padding: 8px 8px 0;
+        font-size: 13px;
+      }
+      .main-content {
+        padding: 8px;
+        padding-bottom: calc(8px + var(--safe-area-bottom));
+      }
+      .main-content .main-app {
+        max-width: 100%;
+        padding-bottom: calc(20px + var(--safe-area-bottom));
+      }
+      .app-header {
+        padding: 14px 14px 10px;
+      }
+      .app-header .brand {
+        font-size: 1.3rem;
+      }
+      .app-header .subtitle {
+        font-size: 0.75rem;
+      }
+      /* 底部导航栏安全区域适配 */
+      .bottom-nav {
+        padding-bottom: var(--safe-area-bottom);
+      }
+      .bottom-nav .nav-btn {
+        min-height: 44px;
+        padding: 8px 4px 6px;
+      }
+      /* 卡片内边距缩减 */
+      .card-body {
+        padding: 12px 14px;
+      }
+      .card-header {
+        padding: 12px 14px;
+        font-size: 0.95rem;
+      }
+      /* 输入框触控优化 */
+      .form-input, input[type="number"], input[type="text"], input[type="password"], select {
+        min-height: 44px;
+        font-size: 0.9rem;
+      }
+      /* 参数设置单列 */
+      .params-grid {
+        grid-template-columns: 1fr;
+      }
+      /* 设置页面单列 */
+      .settings-page-grid {
+        grid-template-columns: 1fr;
+      }
+      /* 设置分组卡片内边距 */
+      .settings-group-card {
+        padding: 14px;
+      }
+      /* 加班布局纵向堆叠 */
+      .overtime-layout {
+        flex-direction: column;
+        max-width: none;
+        margin: 0;
+      }
+      .overtime-calendar-col {
+        flex: 1 1 auto;
+        max-width: none;
+      }
+      .overtime-sidebar {
+        flex: 1 1 auto;
+        max-width: none;
+        position: static;
+      }
+      /* 日历单元格缩小 */
+      .calendar-day {
+        min-height: 56px;
+        padding: 3px 2px;
+      }
+      .calendar-day .day-number {
+        font-size: 0.85rem;
+      }
+      .calendar-grid {
+        gap: 3px;
+      }
+      /* 按钮触控优化 */
+      .btn {
+        min-height: 44px;
+        padding: 10px 16px;
+        font-size: 0.85rem;
+      }
+      /* 浮动按钮安全区域 */
+      .fab-calculate {
+        bottom: calc(max(16px, var(--safe-area-bottom)) + 72px);
+        right: 16px;
+      }
+      /* 弹窗适配 */
+      .modal-overlay {
+        padding: 0;
+        align-items: stretch;
+      }
+      .modal-box {
+        border-radius: 0;
+        margin: 0;
+        max-width: 100%;
+        width: 100%;
+        max-height: 100vh;
+        overflow-y: auto;
+        padding: 16px;
+        padding-top: calc(16px + var(--safe-area-top));
+      }
+    }
+
+    /* ===== 手机 (640px) 深度适配 ===== */
+    @media (max-width: 640px) {
+      body {
+        padding: 6px 6px 0;
+        font-size: 12.5px;
+      }
+      .main-content {
+        padding: 6px;
+      }
+      .app-header {
+        padding: 12px 12px 8px;
+        border-radius: var(--radius-md) var(--radius-md) 0 0;
+      }
+      .app-header .brand {
+        font-size: 1.2rem;
+      }
+      .app-header .subtitle {
+        font-size: 0.7rem;
+      }
+      .app-header .subtitle .badge {
+        font-size: 0.6rem;
+        padding: 1px 6px;
+      }
+      .version {
+        font-size: 0.6rem;
+        padding: 1px 6px;
+      }
+      /* 底部导航栏紧凑化 */
+      .bottom-nav .nav-btn {
+        min-height: 42px;
+        padding: 6px 2px 4px;
+      }
+      .bottom-nav .nav-btn .tab-icon {
+        font-size: 1rem;
+      }
+      .bottom-nav .nav-btn .tab-label {
+        font-size: 0.68rem;
+      }
+      /* 卡片更紧凑 */
+      .card-body {
+        padding: 10px 12px;
+      }
+      .card-header {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+      }
+      /* 表格隐藏，卡片列表显示 */
+      .history-table-wrap {
+        display: none;
+      }
+      .salary-card-list {
+        display: flex;
+      }
+      /* 日历进一步缩小 */
+      .calendar-day {
+        min-height: 48px;
+        padding: 2px 1px;
+      }
+      .calendar-day .day-number {
+        font-size: 0.8rem;
+      }
+      .overtime-badge {
+        font-size: 0.5rem;
+        padding: 1px 4px;
+      }
+      .calendar-grid {
+        gap: 2px;
+      }
+      /* 日历头部星期标签缩小 */
+      .calendar-header {
+        font-size: 0.65rem;
+        gap: 2px;
+      }
+      /* 时段输入横向滚动 */
+      .time-segment {
+        gap: 3px;
+        padding: 3px 4px;
+      }
+      .time-segment input[type="time"] {
+        width: 72px;
+        font-size: 0.7rem;
+        padding: 4px 4px;
+      }
+      .time-segment label {
+        font-size: 0.5rem;
+      }
+      /* 模态框输入优化 */
+      .modal-hours-input-wrap input[type="number"] {
+        font-size: 1.1rem;
+        padding: 10px 12px;
+        min-height: 44px;
+      }
+      /* 年度汇总 */
+      .annual-summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      /* 年度图表单列 */
+      .annual-charts {
+        grid-template-columns: 1fr !important;
+      }
+      /* Toast 位置 */
+      .toast {
+        top: 50px;
+        font-size: 0.9rem;
+        padding: 5px 14px;
+      }
+      /* 空状态 */
+      .empty-state {
+        padding: 24px 16px;
+      }
+      .empty-state .empty-icon {
+        font-size: 2rem;
+      }
+      .empty-state .empty-text {
+        font-size: 0.9rem;
+      }
+      /* 浮动按钮缩小 */
+      .fab-calculate {
+        width: 48px;
+        height: 48px;
+        bottom: calc(var(--safe-area-bottom) + 68px);
+        right: 12px;
+      }
+      .fab-calculate .fab-icon {
+        font-size: 1.3rem;
+      }
+      .fab-calculate .fab-label {
+        display: none;
+      }
+      /* 设置卡片紧凑 */
+      .settings-group-card {
+        padding: 12px;
+      }
+      .sgc-title {
+        font-size: 0.9rem;
+      }
+      .sgc-subtitle {
+        font-size: 0.75rem;
+      }
+      /* AI 快捷按钮 */
+      .ai-quick-btn {
+        font-size: 0.68rem;
+        padding: 4px 8px;
+      }
+      /* 光晕缩小避免遮挡 */
+      .glow-orb.orb1 {
+        width: 250px;
+        height: 250px;
+      }
+      .glow-orb.orb2 {
+        width: 200px;
+        height: 200px;
+      }
+      .glow-orb.orb3 {
+        width: 120px;
+        height: 120px;
+      }
+    }
+
+    /* ===== 小屏手机 (440px) 极限适配 ===== */
+    @media (max-width: 440px) {
+      body {
+        padding: 4px 4px 0;
+        font-size: 12px;
+      }
+      .main-content {
+        padding: 4px;
+      }
+      .app-header {
+        padding: 10px 10px 6px;
+      }
+      .app-header .brand {
+        font-size: 1.1rem;
+      }
+      .app-header .subtitle {
+        font-size: 0.65rem;
+      }
+      /* 底部导航仅显示图标 */
+      .bottom-nav .nav-btn .tab-label {
+        display: none;
+      }
+      .bottom-nav .nav-btn {
+        min-height: 48px;
+      }
+      .bottom-nav .nav-btn .tab-icon {
+        font-size: 1.3rem;
+      }
+      /* 参数设置单列 */
+      .params-grid {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+      /* 日历极小化 */
+      .calendar-day {
+        min-height: 44px;
+        padding: 2px 1px;
+      }
+      .calendar-day .day-number {
+        font-size: 0.75rem;
+      }
+      /* 时段输入更窄 */
+      .time-segment input[type="time"] {
+        width: 62px;
+        font-size: 0.65rem;
+        padding: 3px 3px;
+      }
+      /* 模态框全屏 */
+      .modal-box {
+        padding: 12px;
+        padding-top: calc(12px + var(--safe-area-top));
+      }
+      /* 自定义项垂直排列 */
+      .custom-item-input-group {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .custom-item-input-group input[type="text"],
+      .custom-item-input-group input[type="number"],
+      .custom-item-input-group select {
+        width: 100%;
+      }
+      /* 年度汇总2列 */
+      .annual-summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      /* 设置卡片内边距极小 */
+      .settings-group-card {
+        padding: 10px;
+      }
+      /* AI 消息气泡 */
+      .ai-msg {
+        max-width: 92%;
+        font-size: 0.78rem;
+        padding: 8px 12px;
+      }
+      /* AI 供应商单列 */
+      .ai-provider-grid {
+        grid-template-columns: 1fr;
+      }
+      /* 数据统计保持3列但缩小间距 */
+      .sgc-stats-grid {
+        gap: 4px;
+      }
+      /* 主题模式和强调色保持3列但缩小间距 */
+      .theme-mode-grid {
+        gap: 6px;
+      }
+      .accent-color-grid {
+        gap: 6px;
+      }
+    }
+
+    /* ===== iPhone 横屏适配 ===== */
+    @media (max-width: 900px) and (orientation: landscape) and (max-height: 500px) {
+      .app-header {
+        padding: 8px 16px 6px;
+      }
+      .app-header .brand {
+        font-size: 1.1rem;
+      }
+      .app-header .subtitle {
+        font-size: 0.65rem;
+      }
+      .bottom-nav .nav-btn {
+        min-height: 36px;
+      }
+      .fab-calculate {
+        bottom: calc(var(--safe-area-bottom) + 52px);
+        width: 44px;
+        height: 44px;
+      }
+      .fab-calculate .fab-label {
+        display: none;
+      }
+      .modal-box {
+        max-height: 100vh;
+        padding: 12px;
+      }
+    }
+
+    /* ===== iPhone 独立模式 (PWA) 适配 ===== */
+    @media (display-mode: standalone) {
+      body {
+        padding-top: var(--safe-area-top);
+      }
+      .app-header {
+        padding-top: calc(14px + var(--safe-area-top));
+      }
+      .fab-calculate {
+        bottom: calc(var(--safe-area-bottom) + 72px);
+      }
+      .bottom-nav {
+        padding-bottom: var(--safe-area-bottom);
+      }
+    }
+
+    /* ===== 触控设备优化 ===== */
+    @media (hover: none) and (pointer: coarse) {
+      .calendar-day:hover {
+        transform: none;
+        box-shadow: none;
+      }
+      .btn:hover {
+        transform: none;
+      }
+      .btn:active {
+        transform: scale(0.96);
+      }
+      .highlight-card:hover {
+        transform: none;
+      }
+      .sidebar-secondary-btn:hover {
+        transform: none;
+      }
     }
 
   </style>
@@ -3188,7 +3641,7 @@
           <div class="sidebar-brand">
             <span>📋</span>
             <span>智财管家</span>
-            <span class="sidebar-version">v6.3.0</span>
+            <span class="sidebar-version">v7.1.0</span>
           </div>
           <div class="sidebar-subtitle">工资核算 · 计时模式</div>
         </div>
@@ -3221,7 +3674,7 @@
         <div class="brand" style="position:relative;">
           <span class="brand-icon">📋</span>
           <span>智财管家</span>
-          <span class="version">v6.3.0</span>
+          <span class="version">v7.1.0</span>
         </div>
         <div class="subtitle">工资核算 · 计时模式 <span class="badge" style="background:var(--primary);color:#fff;">⚡ 专业版</span></div>
       </div>
@@ -3914,8 +4367,8 @@
     });
     (function() {
       "use strict";
-      var APP_VERSION = '7.0.0';
-      var APP_VERSION_INT = 700;
+      var APP_VERSION = '7.1.0';
+      var APP_VERSION_INT = 710;
 
 
       var $ = function(id) { return document.getElementById(id); };
@@ -6632,6 +7085,25 @@
 
 
       var CHANGELOG_DATA = [
+        {
+          version: '7.1.0',
+          date: '2026-09-05',
+          highlights: ['手机端全面适配', 'iPhone桌面图标', 'PWA支持', '触控优化', '安全区域适配'],
+          details: [
+            '📱 全面适配手机端尺寸，参数设置、加班日历、工资数据、应用设置页面响应式重构',
+            '🍎 新增 iPhone 添加至桌面图标（apple-touch-icon），支持独立全屏模式启动',
+            '📋 新增 PWA manifest 配置，支持添加到主屏幕后以原生应用体验运行',
+            '🔧 底部导航栏触控优化，增大点击区域，适配 iPhone 底部安全区域',
+            '📐 参数设置页面在手机端自动切换为单列布局，输入框和按钮增大触控面积',
+            '📅 加班日历在手机端自适应缩小日历单元格，时段输入框横向滚动适配',
+            '📊 工资数据表格在手机端切换为卡片列表模式，滑动浏览更流畅',
+            '🤖 AI 助手面板在手机端全屏展开，输入框适配软键盘弹出',
+            '🎨 应用设置页面在手机端自动堆叠为单列，卡片间距和内边距优化',
+            '💡 弹窗（Modal）在手机端全屏化，关闭按钮增大便于触控',
+            '🌟 浮动计算按钮适配安全区域，避免被底部导航遮挡',
+            '🔄 viewport 允许用户缩放，提升可访问性',
+          ]
+        },
         {
           version: '7.0.0',
           date: '2026-09-05',
@@ -9408,7 +9880,7 @@
     <div class="modal-box" style="max-width:520px;text-align:left;max-height:80vh;">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
         <h3 style="font-size:1.1rem;display:flex;align-items:center;gap:8px;">📜 更新日志</h3>
-        <span style="font-size:0.75rem;color:var(--text-muted);background:var(--primary-light);padding:2px 10px;border-radius:20px;" id="changelogVersionBadge">v7.0.0</span>
+        <span style="font-size:0.75rem;color:var(--text-muted);background:var(--primary-light);padding:2px 10px;border-radius:20px;" id="changelogVersionBadge">v7.1.0</span>
       </div>
       <div id="changelogContent" style="max-height:55vh;overflow-y:auto;padding-right:8px;"></div>
       <div class="modal-actions" style="margin-top:16px;">
@@ -9470,8 +9942,10 @@
     .ai-typing span:nth-child(3) { animation-delay: 0.4s; }
     @keyframes aiTyping { 0%, 60%, 100% { transform: translateY(0); opacity: 0.4; } 30% { transform: translateY(-6px); opacity: 1; } }
     @media (max-width: 768px) {
-      #aiFab { bottom: 72px; right: 16px; width: 48px; height: 48px; }
+      #aiFab { bottom: calc(var(--safe-area-bottom) + 72px); right: 16px; width: 48px; height: 48px; }
       #aiPanel { bottom: 0; right: 0; width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; }
+      #aiPanel > div:first-child { padding-top: calc(14px + var(--safe-area-top)); }
+      #aiPanel > div:last-child { padding-bottom: calc(10px + var(--safe-area-bottom)); }
     }
   </style>
 

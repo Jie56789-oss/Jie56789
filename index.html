@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-title" content="智财管家">
 <meta name="theme-color" content="#8b5cf6">
 <meta name="description" content="智财管家 · 工资核算">
-<title>智财管家 · 工资核算 v7.5.0</title>
+<title>智财管家 · 工资核算 v7.5.7</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 ::-webkit-scrollbar{width:6px;height:6px}
@@ -308,7 +308,6 @@ body{font-family:"Inter","PingFang SC","Microsoft YaHei",system-ui,-apple-system
 @media(min-width:769px){body{padding:0;font-size:calc(13px * var(--font-scale))}.bottom-nav{display:none!important}.fab-calculate{display:none!important}.nav-wrapper{display:none}.app-header{display:none}.params-grid{grid-template-columns:repeat(3,1fr)}.history-table-wrap{display:block!important}.salary-card-list{display:none!important}.main-content{padding:28px 48px}.card-body{padding:20px 24px}.card-header{padding:16px 24px}.settings-layout{grid-template-columns:1fr 280px;gap:20px;align-items:start}.settings-right{display:flex;flex-direction:column;gap:12px}.mobile-preview-bar{display:none}}
 @media(min-width:1100px){.settings-layout{grid-template-columns:1fr 300px}.params-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:768px){.mobile-preview-bar{display:flex}.app-frame{display:block;height:auto;overflow:visible}.sidebar,.statusbar{display:none!important}.main-content{overflow:visible}.settings-preview{display:none}.settings-right{display:contents}.settings-info-panel{display:none}.main-content .main-app{max-width:760px;margin:0 auto}}
-/* ==================== AI 侧栏布局 ==================== */
 @media(min-width:1280px){
   body{display:flex;padding:0}
   .app-frame{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;height:100vh;overflow:hidden;position:relative;z-index:1;border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,0.04),0 20px 60px rgba(0,0,0,0.3)}
@@ -339,7 +338,6 @@ body{font-family:"Inter","PingFang SC","Microsoft YaHei",system-ui,-apple-system
 .ai-sidebar-toggle{position:fixed;top:24px;right:24px;z-index:40;width:40px;height:40px;border-radius:50%;border:1px solid var(--card-border);background:var(--card-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);cursor:pointer;display:none;align-items:center;justify-content:center;color:var(--primary);box-shadow:0 4px 12px rgba(0,0,0,0.1)}
 @media(min-width:768px){body:not(.ai-sidebar-open) .ai-sidebar-toggle{display:flex}}
 .ai-sidebar-toggle:hover{background:var(--primary-light);transform:scale(1.05)}
-/* ==================== 日历格：最终样式 ==================== */
 .calendar-day{height:72px!important;min-height:72px!important;max-height:72px!important;overflow:hidden!important;box-sizing:border-box!important;position:relative!important}
 .calendar-day .day-number{line-height:1.2!important}
 .day-type-dot{flex-shrink:0!important}
@@ -347,6 +345,863 @@ body{font-family:"Inter","PingFang SC","Microsoft YaHei",system-ui,-apple-system
 .overtime-hours{position:absolute;bottom:3px;right:4px;font-size:.6rem;font-weight:700;color:var(--color-warning);line-height:1;pointer-events:none;font-variant-numeric:tabular-nums;background:var(--warning-light);padding:1px 4px;border-radius:8px;white-space:nowrap;z-index:1;max-width:calc(100% - 8px);overflow:hidden;text-overflow:ellipsis;box-sizing:border-box}
 @media(max-width:768px){.calendar-day{height:56px!important;min-height:56px!important;max-height:56px!important}}
 @media(max-width:440px){.calendar-day{height:44px!important;min-height:44px!important;max-height:44px!important;padding:2px 1px!important}}
+/* ==================== 窄桌面布局修复 ==================== */
+@media(min-width:769px) and (max-width:1024px){
+  .main-content{padding:20px 24px}
+  .settings-layout{grid-template-columns:1fr;gap:14px}
+  .settings-right{display:none}
+  .settings-page-grid{grid-template-columns:1fr}
+  .params-grid{grid-template-columns:repeat(2,1fr)}
+  .overtime-layout{flex-direction:column;gap:12px}
+  .overtime-calendar-col{flex:1 1 auto;width:100%}
+  .overtime-sidebar{flex:1 1 auto;max-width:none;width:100%}
+}
+@media(min-width:769px) and (max-width:900px){
+  .main-content{padding:16px 18px}
+  .card-body{padding:14px 16px}
+  .card-header{padding:12px 16px}
+  .params-grid{grid-template-columns:1fr}
+}
+@media(min-width:769px){
+  .app-frame{height:100vh}
+  .app-body{min-height:0}
+  .main-content{min-height:0}
+}
+/* ==================== UI 美化增量 v7.5.2 ==================== */
+
+/* 1. 数字等宽对齐（工资、税额、时薪等） */
+.preview-row .pr-value,
+.annual-summary-item .avalue,
+.history-table td,
+.history-table th,
+.salary-card .sc-net,
+.salary-card .sc-value,
+.overtime-stats-row .osr-value,
+.info-card-row .icr-value,
+.mp-value,
+#hourlyRatePreview,
+#previewNet,
+#previewTax,
+#previewGross {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* 2. 卡片左侧色条 + hover 微动效 */
+.card {
+  border-left: 3px solid transparent;
+}
+.card:hover {
+  border-left-color: var(--primary);
+  transform: translateY(-1px);
+  box-shadow: 0 12px 32px hsla(var(--primary-h),var(--primary-s),var(--primary-l),.10);
+}
+@media(max-width:768px){
+  .card:hover { transform: none; }
+}
+
+/* 3. 桌面端顶部品牌条（现在桌面顶部是空的） */
+.desktop-topbar {
+  display: none;
+}
+@media(min-width:769px){
+  .desktop-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    height: 52px;
+    padding: 0 28px;
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--card-border);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    flex-shrink: 0;
+  }
+  .desktop-topbar .dtb-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 800;
+    color: var(--primary);
+    letter-spacing: 1px;
+    font-size: .95rem;
+  }
+  .desktop-topbar .dtb-brand .dtb-logo {
+    font-size: 1.2rem;
+  }
+  .desktop-topbar .dtb-brand .dtb-version {
+    font-size: .6rem;
+    background: var(--primary);
+    color: #fff;
+    padding: 1px 6px;
+    border-radius: 10px;
+    font-weight: 700;
+  }
+  .desktop-topbar .dtb-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: .82rem;
+    color: var(--text-secondary);
+  }
+  .desktop-topbar .dtb-month {
+    background: var(--primary-light);
+    color: var(--primary);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .desktop-topbar .dtb-theme-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid var(--card-border);
+    background: var(--input-bg);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    color: var(--text-primary);
+    transition: all .2s;
+  }
+  .desktop-topbar .dtb-theme-btn:hover {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    transform: scale(1.05);
+  }
+}
+
+/* 4. 参数设置页：预览卡 sticky 跟随 */
+@media(min-width:1025px){
+  .settings-right {
+    position: sticky;
+    top: 20px;
+    align-self: start;
+  }
+}
+
+/* 5. 参数设置页：分区块竖线 + 编号感 */
+.settings-card-group .section-title {
+  position: relative;
+  padding-left: 14px;
+  border-left: 3px solid var(--primary-light);
+}
+.settings-card-group .section-title:hover {
+  border-left-color: var(--primary);
+}
+
+/* 6. 空状态美化（工资数据页） */
+.empty-state {
+  background: linear-gradient(135deg,
+    hsla(var(--primary-h),var(--primary-s),var(--primary-l),.04),
+    hsla(var(--secondary-h),var(--secondary-s),var(--secondary-l),.03));
+  border: 1.5px dashed hsla(var(--primary-h),var(--primary-s),var(--primary-l),.25);
+  border-radius: var(--radius-lg);
+  margin: 8px 0;
+}
+.empty-state .empty-icon {
+  animation: emptyPulse 3s ease-in-out infinite;
+}
+@keyframes emptyPulse {
+  0%,100% { transform: scale(1); opacity: .5; }
+  50% { transform: scale(1.08); opacity: .7; }
+}
+
+/* 7. 应用设置页：分组卡片更紧凑、有层次 */
+.settings-page-grid {
+  gap: 14px;
+}
+.settings-group-card {
+  border-left: 3px solid var(--primary-light);
+  transition: all .25s;
+}
+.settings-group-card:hover {
+  border-left-color: var(--primary);
+}
+
+/* 8. 月份选择器做成胶囊 */
+@media(min-width:769px){
+  .month-picker {
+    background: var(--primary-light);
+    border-radius: 20px;
+    padding: 2px 6px;
+    gap: 2px;
+  }
+  .month-picker button {
+    background: transparent;
+    border: none;
+    width: 26px;
+    height: 26px;
+  }
+  .month-picker button:hover {
+    background: var(--card-bg);
+    border-radius: 50%;
+  }
+  .month-picker .display {
+    color: var(--primary);
+    font-weight: 700;
+  }
+}
+
+/* 9. 按钮图标间距统一 */
+.btn > * + * {
+  margin-left: 2px;
+}
+
+/* 10. 顶栏底部导航 active 态更柔和 */
+.bottom-nav .nav-btn.active {
+  background: linear-gradient(180deg,
+    transparent 0%,
+    hsla(var(--primary-h),var(--primary-s),var(--primary-l),.08) 100%);
+}
+
+/* 11. 滚动条更精致 */
+::-webkit-scrollbar-thumb:hover {
+  background: hsla(var(--primary-h),var(--primary-s),var(--primary-l),.4);
+}
+
+/* 12. 输入框聚焦微上浮 */
+.form-group input:focus,
+.form-group select:focus {
+  transform: translateY(-1px);
+}
+/* ==================== 应用设置页折叠分组 v7.5.2 ==================== */
+
+/* 分组卡片可折叠 */
+.settings-group-card.sgc-collapsible > .sgc-title {
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.settings-group-card.sgc-collapsible > .sgc-title::after {
+  content: '▾';
+  font-size: .8rem;
+  color: var(--text-secondary);
+  transition: transform .25s ease;
+}
+.settings-group-card.sgc-collapsible.sgc-collapsed > .sgc-title::after {
+  transform: rotate(-90deg);
+}
+/* 折叠时，标题以下的所有兄弟元素收起 */
+.settings-group-card.sgc-collapsible.sgc-collapsed > *:not(.sgc-title) {
+  display: none !important;
+}
+/* 折叠时给个淡背景提示 */
+.settings-group-card.sgc-collapsible.sgc-collapsed {
+  background: var(--input-bg);
+  opacity: .85;
+}
+/* ==================== 底栏滑动指示条 v7.5.2 ==================== */
+@media(max-width:768px){
+  /* 给底栏加相对定位，用于放置指示条 */
+  .bottom-nav{
+    position: relative;
+    padding-bottom: 2px;
+  }
+  /* 关闭原来的底边框 active 样式 */
+  .bottom-nav .nav-btn[data-tab].active{
+    border-bottom-color: transparent;
+  }
+  /* 指示条 */
+  .bottom-nav .tab-indicator{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 0;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    border-radius: 3px 3px 0 0;
+    transition: transform .3s cubic-bezier(.4,0,.2,1), width .3s cubic-bezier(.4,0,.2,1);
+    pointer-events: none;
+    box-shadow: 0 -1px 8px hsla(var(--primary-h),var(--primary-s),var(--primary-l),.4);
+  }
+}
+/* ==================== 应用设置页折叠分组 v7.5.2 ==================== */
+.settings-group-card.sgc-collapsible > .sgc-title {
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.settings-group-card.sgc-collapsible > .sgc-title::after {
+  content: '▾';
+  font-size: .8rem;
+  color: var(--text-secondary);
+  transition: transform .25s ease;
+}
+.settings-group-card.sgc-collapsible.sgc-collapsed > .sgc-title::after {
+  transform: rotate(-90deg);
+}
+.settings-group-card.sgc-collapsible.sgc-collapsed > *:not(.sgc-title) {
+  display: none !important;
+}
+.settings-group-card.sgc-collapsible.sgc-collapsed {
+  background: var(--input-bg);
+  opacity: .85;
+}
+/* ==================== 底栏滑动指示条 v7.5.2 ==================== */
+@media(max-width:768px){
+  .bottom-nav{
+    position: relative;
+    padding-bottom: 2px;
+  }
+  .bottom-nav .nav-btn[data-tab].active{
+    border-bottom-color: transparent;
+  }
+  .bottom-nav .tab-indicator{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 0;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    border-radius: 3px 3px 0 0;
+    transition: transform .3s cubic-bezier(.4,0,.2,1), width .3s cubic-bezier(.4,0,.2,1);
+    pointer-events: none;
+    box-shadow: 0 -1px 8px hsla(var(--primary-h),var(--primary-s),var(--primary-l),.4);
+  }
+}
+/* ==================== 外观设置选中态 v7.5.3 ==================== */
+
+/* 外观模式选中态 */
+.settings-page-grid .theme-mode-option {
+  transition: all .25s ease;
+  position: relative;
+}
+.settings-page-grid .theme-mode-option:hover {
+  background: var(--primary-light) !important;
+}
+.settings-page-grid .theme-mode-option.active {
+  border-color: var(--primary) !important;
+  background: var(--primary-light) !important;
+  box-shadow: 0 0 0 3px hsla(var(--primary-h),var(--primary-s),var(--primary-l),.15),
+              0 4px 16px hsla(var(--primary-h),var(--primary-s),var(--primary-l),.2);
+}
+.settings-page-grid .theme-mode-option.active span:last-child {
+  color: var(--primary);
+  font-weight: 700;
+}
+.settings-page-grid .theme-mode-option.active::after {
+  content: '✓';
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  font-size: .7rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px hsla(var(--primary-h),var(--primary-s),var(--primary-l),.4);
+}
+
+/* 强调色选中态 */
+.settings-page-grid .accent-color-option {
+  transition: all .25s ease;
+  position: relative;
+}
+.settings-page-grid .accent-color-option:hover {
+  background: var(--primary-light) !important;
+  transform: translateY(-2px);
+}
+.settings-page-grid .accent-color-option.active {
+  border-color: var(--primary) !important;
+  background: var(--primary-light) !important;
+  box-shadow: 0 0 0 3px hsla(var(--primary-h),var(--primary-s),var(--primary-l),.15),
+              0 4px 16px hsla(var(--primary-h),var(--primary-s),var(--primary-l),.2);
+}
+.settings-page-grid .accent-color-option.active span {
+  color: var(--primary);
+  font-weight: 700;
+}
+.settings-page-grid .accent-color-option.active::after {
+  content: '✓';
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  font-size: .7rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px hsla(var(--primary-h),var(--primary-s),var(--primary-l),.4);
+}
+.settings-page-grid .accent-color-option > div:first-child {
+  transition: all .25s ease;
+}
+.settings-page-grid .accent-color-option.active > div:first-child {
+  transform: scale(1.15);
+  box-shadow: 0 0 0 3px #fff, 0 0 0 6px hsla(var(--primary-h),var(--primary-s),var(--primary-l),.4);
+}
+/* ==================== 优化包 v7.5.4 (A+C+F) ==================== */
+
+/* ---------- A. 加班日历页美化 ---------- */
+
+/* 月份导航胶囊化 */
+.overtime-calendar-col .calendar-nav {
+  background: var(--primary-light);
+  border-radius: 24px;
+  padding: 4px 8px;
+  gap: 4px;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.overtime-calendar-col .calendar-nav button {
+  background: transparent;
+  border: none;
+  color: var(--primary);
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 18px;
+  transition: all .2s;
+}
+.overtime-calendar-col .calendar-nav button:hover {
+  background: var(--card-bg);
+  transform: scale(1.03);
+}
+.overtime-calendar-col .calendar-nav #currentMonthLabel {
+  color: var(--primary);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 日历格 hover 更明显 */
+.calendar-day {
+  transition: all .2s ease;
+}
+.calendar-day:not(.today):hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 16px hsla(var(--primary-h),var(--primary-s),var(--primary-l),.15);
+  border-color: var(--primary);
+}
+
+/* 有加班日期的小圆点标记（右上角） */
+.calendar-day.has-overtime::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-warning);
+  box-shadow: 0 0 0 2px var(--card-bg);
+  animation: otDotPulse 2s ease-in-out infinite;
+}
+@keyframes otDotPulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .6; transform: scale(.85); }
+}
+
+/* 右侧统计卡：加对比条 */
+.overtime-stats-row .osr-value {
+  position: relative;
+}
+.overtime-stats-card {
+  position: relative;
+  overflow: hidden;
+}
+.overtime-stats-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--primary), var(--secondary));
+  opacity: .5;
+}
+
+/* ---------- C. 交互细节打磨 ---------- */
+
+/* 按钮统一 hover 微上浮 */
+.btn {
+  transition: all .2s cubic-bezier(.4,0,.2,1);
+}
+.btn:not(:active):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px hsla(var(--primary-h),var(--primary-s),var(--primary-l),.15);
+}
+
+/* 输入框聚焦左侧指示条 */
+.form-group {
+  position: relative;
+}
+.form-group input,
+.form-group select {
+  transition: all .25s ease;
+}
+.form-group:focus-within::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  background: var(--primary);
+  border-radius: 3px;
+  animation: inputIndicator .3s ease;
+}
+@keyframes inputIndicator {
+  from { height: 0; opacity: 0; }
+  to { height: 60%; opacity: 1; }
+}
+
+/* 卡片入场逐个淡入 */
+@media(prefers-reduced-motion: no-preference){
+  .card.visible {
+    animation: cardFadeIn .5s cubic-bezier(.34,1.56,.64,1) both;
+  }
+  .tab-panel .card:nth-child(1) { animation-delay: .02s; }
+  .tab-panel .card:nth-child(2) { animation-delay: .08s; }
+  .tab-panel .card:nth-child(3) { animation-delay: .14s; }
+  .tab-panel .card:nth-child(4) { animation-delay: .20s; }
+}
+@keyframes cardFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Toast 加图标感 + 关闭按钮位置 */
+.toast {
+  font-weight: 600;
+  letter-spacing: .3px;
+}
+
+/* 底部导航 active 更立体 */
+.bottom-nav .nav-btn.active .tab-icon {
+  filter: drop-shadow(0 2px 4px hsla(var(--primary-h),var(--primary-s),var(--primary-l),.4));
+}
+
+/* 侧边栏导航 hover 微动 */
+.sidebar-nav .nav-btn {
+  transition: all .2s ease;
+}
+.sidebar-nav .nav-btn:hover {
+  transform: translateX(2px);
+}
+
+/* ---------- F. 数据可视化 ---------- */
+
+/* 参数页预览卡：实发/应发环形进度 */
+.preview-ring-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 0 4px;
+}
+.preview-ring {
+  position: relative;
+  width: 110px;
+  height: 110px;
+}
+.preview-ring svg {
+  transform: rotate(-90deg);
+  width: 100%;
+  height: 100%;
+}
+.preview-ring .ring-bg {
+  fill: none;
+  stroke: var(--input-border);
+  stroke-width: 8;
+}
+.preview-ring .ring-fg {
+  fill: none;
+  stroke: url(#ringGrad);
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dasharray .8s cubic-bezier(.4,0,.2,1);
+}
+.preview-ring .ring-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-variant-numeric: tabular-nums;
+}
+.preview-ring .ring-pct {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--color-income);
+  line-height: 1.1;
+}
+.preview-ring .ring-label {
+  font-size: .65rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* 加班统计：横向条形图 */
+.ot-bar-chart {
+  margin: 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ot-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .78rem;
+}
+.ot-bar-row .ot-bar-label {
+  width: 62px;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  font-size: .75rem;
+}
+.ot-bar-track {
+  flex: 1;
+  height: 8px;
+  background: var(--input-border);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+.ot-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width .6s cubic-bezier(.4,0,.2,1);
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+}
+.ot-bar-fill.weekend {
+  background: linear-gradient(90deg, var(--color-income), #52d1b8);
+}
+.ot-bar-fill.holiday {
+  background: linear-gradient(90deg, var(--color-expense), #ff9a9e);
+}
+.ot-bar-row .ot-bar-value {
+  min-width: 52px;
+  text-align: right;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  font-size: .75rem;
+}
+
+/* 年度汇总：迷你柱状图 */
+.mini-bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 60px;
+  padding: 8px 4px 0;
+  margin: 8px 0 4px;
+  border-bottom: 1px solid var(--input-border);
+}
+.mini-bar {
+  flex: 1;
+  background: linear-gradient(180deg,
+    hsla(var(--primary-h),var(--primary-s),var(--primary-l),.7),
+    hsla(var(--primary-h),var(--primary-s),var(--primary-l),.3));
+  border-radius: 3px 3px 0 0;
+  min-height: 2px;
+  position: relative;
+  transition: all .3s;
+  cursor: pointer;
+}
+.mini-bar:hover {
+  filter: brightness(1.2);
+  transform: scaleY(1.05);
+  transform-origin: bottom;
+}
+.mini-bar.current {
+  background: linear-gradient(180deg, var(--primary), var(--secondary));
+  box-shadow: 0 0 8px hsla(var(--primary-h),var(--primary-s),var(--primary-l),.5);
+}
+.mini-bar .mini-bar-tip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px);
+  background: var(--toast-bg);
+  color: var(--toast-color);
+  font-size: .65rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s;
+  font-variant-numeric: tabular-nums;
+}
+.mini-bar:hover .mini-bar-tip {
+  opacity: 1;
+}
+.mini-bar-labels {
+  display: flex;
+  gap: 3px;
+  padding: 0 4px;
+  font-size: .6rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+.mini-bar-labels span {
+  flex: 1;
+}
+/* ==================== 全局动效包 v7.5.6 (J) ==================== */
+
+/* ---------- J1. 主题切换全屏渐变过渡 ---------- */
+/* 用伪元素盖一层渐变遮罩，切换主题时淡入淡出 */
+html.theme-switching::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 99998;
+  pointer-events: none;
+  background: radial-gradient(circle at center,
+    hsla(var(--primary-h),var(--primary-s),var(--primary-l),.15),
+    transparent 70%);
+  animation: themeRipple .6s ease;
+}
+@keyframes themeRipple {
+  0% { opacity: 0; transform: scale(.9); }
+  40% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.1); }
+}
+/* 主题切换时给 body 加个柔和过渡 */
+html, body {
+  transition: background-color .5s cubic-bezier(.4,0,.2,1),
+              color .4s cubic-bezier(.4,0,.2,1);
+}
+.card, .btn, .form-group input, .form-group select,
+.sidebar, .bottom-nav, .app-header, .statusbar {
+  transition: background-color .4s cubic-bezier(.4,0,.2,1),
+              border-color .4s cubic-bezier(.4,0,.2,1),
+              color .3s cubic-bezier(.4,0,.2,1),
+              box-shadow .3s cubic-bezier(.4,0,.2,1);
+}
+
+/* ---------- J2. 数字滚动动效（odometer 效果） ---------- */
+/* 给数字容器加 overflow:hidden，内部数字上滚 */
+.odometer {
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+  vertical-align: bottom;
+  font-variant-numeric: tabular-nums;
+}
+.odometer .odo-track {
+  display: inline-flex;
+  flex-direction: column;
+  transition: transform .6s cubic-bezier(.34,1.56,.64,1);
+}
+.odometer .odo-num {
+  height: 1em;
+  line-height: 1em;
+  display: block;
+}
+/* 数字变化时闪一下高亮 */
+.num-flash {
+  animation: numFlash .8s ease;
+}
+@keyframes numFlash {
+  0% { color: var(--primary); transform: scale(1.08); }
+  100% { color: inherit; transform: scale(1); }
+}
+
+/* ---------- J3. tab 切换卡片滑入方向 ---------- */
+/* 向右切时卡片从右侧滑入，向左切时从左侧滑入 */
+.tab-panel.slide-in-right .card.visible {
+  animation: slideInRight .4s cubic-bezier(.34,1.56,.64,1) both;
+}
+.tab-panel.slide-in-left .card.visible {
+  animation: slideInLeft .4s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+/* 卡片错开延迟 */
+.tab-panel.slide-in-right .card.visible:nth-child(1),
+.tab-panel.slide-in-left .card.visible:nth-child(1) { animation-delay: 0s; }
+.tab-panel.slide-in-right .card.visible:nth-child(2),
+.tab-panel.slide-in-left .card.visible:nth-child(2) { animation-delay: .06s; }
+.tab-panel.slide-in-right .card.visible:nth-child(3),
+.tab-panel.slide-in-left .card.visible:nth-child(3) { animation-delay: .12s; }
+
+/* ---------- J4. 卡片内元素渐次出现 ---------- */
+.tab-panel.active .settings-card-group,
+.tab-panel.active .overtime-stats-card,
+.tab-panel.active .annual-summary-grid {
+  animation: fadeUp .5s cubic-bezier(.34,1.56,.64,1) both;
+}
+.tab-panel.active .settings-card-group:nth-child(1) { animation-delay: .05s; }
+.tab-panel.active .settings-card-group:nth-child(2) { animation-delay: .10s; }
+.tab-panel.active .settings-card-group:nth-child(3) { animation-delay: .15s; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- J5. 按钮点击涟漪 ---------- */
+.btn {
+  position: relative;
+  overflow: hidden;
+}
+.btn .ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,.5);
+  transform: scale(0);
+  animation: rippleEffect .6s ease-out;
+  pointer-events: none;
+}
+@keyframes rippleEffect {
+  to { transform: scale(4); opacity: 0; }
+}
+
+/* ---------- J6. 页面滚动条更顺滑 ---------- */
+.main-content, .ai-messages, .modal-box {
+  scroll-behavior: smooth;
+}
+
+/* ---------- J7. 侧边栏导航 active 指示条滑动 ---------- */
+@media(min-width:769px){
+  .sidebar-nav {
+    position: relative;
+  }
+  .sidebar-nav .nav-btn.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 60%;
+    background: var(--primary);
+    border-radius: 0 3px 3px 0;
+    animation: navIndicator .3s ease;
+  }
+  @keyframes navIndicator {
+    from { height: 0; opacity: 0; }
+    to { height: 60%; opacity: 1; }
+  }
+}
 </style>
 </head>
 <body>
@@ -461,14 +1316,13 @@ body{font-family:"Inter","PingFang SC","Microsoft YaHei",system-ui,-apple-system
 <div class="glow-orb orb1"></div>
 <div class="glow-orb orb2"></div>
 <div class="glow-orb orb3"></div>
-<div class="bg-grid"></div>
-
-<div class="app-frame">
+<div class="bg-grid"></div> 
+<div class="app-frame">  
   <div class="app-body">
     <aside class="sidebar">
       <div class="sidebar-header">
-        <div class="sidebar-brand"><span>📋</span><span>智财管家</span><span class="sidebar-version">v7.5.0</span></div>
-        <div class="sidebar-subtitle">工资核算 · 计时模式</div>
+        <div class="sidebar-brand"><span>📋</span><span>智财管家</span><span class="sidebar-version">v7.5.7</span></div>
+        <div class="sidebar-subtitle">工资核算 · 你的财富管家</div>
       </div>
       <nav class="sidebar-nav" id="sidebarNav">
         <button class="nav-btn active" data-tab="settings"><span class="tab-icon">⚙️</span><span>参数设置</span></button>
@@ -490,7 +1344,7 @@ body{font-family:"Inter","PingFang SC","Microsoft YaHei",system-ui,-apple-system
       <div class="main-app" id="mainApp">
         <div class="nav-wrapper">
           <div class="app-header">
-            <div class="brand"><span class="brand-icon">📋</span><span>智财管家</span><span class="version">v7.5.0</span></div>
+            <div class="brand"><span class="brand-icon">📋</span><span>智财管家</span><span class="version">v7.5.7</span></div>
             <div class="subtitle">工资核算 · 计时模式 <span class="badge" style="background:var(--primary);color:#fff;">⚡ 专业版</span></div>
           </div>
           <nav class="bottom-nav" id="bottomNav">
@@ -796,7 +1650,7 @@ body{font-family:"Inter","PingFang SC","Microsoft YaHei",system-ui,-apple-system
                 </div>
                 <div class="settings-group-card">
                   <div class="sgc-title">ℹ️ 关于应用</div>
-                  <div class="sgc-about"><div class="sgc-about-logo">💰</div><div class="sgc-about-name">智财管家 · 工资核算</div><div class="sgc-about-version" id="aboutVersion">v7.5.0</div></div>
+                  <div class="sgc-about"><div class="sgc-about-logo">💰</div><div class="sgc-about-name">智财管家 · 工资核算</div><div class="sgc-about-version" id="aboutVersion">v7.5.7</div></div>
                   <div class="sgc-action-row">
                     <div class="sgc-action-info"><span class="sgc-action-icon">📜</span><div><div class="sgc-action-label">更新日志</div><div class="sgc-action-desc">查看版本更新记录</div></div></div>
                     <button class="btn btn-sm btn-outline" id="btnSettingsChangelog">查看</button>
@@ -857,7 +1711,6 @@ body{font-family:"Inter","PingFang SC","Microsoft YaHei",system-ui,-apple-system
     <div class="statusbar-right"><span id="statusRecords">工资记录: 0 条</span><span id="statusAutoSave">💾 自动保存</span></div>
   </div>
 </div>
-
 <div class="context-menu" id="contextMenu"></div>
 
 <div class="modal-overlay" id="modalOverlay">
@@ -990,7 +1843,7 @@ body{font-family:"Inter","PingFang SC","Microsoft YaHei",system-ui,-apple-system
   <div class="modal-box" style="max-width:520px;text-align:left;max-height:80vh;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
       <h3 style="font-size:1.1rem;display:flex;align-items:center;gap:8px;">📜 更新日志</h3>
-      <span id="changelogVersionBadge" style="font-size:.75rem;color:var(--text-muted);background:var(--primary-light);padding:2px 10px;border-radius:20px;">v7.5.0</span>
+      <span id="changelogVersionBadge" style="font-size:.75rem;color:var(--text-muted);background:var(--primary-light);padding:2px 10px;border-radius:20px;">v7.5.7</span>
     </div>
     <div id="changelogContent" style="max-height:55vh;overflow-y:auto;padding-right:8px;"></div>
     <div class="modal-actions" style="margin-top:16px;"><button class="btn btn-ghost" id="changelogCloseBtn">关闭</button></div>
@@ -1074,11 +1927,11 @@ body{font-family:"Inter","PingFang SC","Microsoft YaHei",system-ui,-apple-system
     </div>
   </div>
 </div>
-<!-- ✅ 第 1 段结束，继续粘第 2 段 -->
+
 <script>
 (function(){
 "use strict";
-var APP_VERSION='7.5.0';
+var APP_VERSION='7.5.7';
 var FEEDBACK_EMAIL='jie56789@outlook.com';
 var MAX_SEGMENT_HOURS=12;
 var BACKUP_FORMAT='zhicaiguanjia-backup';
@@ -1391,7 +2244,6 @@ function unlockApp(){
     }
   },300);}
 }
-// ========== 业务逻辑 ==========
 function getSettings(){
   var s=storage.settings||{};
   return {
@@ -1943,7 +2795,6 @@ function backToCurrentMonth(){
   loadOvertimeData();loadMonthParams(ck);updateAnnualSummary();updateMenubarInfo();updateHourlyPreview();
   showToast('📅 已回到本月');
 }
-// ========== 导出/导入/AI ==========
 function getOvertimeRecordsForMonth(){
   var p=parseMonthKey(currentMonthKey);if(!p)return[];
   var y=p.year,m=p.month;var rec=[];var tm={weekday:'工作日',weekend:'休息日',holiday:'节假日'};
@@ -2232,7 +3083,6 @@ function executeImport(){
   var msg='✅ 导入完成';if(ic.history)msg+=' 工资'+ic.history+'条';if(ic.details)msg+=' 加班'+ic.details+'月';if(ic.monthParams)msg+=' 参数'+ic.monthParams+'月';if(ic.customItems)msg+=' 自定义'+ic.customItems+'个';
   showToast(msg);
 }
-// ========== AI ==========
 var aiMessages=[];
 var aiInitialized=false;
 var AI_PROVIDERS={
@@ -2356,14 +3206,29 @@ function aiInit(){
   function isDesktop(){return window.innerWidth>=768;}
   function isMobile(){return window.innerWidth<768;}
   function openAiPanel(){
-    if(isMobile()){panel.classList.add('ai-open');panel.style.display='flex';}
-    else{document.body.classList.add('ai-sidebar-open');panel.style.display='flex';void panel.offsetHeight;panel.style.transform='translateX(0)';}
+    if(isMobile()){
+      panel.style.transform='';
+      panel.style.display='flex';
+      void panel.offsetHeight;
+      panel.classList.add('ai-open');
+    }else{
+      document.body.classList.add('ai-sidebar-open');
+      panel.style.display='flex';
+      void panel.offsetHeight;
+      panel.style.transform='translateX(0)';
+    }
     if(aiMessages.length===0){aiAddMsg('bot','你好！我是 AI 工资助手 ✨\n\n可以帮你分析工资、税务、加班费等。\n\n试试问：「我这个月税为什么这么高？」');}
     setTimeout(function(){inp.focus();},150);
   }
   function closeAiPanel(){
-    if(isMobile()){panel.classList.remove('ai-open');}
-    else{document.body.classList.remove('ai-sidebar-open');panel.style.transform='translateX(100%)';}
+    if(isMobile()){
+      panel.classList.remove('ai-open');
+      panel.style.transform='';
+      panel.style.display='';
+    }else{
+      document.body.classList.remove('ai-sidebar-open');
+      panel.style.transform='translateX(100%)';
+    }
   }
   if(isDesktop()){setTimeout(function(){openAiPanel();},300);}
   fab.addEventListener('click',function(){
@@ -2380,13 +3245,38 @@ function aiInit(){
   window.addEventListener('resize',function(){
     clearTimeout(resizeTimer);
     resizeTimer=setTimeout(function(){
-      if(isDesktop()){panel.classList.remove('ai-open');if(document.body.classList.contains('ai-sidebar-open')){panel.style.display='flex';panel.style.transform='translateX(0)';}}
-      else{document.body.classList.remove('ai-sidebar-open');panel.style.transform='';if(panel.style.display==='flex'&&!panel.classList.contains('ai-open')){panel.style.display='none';}}
+      if(isDesktop()){
+        panel.classList.remove('ai-open');
+        if(document.body.classList.contains('ai-sidebar-open')){
+          panel.style.display='flex';
+          panel.style.transform='translateX(0)';
+        }else{
+          panel.style.transform='translateX(100%)';
+        }
+      }else{
+        document.body.classList.remove('ai-sidebar-open');
+        panel.style.transform='';
+        panel.style.display='';
+      }
     },200);
   });
 }
-// ========== 更新日志 ==========
 var CHANGELOG_DATA=[
+ {version:'7.5.7',date:'2026-10-11',highlights:['外观选中态','日历美化','数据可视化','全局动效'],details:[
+    '🎨 外观设置选中态：紫色边框 + ✓ 角标 + 色球双环高亮',
+    '📅 加班日历：月份导航胶囊化、日期 hover 上浮、有加班日期右上角闪动小圆点',
+    '📊 加班统计：右侧新增横向条形图，工作日/休息日/节假日时长对比一目了然',
+    '🍩 参数页预览卡：新增环形进度图，直观显示实发/应发占比',
+    '📈 工资数据页：新增 12 个月迷你柱状图，当前月高亮，hover 显示金额',
+    '✨ 主题切换：全屏紫光波扩散过渡，颜色平滑渐变不再硬切',
+    '💫 数字动效：数值更新时紫色闪动提示',
+    '🎴 tab 切换：卡片按方向滑入，错开延迟像扇子展开',
+    '🌊 按钮涟漪：点击处扩散白色水波',
+    '📜 平滑滚动：内容区/弹窗/AI消息滚动丝滑',
+    '📍 侧边栏指示条：选中菜单左侧紫色竖条动画',
+    '🖱️ 交互细节：按钮 hover 上浮、输入框聚焦左侧紫条、侧边栏 hover 右移',
+    '🎯 卡片入场：逐个淡入，视觉更流畅'
+  ]},
   {version:'7.5.0',date:'2026-10-11',highlights:['全面修复','PBKDF2','冲突检测','AI 关键词'],details:['🔐 密码升级为 PBKDF2（150,000 次迭代），旧 SHA-256 自动升级','📥 导入冲突检测完整实现','🤖 AI 本地分析按关键词分支','⚖️ 新增加班费差额说明导出','📅 加班日历新增「回到本月」','📮 反馈弹窗显示收件邮箱','🧮 单段加班 >12h 警告，单日 >24h 拦截','🔢 数字输入改用 inputmode=decimal','🚫 计算后不再强制跳转','🎯 严格校验月份格式','📤 导出中心精简：保留 PDF / Excel / JSON / 全量备份','💾 加班 JSON 和年度 JSON 支持导出 + 导入','⚙️ 日历格高度锁定 72px，加班只显示小时数','📊 工资数据页支持月份切换','💬 AI 侧栏（桌面侧栏 + 移动抽屉）','🔔 Toast 提示移至屏幕底部']},
   {version:'7.4.0',date:'2026-10-10',highlights:['反馈优化','邮箱可见'],details:['📬 反馈弹窗显示收件邮箱','📋 复制反馈内容为主推方式']},
   {version:'7.3.0',date:'2026-10-10',highlights:['问题反馈','加班费对比'],details:['📮 新增问题反馈功能','⚖️ 加班费双口径对比']},
@@ -2411,7 +3301,6 @@ function showChangelog(){
   c.innerHTML=h;
   if($('changelogModalOverlay'))$('changelogModalOverlay').classList.add('active');
 }
-// ========== 登录动作 ==========
 async function doLogin(){
   var pw=($('loginPassword')||{}).value||'';
   if(!pw){$('loginError').textContent='请输入密码';return;}
@@ -2489,7 +3378,6 @@ function initLoginScreen(){
   if($('toggleLoginPw'))$('toggleLoginPw').addEventListener('click',function(){var i=$('loginPassword');if(!i)return;if(i.type==='password'){i.type='text';this.textContent='🙈';}else{i.type='password';this.textContent='👁️';}});
   if($('loginPassword'))$('loginPassword').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
 }
-// ========== 反馈 ==========
 function openFeedbackModal(){
   if(!$('feedbackModalOverlay'))return;
   if($('feedbackMetaVersion'))$('feedbackMetaVersion').textContent='v'+APP_VERSION;
@@ -2509,7 +3397,6 @@ function buildFeedbackText(){
   var e=location.protocol==='file:'?'本地文件':(location.protocol==='https:'?'HTTPS':'HTTP');
   return '【智财管家 · 问题反馈】\n────────────────\n类型：'+tt+'\n描述：'+c+'\n'+(co?'联系方式：'+co+'\n':'')+'────────────────\n应用版本：v'+APP_VERSION+'\n当前月份：'+(currentMonthKey||'—')+'\n浏览器：'+b+'\n运行环境：'+e+'\n时间：'+new Date().toLocaleString('zh-CN')+'\n';
 }
-// ========== Tab 切换 ==========
 function switchToTab(tab){
   document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
   document.querySelectorAll('#bottomNav .nav-btn[data-tab]').forEach(function(b){b.classList.remove('active');});
@@ -2520,7 +3407,6 @@ function switchToTab(tab){
   if(tab==='overtime'){renderCalendar();updateHourlyPreview();updateSettingsPreview();}
   if(tab==='salary')updateAnnualSummary();
 }
-// ========== 初始化 ==========
 function initApp(){
   console.log('📋 智财管家 工资核算 启动 v'+APP_VERSION);
   document.querySelectorAll('.version, .sidebar-version').forEach(function(el){el.textContent='v'+APP_VERSION;});
@@ -2782,6 +3668,497 @@ function initApp(){
 
   showToast('📋 工资核算 已就绪');
 }
+// ===== UI 美化增量：桌面顶部品牌条联动 =====
+function syncDesktopTopbar(){
+  var m=$('dtbMonth');
+  if(m)m.textContent=currentMonthKey||'—';
+  var btn=$('dtbThemeBtn');
+  if(btn){
+    var cur=document.documentElement.getAttribute('data-theme')||'dark';
+    btn.textContent=cur==='dark'?'🌙':'☀️';
+  }
+}
+// 在初始化末尾调用一次，并在切月/换主题时同步
+(function(){
+  var _origSwitchMonth=ZC.switchMonth;
+  // 等 initApp 执行完后挂载
+  document.addEventListener('DOMContentLoaded',function(){
+    setTimeout(function(){
+      syncDesktopTopbar();
+      var btn=$('dtbThemeBtn');
+      if(btn)btn.addEventListener('click',function(){ZC.switchThemeMode();setTimeout(syncDesktopTopbar,50);});
+    },600);
+  });
+  if(document.readyState!=='loading'){
+    setTimeout(function(){
+      syncDesktopTopbar();
+      var btn=$('dtbThemeBtn');
+      if(btn)btn.addEventListener('click',function(){ZC.switchThemeMode();setTimeout(syncDesktopTopbar,50);});
+    },600);
+  }
+})();
+// ===== 应用设置页折叠分组 =====
+function initSettingsCollapse(){
+  var grid=document.querySelector('.settings-page-grid');
+  if(!grid)return;
+  var cards=grid.querySelectorAll('.settings-group-card');
+  if(!cards.length)return;
+  // AI 设置那张是 wide，不参与折叠（内容多且重要）
+  cards.forEach(function(card,idx){
+    if(card.classList.contains('settings-card-wide'))return;
+    if(card.dataset.sgcInit==='1')return;
+    card.dataset.sgcInit='1';
+    card.classList.add('sgc-collapsible');
+    var title=card.querySelector('.sgc-title');
+    if(!title)return;
+    // 默认：外观设置（第一个）展开，其余折叠
+    if(idx!==0)card.classList.add('sgc-collapsed');
+    title.addEventListener('click',function(){
+      card.classList.toggle('sgc-collapsed');
+    });
+  });
+}
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',function(){setTimeout(initSettingsCollapse,700);});
+}else{
+  setTimeout(initSettingsCollapse,700);
+}
+// ===== UI 美化增量：桌面顶部品牌条联动 =====
+function syncDesktopTopbar(){
+  var m=$('dtbMonth');
+  if(m)m.textContent=currentMonthKey||'—';
+  var btn=$('dtbThemeBtn');
+  if(btn){
+    var cur=document.documentElement.getAttribute('data-theme')||'dark';
+    btn.textContent=cur==='dark'?'🌙':'☀️';
+  }
+}
+(function(){
+  function mount(){
+    syncDesktopTopbar();
+    var btn=$('dtbThemeBtn');
+    if(btn)btn.addEventListener('click',function(){ZC.switchThemeMode();setTimeout(syncDesktopTopbar,50);});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(mount,600);});
+  else setTimeout(mount,600);
+})();
+
+// ===== 应用设置页折叠分组 =====
+function initSettingsCollapse(){
+  var grid=document.querySelector('.settings-page-grid');
+  if(!grid)return;
+  var cards=grid.querySelectorAll('.settings-group-card');
+  if(!cards.length)return;
+  cards.forEach(function(card,idx){
+    if(card.classList.contains('settings-card-wide'))return;
+    if(card.dataset.sgcInit==='1')return;
+    card.dataset.sgcInit='1';
+    card.classList.add('sgc-collapsible');
+    var title=card.querySelector('.sgc-title');
+    if(!title)return;
+    if(idx!==0)card.classList.add('sgc-collapsed');
+    title.addEventListener('click',function(){card.classList.toggle('sgc-collapsed');});
+  });
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(initSettingsCollapse,700);});
+else setTimeout(initSettingsCollapse,700);
+
+// ===== 底栏滑动指示条 =====
+function initTabIndicator(){
+  var nav=document.getElementById('bottomNav');
+  if(!nav)return;
+  if(window.innerWidth>768)return;
+  var tabs=nav.querySelectorAll('.nav-btn[data-tab]');
+  if(tabs.length<2)return;
+  var ind=nav.querySelector('.tab-indicator');
+  if(!ind){ind=document.createElement('div');ind.className='tab-indicator';nav.appendChild(ind);}
+  function moveTo(btn,animate){
+    if(!btn)return;
+    var navRect=nav.getBoundingClientRect();
+    var r=btn.getBoundingClientRect();
+    var left=r.left-navRect.left;
+    var w=r.width;
+    if(!animate)ind.style.transition='none';
+    ind.style.width=w+'px';
+    ind.style.transform='translateX('+left+'px)';
+    if(!animate)setTimeout(function(){ind.style.transition='';},20);
+  }
+  var active=nav.querySelector('.nav-btn[data-tab].active')||tabs[0];
+  setTimeout(function(){moveTo(active,false);},100);
+  tabs.forEach(function(b){
+    b.addEventListener('click',function(){
+      setTimeout(function(){
+        var a=nav.querySelector('.nav-btn[data-tab].active');
+        if(a)moveTo(a,true);
+      },0);
+    });
+  });
+  var rt=null;
+  window.addEventListener('resize',function(){
+    clearTimeout(rt);
+    rt=setTimeout(function(){
+      if(window.innerWidth>768){ind.style.width='0';return;}
+      var a=nav.querySelector('.nav-btn[data-tab].active');
+      if(a)moveTo(a,false);
+    },200);
+  });
+  var mo=new MutationObserver(function(){
+    var a=nav.querySelector('.nav-btn[data-tab].active');
+    if(a)moveTo(a,true);
+  });
+  tabs.forEach(function(b){mo.observe(b,{attributes:true,attributeFilter:['class']});});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(initTabIndicator,800);});
+else setTimeout(initTabIndicator,800);
+// ==================== 优化包 v7.5.4 (A+C+F) ====================
+
+/* ---------- F1. 参数页预览卡：环形进度条 ---------- */
+function initPreviewRing(){
+  var previewBody=$('settingsPreviewBody');
+  if(!previewBody)return;
+  if(previewBody.querySelector('.preview-ring-wrap'))return; // 已存在
+  var wrap=document.createElement('div');
+  wrap.className='preview-ring-wrap';
+  wrap.innerHTML =
+    '<div class="preview-ring">' +
+      '<svg viewBox="0 0 120 120">' +
+        '<defs>' +
+          '<linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">' +
+            '<stop offset="0%" stop-color="var(--primary)"/>' +
+            '<stop offset="100%" stop-color="var(--secondary)"/>' +
+          '</linearGradient>' +
+        '</defs>' +
+        '<circle class="ring-bg" cx="60" cy="60" r="52"></circle>' +
+        '<circle class="ring-fg" cx="60" cy="60" r="52" stroke-dasharray="0 327" id="ringFg"></circle>' +
+      '</svg>' +
+      '<div class="ring-text">' +
+        '<div class="ring-pct" id="ringPct">0%</div>' +
+        '<div class="ring-label">实发/应发</div>' +
+      '</div>' +
+    '</div>';
+  // 插到预览卡顶部（预览行之前）
+  previewBody.insertBefore(wrap, previewBody.firstChild);
+  updatePreviewRing();
+}
+function updatePreviewRing(){
+  var ring=$('ringFg');
+  var pct=$('ringPct');
+  if(!ring||!pct)return;
+  var gp=0,np=0;
+  var gpEl=$('previewGross'),npEl=$('previewNet');
+  if(gpEl)gp=parseFloat(gpEl.textContent.replace(/[^\d.-]/g,''))||0;
+  if(npEl)np=parseFloat(npEl.textContent.replace(/[^\d.-]/g,''))||0;
+  var ratio=gp>0?Math.max(0,Math.min(1,np/gp)):0;
+  var circ=2*Math.PI*52;
+  var len=circ*ratio;
+  ring.setAttribute('stroke-dasharray', len+' '+circ);
+  pct.textContent=Math.round(ratio*100)+'%';
+}
+
+/* ---------- F2. 加班日历：横向条形图 ---------- */
+function initOvertimeBarChart(){
+  var sidebar=$('overtimeSidebar');
+  if(!sidebar)return;
+  var card=sidebar.querySelector('.overtime-stats-card:nth-of-type(2)');
+  if(!card)return;
+  if(card.querySelector('.ot-bar-chart'))return;
+  var chart=document.createElement('div');
+  chart.className='ot-bar-chart';
+  chart.id='otBarChart';
+  chart.innerHTML =
+    '<div class="ot-bar-row"><span class="ot-bar-label">🏢 工作日</span><div class="ot-bar-track"><div class="ot-bar-fill" id="barW" style="width:0%"></div></div><span class="ot-bar-value" id="barWv">0.0h</span></div>' +
+    '<div class="ot-bar-row"><span class="ot-bar-label">🌙 休息日</span><div class="ot-bar-track"><div class="ot-bar-fill weekend" id="barE" style="width:0%"></div></div><span class="ot-bar-value" id="barEv">0.0h</span></div>' +
+    '<div class="ot-bar-row"><span class="ot-bar-label">🎉 节假日</span><div class="ot-bar-track"><div class="ot-bar-fill holiday" id="barH" style="width:0%"></div></div><span class="ot-bar-value" id="barHv">0.0h</span></div>';
+  var rows=card.querySelectorAll('.overtime-stats-row');
+  if(rows.length>0)card.insertBefore(chart,rows[0]);
+  else card.appendChild(chart);
+  updateOvertimeBarChart();
+}
+function updateOvertimeBarChart(){
+  var w=$('sumWeekday'),e=$('sumWeekend'),h=$('sumHoliday');
+  if(!w||!e||!h)return;
+  var wv=parseFloat(w.textContent)||0;
+  var ev=parseFloat(e.textContent)||0;
+  var hv=parseFloat(h.textContent)||0;
+  var max=Math.max(wv,ev,hv,1);
+  var bw=$('barW'),be=$('barE'),bh=$('barH');
+  if(bw)bw.style.width=(wv/max*100)+'%';
+  if(be)be.style.width=(ev/max*100)+'%';
+  if(bh)bh.style.width=(hv/max*100)+'%';
+  if($('barWv'))$('barWv').textContent=wv.toFixed(1)+'h';
+  if($('barEv'))$('barEv').textContent=ev.toFixed(1)+'h';
+  if($('barHv'))$('barHv').textContent=hv.toFixed(1)+'h';
+}
+
+/* ---------- F3. 年度汇总：迷你柱状图 ---------- */
+function renderMiniBarChart(year,recs,yk){
+  var c=$('annualSummaryContent');
+  if(!c)return;
+  var old=c.querySelector('.mini-bar-chart');
+  if(old)old.remove();
+  var oldLabels=c.querySelector('.mini-bar-labels');
+  if(oldLabels)oldLabels.remove();
+  if(!yk||!yk.length)return;
+  // 12 个月全部显示，没有数据的显示 0
+  var allMonths=[];
+  for(var i=1;i<=12;i++)allMonths.push(year+'-'+String(i).padStart(2,'0'));
+  var values=allMonths.map(function(k){
+    return recs[k]?(recs[k].netPay||0):0;
+  });
+  var max=Math.max.apply(null,values.concat([1]));
+  var curKey=currentMonthKey;
+  var chart=document.createElement('div');
+  chart.className='mini-bar-chart';
+  var labels=document.createElement('div');
+  labels.className='mini-bar-labels';
+  allMonths.forEach(function(k,i){
+    var v=values[i];
+    var h=max>0?(v/max*100):0;
+    var isCur=(k===curKey);
+    var bar=document.createElement('div');
+    bar.className='mini-bar'+(isCur?' current':'');
+    bar.style.height=Math.max(h,2)+'%';
+    bar.innerHTML='<div class="mini-bar-tip">'+parseInt(k.split('-')[1])+'月 ¥'+v.toFixed(0)+'</div>';
+    chart.appendChild(bar);
+    var lab=document.createElement('span');
+    lab.textContent=parseInt(k.split('-')[1]);
+    labels.appendChild(lab);
+  });
+  // 插到汇总网格之后
+  var grid=c.querySelector('.annual-summary-grid');
+  if(grid){
+    grid.parentNode.insertBefore(chart,grid.nextSibling);
+    chart.parentNode.insertBefore(labels,chart.nextSibling);
+  }
+}
+/* ---------- 统一调度：在这些函数更新后触发 ---------- */
+(function(){
+  function patch(){
+    // 预览环形图
+    if(typeof updateSettingsPreview==='function'&&!window.__ringPatched){
+      window.__ringPatched=true;
+      var _orig=updateSettingsPreview;
+      window.updateSettingsPreview=function(){
+        _orig.apply(this,arguments);
+        updatePreviewRing();
+      };
+    }
+    // 加班条形图
+    if(typeof updateOvertimeDisplay==='function'&&!window.__barPatched){
+      window.__barPatched=true;
+      var _orig2=updateOvertimeDisplay;
+      window.updateOvertimeDisplay=function(){
+        _orig2.apply(this,arguments);
+        updateOvertimeBarChart();
+      };
+    }
+    // 年度柱状图
+    if(typeof renderAnnualSummary==='function'&&!window.__miniPatched){
+      window.__miniPatched=true;
+      var _orig3=renderAnnualSummary;
+      window.renderAnnualSummary=function(year){
+        _orig3.apply(this,arguments);
+        var recs=storage.history||{};
+        var yk=Object.keys(recs).filter(function(k){return k.startsWith(year+'-')&&parseMonthKey(k);}).sort();
+        renderMiniBarChart(year,recs,yk);
+      };
+    }
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',function(){
+      setTimeout(function(){
+        patch();
+        initPreviewRing();
+        initOvertimeBarChart();
+      },900);
+    });
+  }else{
+    setTimeout(function(){
+      patch();
+      initPreviewRing();
+      initOvertimeBarChart();
+    },900);
+  }
+})();
+// 切 tab 时也刷新一下可视化
+(function(){
+  function refresh(){
+    setTimeout(function(){
+      initPreviewRing();
+      updatePreviewRing();
+      initOvertimeBarChart();
+      updateOvertimeBarChart();
+    },300);
+  }
+  document.querySelectorAll('.nav-btn[data-tab]').forEach(function(b){
+    b.addEventListener('click',refresh);
+  });
+})();
+// ===== 迷你柱状图修复 v7.5.5 =====
+(function(){
+  function drawMiniChart(){
+    var c=document.getElementById('annualSummaryContent');
+    if(!c)return;
+    // 移除旧图
+    var oldC=c.querySelector('.mini-bar-chart');
+    if(oldC)oldC.remove();
+    var oldL=c.querySelector('.mini-bar-labels');
+    if(oldL)oldL.remove();
+
+    var grid=c.querySelector('.annual-summary-grid');
+    if(!grid)return; // 空状态，不画
+
+    var p=(typeof parseMonthKey==='function'&&currentMonthKey)?parseMonthKey(currentMonthKey):null;
+    if(!p)return;
+    var year=p.year;
+    var recs=(typeof storage!=='undefined'&&storage.history)?storage.history:{};
+
+    // 12 个月
+    var allMonths=[];
+    for(var i=1;i<=12;i++)allMonths.push(year+'-'+String(i).padStart(2,'0'));
+    var values=allMonths.map(function(k){return recs[k]?(recs[k].netPay||0):0;});
+    var max=Math.max.apply(null,values.concat([1]));
+
+    var chart=document.createElement('div');
+    chart.className='mini-bar-chart';
+    var labels=document.createElement('div');
+    labels.className='mini-bar-labels';
+
+    allMonths.forEach(function(k,i){
+      var v=values[i];
+      var h=max>0?(v/max*100):0;
+      var isCur=(k===currentMonthKey);
+      var bar=document.createElement('div');
+      bar.className='mini-bar'+(isCur?' current':'');
+      bar.style.height=Math.max(h,2)+'%';
+      bar.innerHTML='<div class="mini-bar-tip">'+parseInt(k.split('-')[1])+'月 ¥'+v.toFixed(0)+'</div>';
+      chart.appendChild(bar);
+      var lab=document.createElement('span');
+      lab.textContent=parseInt(k.split('-')[1]);
+      labels.appendChild(lab);
+    });
+
+    grid.parentNode.insertBefore(chart,grid.nextSibling);
+    chart.parentNode.insertBefore(labels,chart.nextSibling);
+  }
+
+  // 每次切换 tab 到工资数据时重画
+  function tryDraw(){
+    setTimeout(function(){
+      var panel=document.getElementById('tab-salary');
+      if(panel&&panel.classList.contains('active'))drawMiniChart();
+    },400);
+  }
+  document.querySelectorAll('.nav-btn[data-tab="salary"]').forEach(function(b){
+    b.addEventListener('click',tryDraw);
+  });
+  // 初始也试一次
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',function(){setTimeout(tryDraw,1200);});
+  }else{
+    setTimeout(tryDraw,1200);
+  }
+})();
+// ==================== 全局动效包 v7.5.6 (J) ====================
+
+/* ---------- J1. 主题切换加遮罩动画 ---------- */
+(function(){
+  var _origSwitchTheme=null;
+  function patchTheme(){
+    if(typeof window.switchThemeMode!=='function'&&typeof ZC.switchThemeMode==='function'){
+      var _orig=ZC.switchThemeMode;
+      ZC.switchThemeMode=function(){
+        document.documentElement.classList.add('theme-switching');
+        _orig.apply(this,arguments);
+        setTimeout(function(){
+          document.documentElement.classList.remove('theme-switching');
+        },650);
+      };
+    }
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',patchTheme);
+  else patchTheme();
+})();
+
+/* ---------- J2. 数字滚动动效（包装 animateNumber） ---------- */
+(function(){
+  function patchNumber(){
+    // 包一层，让原本的 animateNumber 带闪一下效果
+    if(typeof window.animateNumber!=='function')return;
+    if(window.__numFlashPatched)return;
+    window.__numFlashPatched=true;
+    var _orig=window.animateNumber;
+    window.animateNumber=function(el,from,to,duration,prefix,suffix){
+      _orig.apply(this,arguments);
+      if(!el)return;
+      el.classList.remove('num-flash');
+      void el.offsetWidth;
+      el.classList.add('num-flash');
+    };
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(patchNumber,500);});
+  else setTimeout(patchNumber,500);
+})();
+
+/* ---------- J3. tab 切换卡片滑入方向 ---------- */
+(function(){
+  var lastTab='settings';
+  var tabOrder=['settings','overtime','salary','theme'];
+  function patchTab(){
+    if(typeof window.switchToTab!=='function'&&typeof ZC.switchToTab!=='function')return;
+    var orig=window.switchToTab||ZC.switchToTab;
+    function newSwitch(tab){
+      var fromIdx=tabOrder.indexOf(lastTab);
+      var toIdx=tabOrder.indexOf(tab);
+      var dir=(toIdx>=fromIdx)?'right':'left';
+      orig.apply(this,arguments);
+      var panel=document.getElementById('tab-'+tab);
+      if(panel){
+        panel.classList.remove('slide-in-right','slide-in-left');
+        void panel.offsetWidth;
+        panel.classList.add(dir==='right'?'slide-in-right':'slide-in-left');
+        setTimeout(function(){
+          panel.classList.remove('slide-in-right','slide-in-left');
+        },600);
+      }
+      lastTab=tab;
+    }
+    window.switchToTab=newSwitch;
+    ZC.switchToTab=newSwitch;
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(patchTab,500);});
+  else setTimeout(patchTab,500);
+})();
+
+/* ---------- J5. 按钮点击涟漪 ---------- */
+(function(){
+  function attachRipple(){
+    document.querySelectorAll('.btn').forEach(function(btn){
+      if(btn.dataset.rippleInit==='1')return;
+      btn.dataset.rippleInit='1';
+      btn.addEventListener('click',function(e){
+        var rect=btn.getBoundingClientRect();
+        var x=e.clientX-rect.left;
+        var y=e.clientY-rect.top;
+        var size=Math.max(rect.width,rect.height);
+        var ripple=document.createElement('span');
+        ripple.className='ripple';
+        ripple.style.width=ripple.style.height=size+'px';
+        ripple.style.left=(x-size/2)+'px';
+        ripple.style.top=(y-size/2)+'px';
+        btn.appendChild(ripple);
+        setTimeout(function(){ripple.remove();},650);
+      });
+    });
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(attachRipple,900);});
+  else setTimeout(attachRipple,900);
+})();
+
+/* ---------- J7. 侧边栏导航 active 指示条（配合 CSS） ---------- */
+/* CSS 已经处理，无需额外 JS */
+
+console.log('✨ 全局动效包 v7.5.6 已加载');
 ZC.version=APP_VERSION;
 ZC.switchMonth=switchMonth;
 ZC.switchToTab=switchToTab;

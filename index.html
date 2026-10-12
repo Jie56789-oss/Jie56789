@@ -1365,6 +1365,27 @@ html, body {
     overflow-wrap: anywhere !important;
   }
 }
+/* ==================== 导出中心移动端居中 v7.5.8 ==================== */
+@media(max-width:768px){
+  /* 只针对导出中心弹窗 */
+  #exportCenterOverlay{
+    padding: env(safe-area-inset-top, 16px) 12px env(safe-area-inset-bottom, 16px) !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  #exportCenterOverlay .modal-box{
+    border-radius: var(--radius-lg) !important;
+    margin: auto !important;
+    width: 94% !important;
+    max-width: 480px !important;
+    max-height: 82vh !important;
+    padding: 20px !important;
+  }
+  /* 内部内容滚动 */
+  #exportCenterOverlay #exportCenterBody{
+    max-height: 55vh !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -4397,6 +4418,49 @@ console.log('✨ 全局动效包 v7.5.6 已加载');
     document.addEventListener('DOMContentLoaded',function(){setTimeout(initAiSwipeClose,900);});
   }else{
     setTimeout(initAiSwipeClose,900);
+  }
+})();
+// ==================== AI 面板打开时锁住背景滚动 v7.5.8 ====================
+(function(){
+  function initBodyLock(){
+    var panel=document.getElementById('aiPanel');
+    if(!panel)return;
+    if(panel.dataset.lockInit==='1')return;
+    panel.dataset.lockInit='1';
+
+    function isMobile(){return window.innerWidth<768;}
+
+    function lockBody(){
+      if(!isMobile())return;
+      document.body.style.overflow='hidden';
+      document.body.style.position='fixed';
+      document.body.style.width='100%';
+      document.body.style.top='0';
+      document.body.style.left='0';
+    }
+    function unlockBody(){
+      document.body.style.overflow='';
+      document.body.style.position='';
+      document.body.style.width='';
+      document.body.style.top='';
+      document.body.style.left='';
+    }
+
+    // 监听面板 class 变化
+    var observer=new MutationObserver(function(){
+      if(panel.classList.contains('ai-open')){
+        lockBody();
+      }else{
+        unlockBody();
+      }
+    });
+    observer.observe(panel,{attributes:true,attributeFilter:['class']});
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',function(){setTimeout(initBodyLock,900);});
+  }else{
+    setTimeout(initBodyLock,900);
   }
 })();
 ZC.version=APP_VERSION;

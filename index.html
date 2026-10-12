@@ -1202,6 +1202,79 @@ html, body {
     to { height: 60%; opacity: 1; }
   }
 }
+/* ==================== 移动端 AI 关闭修复 v7.5.7 ==================== */
+
+/* 移动端也显示关闭按钮 */
+@media(max-width:767px){
+  #aiPanel .ai-close-btn{
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--input-bg);
+    border: 1px solid var(--card-border);
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+  }
+  #aiPanel .ai-close-btn:active{
+    background: var(--primary-light);
+    color: var(--primary);
+  }
+}
+
+/* 移动端 AI 面板加一个顶部把手指示条（视觉提示可下拉） */
+@media(max-width:767px){
+  #aiPanel::before{
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 4px;
+    background: var(--text-muted);
+    border-radius: 2px;
+    opacity: 0.35;
+    z-index: 2;
+  }
+  /* 面板头部留出空间给把手 */
+  #aiPanel > div:first-child{
+    padding-top: 18px !important;
+  }
+}
+/* ==================== 移动端顶栏虚化修复 v7.5.7 ==================== */
+@media(max-width:768px){
+  /* 关掉旋转背景动画，减少重绘 */
+  .app-header::before{
+    animation: none !important;
+    opacity: 0.4;
+  }
+  /* 顶栏去掉毛玻璃，改用纯色，文字更清晰 */
+  .app-header{
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: linear-gradient(135deg, var(--card-bg) 0%, var(--primary-light) 100%) !important;
+  }
+  /* 副标题文字加清晰度 */
+  .app-header .subtitle{
+    font-weight: 400;
+    letter-spacing: 1.5px;
+    text-shadow: none;
+    opacity: 0.95;
+  }
+  .app-header .brand{
+    text-shadow: none;
+  }
+}
+@media(max-width:768px){
+  .nav-wrapper{
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -1354,9 +1427,6 @@ html, body {
             <button class="nav-btn theme-toggle-btn" onclick="ZC.switchThemeMode()"><span class="tab-icon" id="themeToggleIcon">🌙</span><span class="tab-label">切换</span></button>
           </nav>
         </div>
-        <button class="fab-calculate" id="fabCalculate" title="计算本月工资">
-          <span class="fab-icon">📊</span><span class="fab-label">计算</span>
-        </button>
         <div class="toast" id="toast">📋 工资核算 已就绪</div>
 
         <div class="tab-panel active" id="tab-settings">
@@ -4159,6 +4229,86 @@ function renderMiniBarChart(year,recs,yk){
 /* CSS 已经处理，无需额外 JS */
 
 console.log('✨ 全局动效包 v7.5.6 已加载');
+// ==================== 移动端 AI 下滑关闭手势 v7.5.7 ====================
+(function(){
+  function initAiSwipeClose(){
+    var panel=document.getElementById('aiPanel');
+    if(!panel)return;
+    if(panel.dataset.swipeInit==='1')return;
+    panel.dataset.swipeInit='1';
+
+    var startY=0;
+    var startTime=0;
+    var dragging=false;
+    var currentY=0;
+
+    function isMobile(){return window.innerWidth<768;}
+
+    panel.addEventListener('touchstart',function(e){
+      if(!isMobile())return;
+      // 只在面板顶部区域（前 60px）或把手处触发下拉，避免与内部滚动冲突
+      var touch=e.touches[0];
+      var rect=panel.getBoundingClientRect();
+      var offsetY=touch.clientY-rect.top;
+      // 顶部 80px 内 或者 面板内部滚动条已在顶部时才允许
+      var scrollArea=e.target.closest('#aiMessages');
+      var atTop=!scrollArea || scrollArea.scrollTop<=0;
+      if(offsetY<80 || atTop){
+        dragging=true;
+        startY=touch.clientY;
+        startTime=Date.now();
+        panel.style.transition='none';
+      }
+    },{passive:true});
+
+    panel.addEventListener('touchmove',function(e){
+      if(!dragging)return;
+      var touch=e.touches[0];
+      currentY=touch.clientY-startY;
+      if(currentY>0){
+        panel.style.transform='translateY('+currentY+'px)';
+        // 下拉越多，背景越透明
+        var op=Math.max(0.3,1-currentY/400);
+        panel.style.opacity=op;
+      }
+    },{passive:true});
+
+    panel.addEventListener('touchend',function(){
+      if(!dragging)return;
+      dragging=false;
+      panel.style.transition='';
+      panel.style.opacity='';
+      var dy=currentY;
+      var dt=Date.now()-startTime;
+      // 下拉超过 100px，或者快速下拉（速度 > 0.5 px/ms）就关闭
+      if(dy>100 || (dy>40 && dt<300)){
+        // 触发关闭
+        panel.classList.remove('ai-open');
+        panel.style.transform='';
+        panel.style.display='';
+      }else{
+        // 回弹
+        panel.style.transform='translateY(0)';
+      }
+      currentY=0;
+    });
+
+    // 面板打开时，重置 transform
+    var observer=new MutationObserver(function(){
+      if(panel.classList.contains('ai-open')){
+        panel.style.transform='translateY(0)';
+        panel.style.opacity='';
+      }
+    });
+    observer.observe(panel,{attributes:true,attributeFilter:['class']});
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',function(){setTimeout(initAiSwipeClose,900);});
+  }else{
+    setTimeout(initAiSwipeClose,900);
+  }
+})();
 ZC.version=APP_VERSION;
 ZC.switchMonth=switchMonth;
 ZC.switchToTab=switchToTab;

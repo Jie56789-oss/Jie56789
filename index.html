@@ -4463,6 +4463,190 @@ console.log('✨ 全局动效包 v7.5.6 已加载');
     setTimeout(initBodyLock,900);
   }
 })();
+// ==================== 弹窗打开时锁住背景滚动 v7.5.9 ====================
+(function(){
+  function initModalScrollLock(){
+    var overlays=document.querySelectorAll('.modal-overlay');
+    if(!overlays.length)return;
+    if(window.__modalLockInit)return;
+    window.__modalLockInit=true;
+
+    var scrollY=0;
+    var locked=false;
+
+    function lock(){
+      if(locked)return;
+      locked=true;
+      scrollY=window.scrollY||document.documentElement.scrollTop||0;
+      document.body.style.position='fixed';
+      document.body.style.top=(-scrollY)+'px';
+      document.body.style.left='0';
+      document.body.style.right='0';
+      document.body.style.width='100%';
+      document.body.style.overflow='hidden';
+    }
+    function unlock(){
+      if(!locked)return;
+      locked=false;
+      document.body.style.position='';
+      document.body.style.top='';
+      document.body.style.left='';
+      document.body.style.right='';
+      document.body.style.width='';
+      document.body.style.overflow='';
+      window.scrollTo(0,scrollY);
+    }
+    function check(){
+      var anyActive=false;
+      overlays.forEach(function(o){
+        if(o.classList.contains('active'))anyActive=true;
+      });
+      if(anyActive)lock();
+      else unlock();
+    }
+
+    // 每个弹窗都监听 class 变化
+    overlays.forEach(function(o){
+      var obs=new MutationObserver(check);
+      obs.observe(o,{attributes:true,attributeFilter:['class']});
+    });
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',function(){setTimeout(initModalScrollLock,900);});
+  }else{
+    setTimeout(initModalScrollLock,900);
+  }
+})();
+// ==================== 移动端导出改下载 .doc v7.6.0 ====================
+(function(){
+  function isMobile(){return window.innerWidth<768 || /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);}
+
+  // 保存 Blob 为文件
+  function saveBlob(blob, filename){
+    if(navigator.msSaveOrOpenBlob){
+      navigator.msSaveOrOpenBlob(blob, filename);
+      return;
+    }
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');
+    a.href=url;
+    a.download=filename;
+    a.style.display='none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    },300);
+  }
+
+  // 下载为 .doc（Word 可打开，样式保留）
+  window.downloadAsDoc=function(html, filename){
+    var full='<html xmlns:o="urn:schemas-microsoft-com:office:office" ' +
+             'xmlns:w="urn:schemas-microsoft-com:office:word" ' +
+             'xmlns="http://www.w3.org/TR/REC-html40">' +
+             '<head><meta charset="utf-8"><title>'+filename+'</title>' +
+             '<style>body{font-family:"Microsoft YaHei",sans-serif;padding:20px;}' +
+             'table{border-collapse:collapse;width:100%;}' +
+             'th,td{border:1px solid #ddd;padding:6px 10px;}' +
+             'th{background:#5b4cdb;color:#fff;}' +
+             'h1{color:#5b4cdb;}</style></head>' +
+             '<body>'+html+'</body></html>';
+    var blob=new Blob(['\ufeff', full], {type:'application/msword;charset=utf-8'});
+    saveBlob(blob, filename+'.doc');
+  };
+
+  window.__isMobileExport=isMobile();
+})();
+
+// ==================== 拦截导出中心点击，移动端改下载 v7.6.0 ====================
+(function(){
+  function generateHtml(action){
+    if(action==='printSalarySlip'){
+      var r=(storage.history||{})[currentMonthKey];
+      if(!r){showToast('该月暂无记录');return null;}
+      return {
+        html:'<h1>💰 '+r.month+' 工资条</h1><table>' +
+             '<tr><td>底薪</td><td>¥'+formatNumber(r.baseSalary||0)+'</td></tr>' +
+             '<tr><td>加班费</td><td>¥'+formatNumber(r.totalOvertimePay||0)+'</td></tr>' +
+             '<tr><td>应发</td><td>¥'+formatNumber(r.grossPay||0)+'</td></tr>' +
+             '<tr><td>社保</td><td>¥'+formatNumber(r.socialInsurance||0)+'</td></tr>' +
+             '<tr><td>公积金</td><td>¥'+formatNumber(r.housingFund||0)+'</td></tr>' +
+             '<tr><td>个税</td><td>¥'+formatNumber(r.tax||0)+'</td></tr>' +
+             '<tr><td><strong>实发</strong></td><td><strong>¥'+formatNumber(r.netPay||0)+'</strong></td></tr>' +
+             '</table>',
+        filename:'工资条_'+r.month
+      };
+    }
+    if(action==='printYearlyReport'){
+      var y=currentAnnualYear;
+      var recs=storage.history||{};
+      var ks=Object.keys(recs).filter(function(k){return k.startsWith(y+'-')&&parseMonthKey(k);}).sort();
+      if(!ks.length){showToast('暂无数据');return null;}
+      var rows='';
+      ks.forEach(function(k){var r=recs[k];rows+='<tr><td>'+k.slice(5)+'月</td><td>¥'+formatNumber(r.baseSalary||0)+'</td><td>¥'+formatNumber(r.totalOvertimePay||0)+'</td><td>¥'+formatNumber(r.grossPay||0)+'</td><td>¥'+formatNumber(r.tax||0)+'</td><td>¥'+formatNumber(r.overtimeDiff||0)+'</td><td>¥'+formatNumber(r.netPay||0)+'</td></tr>';});
+      return {
+        html:'<h1>📊 '+y+' 年度工资报表</h1><table><thead><tr><th>月份</th><th>底薪</th><th>加班费</th><th>应发</th><th>个税</th><th>加班差额</th><th>实发</th></tr></thead><tbody>'+rows+'</tbody></table>',
+        filename:'年度报表_'+y
+      };
+    }
+    if(action==='exportOvertimePdf'){
+      var arr=getOvertimeRecordsForMonth();
+      if(!arr.length){showToast('本月暂无加班记录');return null;}
+      var rows2='';
+      arr.forEach(function(x){rows2+='<tr><td>'+x.date+'</td><td>'+x.type+'</td><td>'+x.segments+'</td><td>'+x.hours.toFixed(1)+'h</td></tr>';});
+      return {
+        html:'<h1>📆 '+currentMonthKey+' 加班记录</h1><table><thead><tr><th>日期</th><th>类型</th><th>时间段</th><th>时长</th></tr></thead><tbody>'+rows2+'</tbody></table>',
+        filename:'加班记录_'+currentMonthKey
+      };
+    }
+    if(action==='exportOvertimeAppeal'){
+      var recs2=storage.history||{};
+      var ks2=Object.keys(recs2).filter(function(k){return parseMonthKey(k);}).sort();
+      if(!ks2.length){showToast('暂无数据');return null;}
+      var rows3='';
+      ks2.forEach(function(k){var r=recs2[k];rows3+='<tr><td>'+k+'</td><td>¥'+formatNumber(r.legalHourlyRate||0)+'</td><td>¥'+formatNumber(r.companyHourlyRate||0)+'</td><td>¥'+formatNumber(r.legalOvertimePay||0)+'</td><td>¥'+formatNumber(r.companyOvertimePay||0)+'</td><td>¥'+formatNumber(r.overtimeDiff||0)+'</td></tr>';});
+      var tl=0,tc=0,td=0;
+      ks2.forEach(function(k){var r=recs2[k];tl+=r.legalOvertimePay||0;tc+=r.companyOvertimePay||0;td+=r.overtimeDiff||0;});
+      return {
+        html:'<h1>⚖️ 加班费差额说明</h1><p>依据《劳动法》第44条，月计薪天数 21.75 天。法定时薪 = 底薪 ÷ 21.75 ÷ 8</p><table><thead><tr><th>月份</th><th>法定时薪</th><th>公司时薪</th><th>法定应得</th><th>公司口径</th><th>差额</th></tr></thead><tbody>'+rows3+'<tr><td><strong>合计</strong></td><td>—</td><td>—</td><td>¥'+formatNumber(tl)+'</td><td>¥'+formatNumber(tc)+'</td><td>¥'+formatNumber(td)+'</td></tr></tbody></table><p><strong>结论：公司累计少发加班费 ¥'+formatNumber(td)+'</strong></p>',
+        filename:'加班费差额说明_'+getLocalDateString()
+      };
+    }
+    return null;
+  }
+
+  function intercept(){
+    if(!window.__isMobileExport)return;
+    var body=document.getElementById('exportCenterBody');
+    if(!body)return;
+    if(body.dataset.mobileExportInit==='1')return;
+    body.dataset.mobileExportInit='1';
+    body.addEventListener('click',function(e){
+      var b=e.target.closest('.export-item');
+      if(!b)return;
+      var action=b.dataset.action;
+      var map={printSalarySlip:1,printYearlyReport:1,exportOvertimePdf:1,exportOvertimeAppeal:1};
+      if(!map[action])return;
+      e.preventDefault();
+      e.stopPropagation();
+      var result=generateHtml(action);
+      if(!result)return;
+      if(window.downloadAsDoc){
+        window.downloadAsDoc(result.html, result.filename);
+        showToast('✅ 已下载 '+result.filename+'.doc');
+        if(typeof closeExportCenter==='function')closeExportCenter();
+      }
+    },true); // 捕获阶段，抢在原有监听前
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',function(){setTimeout(intercept,1000);});
+  }else{
+    setTimeout(intercept,1000);
+  }
+})();
 ZC.version=APP_VERSION;
 ZC.switchMonth=switchMonth;
 ZC.switchToTab=switchToTab;

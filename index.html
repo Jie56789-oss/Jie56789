@@ -464,6 +464,10 @@ body{font-family:"Inter","PingFang SC","Microsoft YaHei",system-ui,-apple-system
 .export-item .ei-icon{font-size:1.1rem;flex-shrink:0}
 .export-item .ei-name{flex:1}
 .export-item.highlight{border-color:hsla(var(--primary-h),var(--primary-s),var(--primary-l),.3);background:hsla(var(--primary-h),var(--primary-s),var(--primary-l),.06)}
+.export-profile{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.export-profile label{display:flex;flex-direction:column;gap:3px;font-size:.7rem;color:var(--text-secondary)}
+.export-profile input{width:100%;padding:7px 10px;border-radius:8px;border:1px solid var(--input-border);background:var(--input-bg);color:var(--text-primary);font-size:13.5px;font-family:inherit;outline:none;min-height:38px;text-align:left}
+.export-profile input:focus{border-color:var(--primary);box-shadow:0 0 0 3px hsla(var(--primary-h),var(--primary-s),var(--primary-l),.12)}
 .import-conflict-list{font-size:.72rem;color:var(--text-muted);margin-bottom:8px;max-height:100px;overflow-y:auto;line-height:1.6}
 
 html.theme-switching::after{content:'';position:fixed;inset:0;z-index:99998;pointer-events:none;background:radial-gradient(circle at center,hsla(var(--primary-h),var(--primary-s),var(--primary-l),.15),transparent 70%);animation:themeRipple .6s ease}
@@ -500,17 +504,30 @@ html.theme-switching::after{content:'';position:fixed;inset:0;z-index:99998;poin
 .mini-bar-labels{display:flex;gap:3px;padding:0 4px;font-size:.6rem;color:var(--text-muted);text-align:center}
 .mini-bar-labels span{flex:1}
 
-.settings-page-grid .theme-mode-option{transition:all .25s ease;position:relative}
-.settings-page-grid .theme-mode-option:hover{background:var(--primary-light)!important}
-.settings-page-grid .theme-mode-option.active{border-color:var(--primary)!important;background:var(--primary-light)!important;box-shadow:0 0 0 3px hsla(var(--primary-h),var(--primary-s),var(--primary-l),.15),0 4px 16px hsla(var(--primary-h),var(--primary-s),var(--primary-l),.2)}
-.settings-page-grid .theme-mode-option.active span:last-child{color:var(--primary);font-weight:700}
-.settings-page-grid .theme-mode-option.active::after{content:'✓';position:absolute;top:6px;right:8px;width:18px;height:18px;border-radius:50%;background:var(--primary);color:#fff;font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px hsla(var(--primary-h),var(--primary-s),var(--primary-l),.4)}
-.settings-page-grid .accent-color-option{transition:all .25s ease;position:relative}
-.settings-page-grid .accent-color-option:hover{background:var(--primary-light)!important;transform:translateY(-2px)}
-.settings-page-grid .accent-color-option.active{border-color:var(--primary)!important;background:var(--primary-light)!important;box-shadow:0 0 0 3px hsla(var(--primary-h),var(--primary-s),var(--primary-l),.15),0 4px 16px hsla(var(--primary-h),var(--primary-s),var(--primary-l),.2)}
-.settings-page-grid .accent-color-option.active span{color:var(--primary);font-weight:700}
-.settings-page-grid .accent-color-option.active::after{content:'✓';position:absolute;top:6px;right:8px;width:18px;height:18px;border-radius:50%;background:var(--primary);color:#fff;font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px hsla(var(--primary-h),var(--primary-s),var(--primary-l),.4)}
-.settings-page-grid .accent-color-option.active > div:first-child{transform:scale(1.15);box-shadow:0 0 0 3px #fff,0 0 0 6px hsla(var(--primary-h),var(--primary-s),var(--primary-l),.4)}
+/* 外观设置选中态：原作用域 .settings-page-grid 在当前 DOM 中不存在，改为 #tab-theme */
+#tab-theme .theme-mode-option{transition:all .25s ease;position:relative}
+#tab-theme .theme-mode-option:hover{background:var(--primary-light)!important}
+#tab-theme .theme-mode-option.active{border-color:var(--primary)!important;background:var(--primary-light)!important;box-shadow:0 0 0 3px hsla(var(--primary-h),var(--primary-s),var(--primary-l),.15),0 4px 16px hsla(var(--primary-h),var(--primary-s),var(--primary-l),.2)}
+#tab-theme .theme-mode-option.active span:last-child{color:var(--primary);font-weight:700}
+#tab-theme .theme-mode-option.active::after{content:'✓';position:absolute;top:6px;right:8px;width:18px;height:18px;border-radius:50%;background:var(--primary);color:#fff;font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px hsla(var(--primary-h),var(--primary-s),var(--primary-l),.4)}
+#tab-theme .accent-color-option{transition:all .25s ease;position:relative}
+#tab-theme .accent-color-option:hover{background:var(--primary-light)!important;transform:translateY(-2px)}
+#tab-theme .accent-color-option.active{border-color:var(--primary)!important;background:var(--primary-light)!important;box-shadow:0 0 0 3px hsla(var(--primary-h),var(--primary-s),var(--primary-l),.15),0 4px 16px hsla(var(--primary-h),var(--primary-s),var(--primary-l),.2)}
+#tab-theme .accent-color-option.active span{color:var(--primary);font-weight:700}
+#tab-theme .accent-color-option.active::after{content:'✓';position:absolute;top:6px;right:8px;width:18px;height:18px;border-radius:50%;background:var(--primary);color:#fff;font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px hsla(var(--primary-h),var(--primary-s),var(--primary-l),.4)}
+#tab-theme .accent-color-option.active > div:first-child{transform:scale(1.15);box-shadow:0 0 0 3px #fff,0 0 0 6px hsla(var(--primary-h),var(--primary-s),var(--primary-l),.4)}
+
+/* 视觉效果开关：补上滑块与 :checked 态（原标记只有一块灰底 span） */
+#tab-theme label > input[type="checkbox"] + span::after{
+  content:'';position:absolute;width:20px;height:20px;left:3px;top:3px;border-radius:50%;
+  background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.35);
+  transition:transform .25s cubic-bezier(.4,0,.2,1);
+}
+#tab-theme label > input[type="checkbox"]:checked + span{background:var(--primary)!important}
+#tab-theme label > input[type="checkbox"]:checked + span::after{transform:translateX(22px)}
+#tab-theme label > input[type="checkbox"] + span:hover{filter:brightness(1.08)}
+#tab-theme label > input[type="checkbox"]:focus-visible + span{box-shadow:0 0 0 3px var(--primary-glow)}
+html.no-anim *,html.no-anim *::before,html.no-anim *::after{animation-duration:0s!important;animation-delay:0s!important;transition-duration:0s!important}
 
 .ai-action-card{animation:actionIn .35s cubic-bezier(.34,1.56,.64,1) both}
 @keyframes actionIn{from{opacity:0;transform:translateY(8px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
@@ -668,6 +685,27 @@ body.ai-sidebar-open #aiFab{display:none!important}
 @media(min-width:769px){.nav-wrapper{display:none!important}}
 /* ========== 参数设置：左侧子菜单布局 ========== */
 .settings-split{display:flex;gap:16px;align-items:flex-start}
+.settings-actionbar{
+  position:sticky;bottom:12px;z-index:6;
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:10px 14px;
+  background:var(--modal-bg);
+  backdrop-filter:blur(20px) saturate(140%);-webkit-backdrop-filter:blur(20px) saturate(140%);
+  border:1px solid var(--card-border);border-left:3px solid var(--primary);
+  border-radius:var(--radius-md);
+  box-shadow:0 10px 30px rgba(0,0,0,.18);
+}
+.settings-actionbar .sab-hint{font-size:.75rem;color:var(--text-secondary);line-height:1.5}
+.settings-actionbar .btn{min-width:230px;flex-shrink:0}
+@media(max-width:640px){
+  #tab-settings{padding-bottom:92px}
+  .settings-actionbar{
+    position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));
+    z-index:70;flex-direction:column;align-items:stretch;gap:8px;
+  }
+  .settings-actionbar .sab-hint{font-size:.72rem}
+  .settings-actionbar .btn{width:100%}
+}
 .settings-subnav{
   flex:0 0 180px;
   display:flex;flex-direction:column;gap:6px;
@@ -1349,14 +1387,13 @@ html{font-size:17px}
                     </div>
                   </div>
                 </div>
-                <div class="card visible" style="margin-top:12px;">
-                  <div class="card-body">
-                    <button class="btn btn-primary" id="btnCalculate" style="width:100%;padding:14px;font-size:1rem;letter-spacing:1px;">📊 计算并存入历史 <span style="font-size:.72rem;opacity:.8;">（Ctrl+Enter）</span></button>
-                  </div>
-                </div>
               </div>
 
             </div>
+          </div>
+          <div class="settings-actionbar">
+            <div class="sab-hint">参数修改后会自动保存；确认无误后计算本月工资。</div>
+            <button class="btn btn-primary" id="btnCalculate">📊 计算并保存 <span style="font-size:.72rem;opacity:.8;">（Ctrl+Enter）</span></button>
           </div>
         </div>
 
@@ -1711,6 +1748,15 @@ html{font-size:17px}
       <span id="exportCenterMonth" style="font-size:.75rem;color:var(--text-muted);background:var(--primary-light);padding:2px 10px;border-radius:20px;"></span>
     </div>
     <div id="exportCenterBody" style="max-height:60vh;overflow-y:auto;padding-right:6px;">
+      <div class="export-group">
+        <div class="export-group-title">🏷️ 单据抬头 <span style="font-weight:400;color:var(--text-muted);font-size:.68rem;">用于 PDF / Word / Excel，自动保存</span></div>
+        <div class="export-profile">
+          <label>单位名称<input type="text" id="docCompany" maxlength="40" placeholder="例如：XX 科技有限公司"></label>
+          <label>员工姓名<input type="text" id="docName" maxlength="20" placeholder="例如：张三"></label>
+          <label>部门<input type="text" id="docDept" maxlength="20" placeholder="例如：研发部"></label>
+          <label>岗位<input type="text" id="docJob" maxlength="20" placeholder="例如：软件工程师"></label>
+        </div>
+      </div>
       <div class="export-group">
         <div class="export-group-title">📅 当前月份工资</div>
         <div class="export-grid">
@@ -2125,6 +2171,7 @@ function applyVisualEffects(){
   if(c)c.style.display=themeConfig.particles?'':'none';
   orbs.forEach(function(o){o.style.display=themeConfig.orbs?'':'none';});
   if(g)g.style.display=themeConfig.grid?'':'none';
+  document.documentElement.classList.toggle('no-anim',themeConfig.animations===false);
 }
 function applyFontScale(s){
   document.documentElement.style.setProperty('--font-scale',s);
@@ -3071,16 +3118,160 @@ function applyBatchSetting(){
   showToast('✅ 已为 '+c2+' 天设置 '+h+'h');
 }
 
-function exportToExcel(fn,sn,rows){
-  var h='<!DOCTYPE html><html><head><meta charset="UTF-8"><style>table{border-collapse:collapse;font-family:sans-serif;}th{background:#5b4cdb;color:#fff;padding:8px 10px;}td{padding:7px 10px;border:1px solid #ddd;text-align:center;}</style></head><body><h2>'+escapeHtml(sn)+'</h2><table>';
-  rows.forEach(function(row,i){
-    var ih=i===0;
-    h+='<tr>';
-    row.forEach(function(c){h+=ih?'<th>'+escapeHtml(String(c))+'</th>':'<td>'+escapeHtml(String(c))+'</td>';});
-    h+='</tr>';
+/* ===== Excel 导出：不再用 HTML 伪装 .xls，直接生成标准 .xlsx（无外部依赖） ===== */
+function xlsxEsc(s){
+  return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;');
+}
+function xlsxCol(n){
+  var s='';n=Math.floor(n)+1;
+  while(n>0){var m=(n-1)%26;s=String.fromCharCode(65+m)+s;n=Math.floor((n-1)/26);}
+  return s;
+}
+var XLSX_CRC_TABLE=(function(){
+  var t=new Uint32Array(256);
+  for(var i=0;i<256;i++){
+    var c=i;
+    for(var k=0;k<8;k++)c=(c&1)?(0xEDB88320^(c>>>1)):(c>>>1);
+    t[i]=c>>>0;
+  }
+  return t;
+})();
+function xlsxCrc32(u8){
+  var c=0xFFFFFFFF;
+  for(var i=0;i<u8.length;i++)c=XLSX_CRC_TABLE[(c^u8[i])&0xFF]^(c>>>8);
+  return (c^0xFFFFFFFF)>>>0;
+}
+function xlsxZip(files){
+  var enc=new TextEncoder(),parts=[],central=[],offset=0,dosDate=33;
+  files.forEach(function(f){
+    var name=enc.encode(f.name),data=f.data,crc=xlsxCrc32(data);
+    var lh=new DataView(new ArrayBuffer(30));
+    lh.setUint32(0,0x04034b50,true);lh.setUint16(4,20,true);lh.setUint16(6,0x0800,true);
+    lh.setUint16(8,0,true);lh.setUint16(10,0,true);lh.setUint16(12,dosDate,true);
+    lh.setUint32(14,crc,true);lh.setUint32(18,data.length,true);lh.setUint32(22,data.length,true);
+    lh.setUint16(26,name.length,true);lh.setUint16(28,0,true);
+    parts.push(new Uint8Array(lh.buffer),name,data);
+    var ch=new DataView(new ArrayBuffer(46));
+    ch.setUint32(0,0x02014b50,true);ch.setUint16(4,20,true);ch.setUint16(6,20,true);ch.setUint16(8,0x0800,true);
+    ch.setUint16(10,0,true);ch.setUint16(12,0,true);ch.setUint16(14,dosDate,true);
+    ch.setUint32(16,crc,true);ch.setUint32(20,data.length,true);ch.setUint32(24,data.length,true);
+    ch.setUint16(28,name.length,true);ch.setUint16(30,0,true);ch.setUint16(32,0,true);
+    ch.setUint16(34,0,true);ch.setUint16(36,0,true);ch.setUint32(38,0,true);ch.setUint32(42,offset,true);
+    central.push(new Uint8Array(ch.buffer),name);
+    offset+=30+name.length+data.length;
   });
-  h+='</table></body></html>';
-  downloadBlob(new Blob([h],{type:'application/vnd.ms-excel;charset=utf-8'}),fn+'.xls');
+  var cdSize=0;central.forEach(function(c){cdSize+=c.length;});
+  var eocd=new DataView(new ArrayBuffer(22));
+  eocd.setUint32(0,0x06054b50,true);eocd.setUint16(4,0,true);eocd.setUint16(6,0,true);
+  eocd.setUint16(8,files.length,true);eocd.setUint16(10,files.length,true);
+  eocd.setUint32(12,cdSize,true);eocd.setUint32(16,offset,true);eocd.setUint16(20,0,true);
+  var all=parts.concat(central,[new Uint8Array(eocd.buffer)]);
+  var total=0;all.forEach(function(p){total+=p.length;});
+  var out=new Uint8Array(total),pos=0;
+  all.forEach(function(p){out.set(p,pos);pos+=p.length;});
+  return out;
+}
+function xlsxCellXml(ref,cell,rowStyle){
+  var v=cell,s=rowStyle;
+  if(cell&&typeof cell==='object'&&!Array.isArray(cell)){v=cell.v;s=(cell.s===undefined?rowStyle:cell.s);}
+  if(typeof v==='number'&&isFinite(v)){
+    if(s===2)s=8;else if(s===5)s=9;
+    return '<c r="'+ref+'" s="'+s+'"><v>'+v+'</v></c>';
+  }
+  var t=String(v==null?'':v);
+  if(t.length>32767)t=t.slice(0,32767);
+  return '<c r="'+ref+'" s="'+s+'" t="inlineStr"><is><t xml:space="preserve">'+xlsxEsc(t)+'</t></is></c>';
+}
+function buildXlsxBlob(rows,sheetName,opts){
+  rows=rows||[];opts=opts||{};
+  var name=String(sheetName||'Sheet1').replace(/[\\\/\?\*\[\]:]/g,' ').replace(/\s+/g,' ').trim().slice(0,31)||'Sheet1';
+  var colCount=1,widths=[],merges=[],sheetRows='';
+  rows.forEach(function(row){
+    var cells=Array.isArray(row)?row:((row&&row.cells)||[]);
+    if(cells.length>colCount)colCount=cells.length;
+  });
+  rows.forEach(function(row,ri){
+    var idx=ri+1;
+    var isArr=Array.isArray(row);
+    var cells=isArr?row:((row&&row.cells)||[]);
+    var style=isArr?(idx===1?1:2):(row.style===undefined?(idx===1?1:2):row.style);
+    var attrs=' r="'+idx+'"';
+    if(!isArr&&row.height)attrs+=' ht="'+row.height+'" customHeight="1"';
+    var line='<row'+attrs+'>';
+    cells.forEach(function(c,j){
+      var v=(c&&typeof c==='object'&&!Array.isArray(c))?c.v:c;
+      var len;
+      if(typeof v==='number')len=v.toFixed(2).length+2;
+      else len=String(v==null?'':v).replace(/[^\x00-\xff]/g,'xx').length;
+      widths[j]=Math.max(widths[j]||0,len);
+      line+=xlsxCellXml(xlsxCol(j)+idx,c,style);
+    });
+    line+='</row>';
+    sheetRows+=line;
+    if(!isArr&&row.mergeAll)merges.push('A'+idx+':'+xlsxCol(colCount-1)+idx);
+  });
+  var cols='';
+  if(widths.length){
+    cols='<cols>';
+    for(var ci=0;ci<colCount;ci++){
+      var w=widths[ci]||10;
+      cols+='<col min="'+(ci+1)+'" max="'+(ci+1)+'" width="'+Math.min(46,Math.max(9,w+2))+'" customWidth="1"/>';
+    }
+    cols+='</cols>';
+  }
+  var mergeXml=merges.length?'<mergeCells count="'+merges.length+'">'+merges.map(function(m){return '<mergeCell ref="'+m+'"/>';}).join('')+'</mergeCells>':'';
+  var freeze=opts.freezeRows||0;
+  var views=freeze>0
+    ?'<sheetViews><sheetView workbookViewId="0"><pane ySplit="'+freeze+'" topLeftCell="A'+(freeze+1)+'" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>'
+    :'<sheetViews><sheetView workbookViewId="0"/></sheetViews>';
+  var page='<pageMargins left="0.4" right="0.4" top="0.5" bottom="0.5" header="0.2" footer="0.2"/><pageSetup paperSize="9" orientation="'+(opts.landscape?'landscape':'portrait')+'" fitToWidth="1" fitToHeight="0"/>';
+  var sheet='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetPr><pageSetUpPr fitToPage="1"/></sheetPr>'+views+cols+'<sheetData>'+sheetRows+'</sheetData>'+mergeXml+page+'</worksheet>';
+  var styles='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'
+    +'<fonts count="5">'
+    +'<font><sz val="11"/><color rgb="FF000000"/><name val="Microsoft YaHei"/></font>'
+    +'<font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Microsoft YaHei"/></font>'
+    +'<font><b/><sz val="14"/><color rgb="FF1A1A1A"/><name val="Microsoft YaHei"/></font>'
+    +'<font><sz val="9"/><color rgb="FF666666"/><name val="Microsoft YaHei"/></font>'
+    +'<font><b/><sz val="11"/><color rgb="FF1A1A1A"/><name val="Microsoft YaHei"/></font>'
+    +'</fonts>'
+    +'<fills count="5"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill>'
+    +'<fill><patternFill patternType="solid"><fgColor rgb="FF5B4CDB"/><bgColor indexed="64"/></patternFill></fill>'
+    +'<fill><patternFill patternType="solid"><fgColor rgb="FFEEF1F6"/><bgColor indexed="64"/></patternFill></fill>'
+    +'<fill><patternFill patternType="solid"><fgColor rgb="FFF5F6F8"/><bgColor indexed="64"/></patternFill></fill></fills>'
+    +'<borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border>'
+    +'<border><left style="thin"><color rgb="FFBFBFBF"/></left><right style="thin"><color rgb="FFBFBFBF"/></right><top style="thin"><color rgb="FFBFBFBF"/></top><bottom style="thin"><color rgb="FFBFBFBF"/></bottom><diagonal/></border></borders>'
+    +'<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>'
+    +'<cellXfs count="10">'
+    +'<xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>'
+    +'<xf numFmtId="0" fontId="1" fillId="2" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>'
+    +'<xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>'
+    +'<xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf>'
+    +'<xf numFmtId="0" fontId="3" fillId="0" borderId="0" xfId="0" applyFont="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf>'
+    +'<xf numFmtId="0" fontId="4" fillId="3" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf>'
+    +'<xf numFmtId="0" fontId="3" fillId="0" borderId="0" xfId="0" applyFont="1" applyAlignment="1"><alignment horizontal="left" vertical="center" wrapText="1"/></xf>'
+    +'<xf numFmtId="0" fontId="4" fillId="4" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="left" vertical="center"/></xf>'
+    +'<xf numFmtId="4" fontId="0" fillId="0" borderId="1" xfId="0" applyNumberFormat="1" applyBorder="1" applyAlignment="1"><alignment horizontal="right" vertical="center"/></xf>'
+    +'<xf numFmtId="4" fontId="4" fillId="3" borderId="1" xfId="0" applyNumberFormat="1" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="right" vertical="center"/></xf>'
+    +'</cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>';
+  var xml=[
+    {name:'[Content_Types].xml',data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>'},
+    {name:'_rels/.rels',data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>'},
+    {name:'xl/workbook.xml',data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="'+xlsxEsc(name)+'" sheetId="1" r:id="rId1"/></sheets></workbook>'},
+    {name:'xl/_rels/workbook.xml.rels',data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>'},
+    {name:'xl/styles.xml',data:styles},
+    {name:'xl/worksheets/sheet1.xml',data:sheet}
+  ];
+  var enc=new TextEncoder();
+  var files=xml.map(function(f){return{name:f.name,data:enc.encode(f.data)};});
+  return new Blob([xlsxZip(files)],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+}
+function exportToExcel(fn,sn,rows,opts){
+  try{
+    downloadBlob(buildXlsxBlob(rows,sn,opts),fn+'.xlsx');
+  }catch(e){
+    console.error(e);
+    showToast('⚠️ 导出失败：'+e.message);
+  }
 }
 function downloadBlob(blob,filename,silent){
   if(!silent&&!confirm('📥 即将下载：\n\n'+filename+'\n\n文件会保存到浏览器默认下载位置。\n是否继续？')){
@@ -3098,39 +3289,331 @@ function downloadBlob(blob,filename,silent){
   return true;
 }
 function downloadAsDoc(html,filename){
-  var full='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>'+filename+'</title><style>body{font-family:"Microsoft YaHei",sans-serif;padding:20px;}table{border-collapse:collapse;width:100%;}th,td{border:1px solid #ddd;padding:6px 10px;}th{background:#5b4cdb;color:#fff;}h1{color:#5b4cdb;}</style></head><body>'+html+'</body></html>';
+  var full=/^<!DOCTYPE/i.test(String(html))?html:('<!DOCTYPE html><html><head><meta charset="utf-8"><title>'+escapeHtml(filename)+'</title></head><body>'+html+'</body></html>');
   downloadBlob(new Blob(['\ufeff',full],{type:'application/msword;charset=utf-8'}),filename+'.doc');
 }
 function printHtml(html,filename){
   var w=window.open('','_blank');
   if(!w){showToast('⚠️ 请允许弹窗');return;}
   w.document.write(html);w.document.close();
+  if(filename){try{w.document.title=filename;}catch(e){}}
   w.onload=function(){setTimeout(function(){w.print();setTimeout(function(){w.close();},500);},300);};
 }
 function isMobileEnv(){return window.innerWidth<768||/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);}
 
+/* ============================================================
+   导出单据：统一模板（抬头 / 元信息 / 表格 / 大写金额 / 签字 / 页脚）
+   ============================================================ */
+var DOC_PROFILE_KEY='doc_profile_v1';
+var DEDUCT_LABELS={child:'子女教育',education:'继续教育',medical:'大病医疗',loan:'住房贷款利息',rent:'住房租金',elder:'赡养老人',infant:'婴幼儿照护'};
+
+function getDocProfile(){
+  var p={company:'',name:'',dept:'',job:''};
+  try{
+    var r=localStorage.getItem(DOC_PROFILE_KEY);
+    if(r){var o=JSON.parse(r)||{};['company','name','dept','job'].forEach(function(k){if(typeof o[k]==='string')p[k]=o[k];});}
+  }catch(e){}
+  return p;
+}
+function saveDocProfile(){
+  try{
+    localStorage.setItem(DOC_PROFILE_KEY,JSON.stringify({
+      company:getVal('docCompany').trim(),name:getVal('docName').trim(),
+      dept:getVal('docDept').trim(),job:getVal('docJob').trim()
+    }));
+  }catch(e){}
+}
+function fillDocProfileInputs(){
+  var p=getDocProfile();
+  setVal('docCompany',p.company);setVal('docName',p.name);setVal('docDept',p.dept);setVal('docJob',p.job);
+}
+function docFileName(base,ext){
+  var p=getDocProfile(),n=String(base||'导出')+(p.name?'_'+p.name:'');
+  n=n.replace(/[\\\/:*?"<>|]/g,'_');
+  return ext?n+'.'+ext:n;
+}
+function fmtAmt(n){
+  if(n===undefined||n===null||isNaN(n))return '—';
+  return formatNumber(Number(n)||0,2);
+}
+function fmtHours(n){
+  var v=Math.round((Number(n)||0)*100)/100;
+  return (v%1===0?v.toFixed(0):v.toFixed(1))+'h';
+}
+function monthCn(mk){
+  var p=parseMonthKey(mk);
+  return p?(p.year+'年'+p.month+'月'):String(mk||'');
+}
+function todayCn(){
+  var d=new Date();
+  return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日';
+}
+function weekCn(dk){
+  var p=String(dk||'').split('-');
+  if(p.length!==3)return '';
+  var d=new Date(+p[0],+p[1]-1,+p[2]);
+  return '星期'+'日一二三四五六'.charAt(d.getDay());
+}
+function taxRateOf(ct){
+  if(!(ct>0))return '0%';
+  if(ct<=36000)return '3%';
+  if(ct<=144000)return '10%';
+  if(ct<=300000)return '20%';
+  if(ct<=420000)return '25%';
+  if(ct<=660000)return '30%';
+  if(ct<=960000)return '35%';
+  return '45%';
+}
+/* 人民币大写（工资条/说明类单据使用） */
+function rmbUpper(num){
+  num=Math.round((Number(num)||0)*100)/100;
+  if(!isFinite(num))return '';
+  var neg=num<0;num=Math.abs(num);
+  var digit=['零','壹','贰','叁','肆','伍','陆','柒','捌','玖'],u1=['','拾','佰','仟'],u2=['','万','亿','万亿'];
+  function sec4(n){
+    var s='',zero=false;
+    for(var i=3;i>=0;i--){
+      var v=Math.floor(n/Math.pow(10,i))%10;
+      if(v===0){if(s)zero=true;}
+      else{if(zero){s+='零';zero=false;}s+=digit[v]+u1[i];}
+    }
+    return s;
+  }
+  var intNum=Math.floor(num),sections=[];
+  while(intNum>0){sections.push(intNum%10000);intNum=Math.floor(intNum/10000);}
+  var intStr='';
+  for(var i=sections.length-1;i>=0;i--){
+    var sec=sections[i];
+    if(sec===0){
+      if(intStr&&!/零$/.test(intStr)){
+        var lower=false;
+        for(var k=i-1;k>=0;k--){if(sections[k]>0){lower=true;break;}}
+        if(lower)intStr+='零';
+      }
+      continue;
+    }
+    if(intStr&&sec<1000&&!/零$/.test(intStr))intStr+='零';
+    intStr+=sec4(sec)+u2[i];
+  }
+  var cents=Math.round(num*100),jiao=Math.floor(cents/10)%10,fen=cents%10,frac='';
+  if(jiao>0)frac+=digit[jiao]+'角';
+  if(fen>0)frac+=(jiao===0&&intStr?'零':'')+digit[fen]+'分';
+  var out=(intStr?intStr+'元':'')+frac;
+  if(!intStr&&!frac)out='零元整';
+  else if(!frac)out+='整';
+  return (neg?'负':'')+out;
+}
+function monthDayDetails(mk){
+  var d=(storage.details||{})[mk];
+  return d&&typeof d==='object'?d:{};
+}
+function sumOvertimeHours(mk){
+  var d=monthDayDetails(mk),r={weekday:0,weekend:0,holiday:0,total:0};
+  Object.keys(d).forEach(function(k){
+    var it=d[k];if(!it||!it.hours)return;
+    var t=it.type||'weekday';
+    if(r[t]===undefined)r[t]=0;
+    r[t]=roundToCent(r[t]+it.hours);r.total=roundToCent(r.total+it.hours);
+  });
+  return r;
+}
+function deductionItems(rec){
+  var d=(rec&&rec.deductionsDetail)||{},out=[];
+  Object.keys(DEDUCT_LABELS).forEach(function(k){
+    var v=Number(d[k])||0;
+    if(v>0)out.push({key:k,name:DEDUCT_LABELS[k],amount:v});
+  });
+  return out;
+}
+function deductionTotal(rec){
+  var t=0;deductionItems(rec).forEach(function(x){t+=x.amount;});
+  return roundToCent(t);
+}
+function docInfo(rows){
+  var h='<table class="info-table">';
+  rows.forEach(function(r){
+    h+='<tr>';
+    for(var i=0;i<r.length;i+=2)h+='<td class="k">'+escapeHtml(r[i])+'</td><td>'+escapeHtml(r[i+1]||'　')+'</td>';
+    h+='</tr>';
+  });
+  return h+'</table>';
+}
+function docNotes(lines){
+  return '<div class="note"><b>说明：</b><ol>'+lines.map(function(t){return '<li>'+escapeHtml(t)+'</li>';}).join('')+'</ol></div>';
+}
+function docRow(seq,name,desc,amount){
+  return '<tr><td class="c">'+seq+'</td><td>'+escapeHtml(name)+'</td><td>'+escapeHtml(desc||'—')+'</td><td class="num">'+fmtAmt(amount)+'</td></tr>';
+}
+function salaryBreakdown(r){
+  var s=getSettings(),ot=sumOvertimeHours(r.month),special=deductionItems(r),specialTotal=deductionTotal(r);
+  var adds=[],subs=[];
+  (r.customItems||[]).forEach(function(it){if(!it)return;if(it.type==='sub')subs.push(it);else adds.push(it);});
+  var addTotal=0;adds.forEach(function(it){addTotal+=Number(it.amount)||0;});
+  var subTotal=0;subs.forEach(function(it){subTotal+=Number(it.amount)||0;});
+  var base=Number(r.baseSalary)||0,otp=Number(r.totalOvertimePay)||0,other=Number(r.otherIncome)||0;
+  var earnings=roundToCent(base+otp+other+addTotal);
+  /* 自定义减少项计入应发（负数行），与 app 的 grossPay 口径一致；专项附加扣除只影响计税所得额 */
+  var gross=roundToCent(earnings-subTotal);
+  var deductions=roundToCent((Number(r.socialInsurance)||0)+(Number(r.housingFund)||0)+(Number(r.otherDeduction)||0)+(Number(r.tax)||0));
+  var net=Number(r.netPay)||roundToCent(gross-deductions);
+  return{s:s,ot:ot,special:special,specialTotal:specialTotal,adds:adds,subs:subs,addTotal:roundToCent(addTotal),subTotal:roundToCent(subTotal),base:base,otp:otp,other:other,earnings:earnings,gross:gross,deductions:deductions,net:net};
+}
+function docCss(kind,landscape){
+  var page=landscape?'size:A4 landscape;margin:12mm 10mm 11mm;':'size:A4;margin:14mm 14mm 13mm;';
+  var wordPage=landscape?'size:29.7cm 21cm;margin:1.2cm 1cm 1.1cm;':'size:21cm 29.7cm;margin:1.4cm 1.4cm 1.3cm;';
+  var r=[
+    '@page'+(kind==='word'?' WordSection1':'')+'{'+(kind==='word'?wordPage:page)+'}',
+    kind==='word'?'div.WordSection1{page:WordSection1;}':'',
+    '*{box-sizing:border-box}html,body{margin:0;padding:0}',
+    'body{font-family:"Microsoft YaHei","PingFang SC","Source Han Sans SC",sans-serif;color:#1a1a1a;font-size:10pt;line-height:1.55;-webkit-print-color-adjust:exact;print-color-adjust:exact}',
+    '.doc{width:'+(kind==='word'?'auto':(landscape?'277mm':'182mm'))+';margin:0 auto;padding:0}',
+    '.doc-org{text-align:center;font-size:10.5pt;letter-spacing:2px;color:#333;min-height:4mm}',
+    '.doc-title{text-align:center;font-size:18pt;font-weight:700;letter-spacing:6px;margin:.8mm 0 1mm;color:#111}',
+    '.doc-sub{text-align:center;font-size:9.5pt;color:#555;letter-spacing:1px;margin-bottom:1mm}',
+    '.doc-rule{border:none;border-top:1.2pt solid #1a1a1a;margin:2.5mm 0 2mm}',
+    '.meta-table{width:100%;border-collapse:collapse;margin:0 0 3mm;font-size:8.5pt;color:#555}',
+    '.meta-table td{padding:0 3mm 0 0;white-space:nowrap}',
+    '.meta-table td:last-child{text-align:right;padding-right:0}',
+    '.info-table{width:100%;border-collapse:collapse;margin:0 0 3mm;font-size:9pt}',
+    '.info-table td{border:0.75pt solid #666;padding:1.4mm 2mm}',
+    '.info-table td.k{background:#f2f4f7;width:16%;text-align:center;color:#333;white-space:nowrap}',
+    '.section-h{font-size:10pt;font-weight:700;margin:3mm 0 1.5mm;padding-left:2.2mm;border-left:3pt solid #1a1a1a}',
+    '.data-table{width:100%;border-collapse:collapse;font-size:8.5pt}',
+    '.data-table th,.data-table td{border:0.6pt solid #555;padding:1.2mm 1.8mm;vertical-align:middle}',
+    '.data-table th{background:#e8ecf2;font-weight:700;text-align:center}',
+    '.data-table td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}',
+    '.data-table td.c{text-align:center;white-space:nowrap}',
+    '.data-table tr.group td{background:#f5f6f8;font-weight:700}',
+    '.data-table tr.total td{background:#eef1f6;font-weight:700}',
+    '.amount-table{width:100%;border-collapse:collapse;margin:2.5mm 0;border:0.8pt solid #333;background:#fafbfc}',
+    '.amount-table td{padding:2mm 3.5mm;font-size:9.5pt;vertical-align:middle}',
+    '.amount-table td:last-child{text-align:right;white-space:nowrap}',
+    '.amount-table .big{font-size:11pt;font-weight:700}',
+    '.tax-line{margin:2mm 0;padding:1.8mm 2.5mm;border:0.6pt solid #999;background:#fafbfc;font-size:8.5pt;line-height:1.65}',
+    '.letter-head{font-size:10pt;margin:0 0 2.5mm}',
+    '.para{text-indent:2em;margin:1.8mm 0;line-height:1.8}',
+    '.list-lite{margin:1.2mm 0 1.2mm 6mm;padding:0}',
+    '.list-lite li{margin:.6mm 0}',
+    '.note{font-size:7.8pt;color:#444;line-height:1.7;margin-top:3mm;border-top:0.5pt dashed #999;padding-top:1.6mm}',
+    '.note b{color:#222}.note ol{margin:.8mm 0 0 4.5mm;padding:0}.note li{margin:.3mm 0}',
+    '.sign-table{width:100%;border-collapse:collapse;margin-top:9mm;font-size:9pt}',
+    '.sign-table td{padding:0 4mm 0 0;white-space:nowrap}',
+    '.sign-table td:last-child{text-align:right;padding-right:0}',
+    '.line{display:inline-block;border-bottom:0.75pt solid #333;min-width:30mm;height:4mm}',
+    '.foot{margin-top:5mm;border-top:0.5pt solid #999;padding-top:1.5mm;font-size:7.2pt;color:#777;overflow:hidden}',
+    '.foot .l{float:left}.foot .r{float:right}',
+    'thead{display:table-header-group}tr{page-break-inside:avoid}.keep{page-break-inside:avoid}'
+  ];
+  return r.join('');
+}
+function docContent(o){
+  var p=getDocProfile();
+  var meta=(o.meta||[]).map(function(x){return '<td>'+escapeHtml(x)+'</td>';}).join('');
+  var metaRow=meta?'<table class="meta-table"><tr>'+meta+'</tr></table>':'';
+  var sign=(o.sign&&o.sign.length)
+    ?'<table class="sign-table"><tr>'+o.sign.map(function(t){return '<td>'+escapeHtml(t)+'：<span class="line"></span></td>';}).join('')+'</tr></table>'
+    :'';
+  return '<div class="doc">'
+    +'<div class="doc-org">'+(p.company?escapeHtml(p.company):'&nbsp;')+'</div>'
+    +'<div class="doc-title">'+escapeHtml(o.title)+'</div>'
+    +(o.subtitle?'<div class="doc-sub">'+escapeHtml(o.subtitle)+'</div>':'')
+    +'<hr class="doc-rule">'
+    +metaRow
+    +(o.body||'')
+    +sign
+    +'<div class="foot"><span class="l">'+escapeHtml(o.footLeft||('本单据由「智财管家」生成 · v'+APP_VERSION))+'</span><span class="r">'+escapeHtml(o.footRight||('制表时间 '+todayCn()))+'</span></div>'
+    +'</div>';
+}
+function docPrintHtml(o){
+  return '<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><title>'+escapeHtml(o.fileTitle||o.title)+'</title><style>'+docCss('print',o.landscape)+'</style></head><body>'+docContent(o)+'</body></html>';
+}
+function docWordHtml(o){
+  return '<!DOCTYPE html><html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>'+escapeHtml(o.fileTitle||o.title)+'</title>'
+    +'<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom><w:DoNotOptimizeForBrowser/></w:WordDocument></xml><![endif]-->'
+    +'<style>'+docCss('word',o.landscape)+'</style></head><body><div class="WordSection1">'+docContent(o)+'</div></body></html>';
+}
+function deliverDoc(o){
+  var base=docFileName(o.fileName||o.title,'');
+  if(isMobileEnv())downloadAsDoc(docWordHtml(o),base);
+  else printHtml(docPrintHtml(o),base);
+}
+
 function exportOvertimePdf(){
   var r=getOvertimeRecordsForMonth();
   if(!r.length){showToast('📭 本月暂无加班记录');return;}
-  var w=0,e=0,h=0,rows='';
+  var s=getSettings();
+  var rec=(storage.history||{})[currentMonthKey];
+  var base=rec&&rec.baseSalary?rec.baseSalary:getNum('baseSalary');
+  var hr=getHourlyRate(base);
+  var ot=sumOvertimeHours(currentMonthKey);
+  var typeRows='',seq=1,days=0,conv=0,amt=0;
   r.forEach(function(x){
-    if(x.type==='工作日')w+=x.hours;else if(x.type==='休息日')e+=x.hours;else if(x.type==='节假日')h+=x.hours;
-    rows+='<tr><td>'+x.date+'</td><td>'+x.type+'</td><td>'+escapeHtml(x.segments)+'</td><td>'+x.hours.toFixed(1)+'h</td></tr>';
+    var mul=x.type==='工作日'?s.multiplierWeekday:(x.type==='休息日'?s.multiplierWeekend:s.multiplierHoliday);
+    var ch=roundToCent(x.hours*mul),money=isNaN(hr)?NaN:roundToCent(x.hours*mul*hr);
+    days++;conv=roundToCent(conv+ch);
+    if(!isNaN(money))amt=roundToCent(amt+money);
+    typeRows+='<tr><td class="c">'+(seq++)+'</td><td class="c">'+escapeHtml(x.date)+'</td><td class="c">'+escapeHtml(weekCn(x.date))+'</td><td class="c">'+escapeHtml(x.type)+'</td><td>'+escapeHtml(x.segments)+'</td><td class="num">'+fmtHours(x.hours)+'</td><td class="c">×'+mul+'</td><td class="num">'+ch.toFixed(1)+'</td></tr>';
   });
-  var tot=r.reduce(function(s,x){return s+x.hours;},0);
-  var s=getSettings(),bs=getNum('baseSalary'),hr=getHourlyRate(bs);
-  var otp=isNaN(hr)?0:roundToCent((w*s.multiplierWeekday+e*s.multiplierWeekend+h*s.multiplierHoliday)*hr);
-  var html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>加班记录</title><style>body{font-family:sans-serif;padding:24px;}table{width:100%;border-collapse:collapse;}th{background:#5b4cdb;color:#fff;padding:8px;}td{padding:8px;text-align:center;border-bottom:1px solid #eee;}</style></head><body><h1>📆 '+currentMonthKey+' 加班记录</h1><p>加班天数：'+r.length+' 天 | 总加班：'+tot.toFixed(1)+'h | 预估加班费：¥'+(isNaN(otp)?'—':formatNumber(otp))+'</p><table><thead><tr><th>日期</th><th>类型</th><th>时间段</th><th>时长</th></tr></thead><tbody>'+rows+'</tbody></table><p style="text-align:center;color:#999;font-size:10pt;">智财管家 · '+new Date().toLocaleString('zh-CN')+'</p></body></html>';
-  if(isMobileEnv())downloadAsDoc(html,'加班记录_'+currentMonthKey);
-  else printHtml(html);
+  var sumRows='';
+  [['工作日',ot.weekday,s.multiplierWeekday],['休息日',ot.weekend,s.multiplierWeekend],['节假日',ot.holiday,s.multiplierHoliday]].forEach(function(t){
+    var h=t[1],m=t[2],c=roundToCent(h*m),a=isNaN(hr)?NaN:roundToCent(h*m*hr);
+    sumRows+='<tr><td class="c">'+t[0]+'</td><td class="num">'+fmtHours(h)+'</td><td class="c">×'+m+'</td><td class="num">'+c.toFixed(1)+'</td><td class="num">'+(isNaN(hr)?'—':fmtAmt(hr))+'</td><td class="num">'+(isNaN(a)?'—':fmtAmt(a))+'</td></tr>';
+  });
+  sumRows+='<tr class="total"><td>合计</td><td class="num">'+fmtHours(ot.total)+'</td><td class="c">—</td><td class="num">'+conv.toFixed(1)+'</td><td class="c">—</td><td class="num">'+(isNaN(hr)?'—':fmtAmt(amt))+'</td></tr>';
+  var body=docInfo([
+    ['姓名',getDocProfile().name||'　','部门',getDocProfile().dept||'　'],
+    ['岗位',getDocProfile().job||'　','数据来源','本地登记记录'],
+    ['加班天数',days+' 天','合计时长',fmtHours(ot.total)]
+  ])
+    +'<div class="section-h">一、加班明细</div>'
+    +'<table class="data-table"><thead><tr><th style="width:8%">序号</th><th style="width:12%">日期</th><th style="width:11%">星期</th><th style="width:10%">类型</th><th>时段</th><th style="width:11%">时长</th><th style="width:8%">倍率</th><th style="width:11%">折合工时</th></tr></thead><tbody>'+typeRows+'<tr class="total"><td colspan="5">合计（'+days+' 天）</td><td class="num">'+fmtHours(ot.total)+'</td><td class="c">—</td><td class="num">'+conv.toFixed(1)+'</td></tr></tbody></table>'
+    +'<div class="section-h">二、加班统计</div>'
+    +'<table class="data-table"><thead><tr><th style="width:16%">类型</th><th>时长</th><th>倍率</th><th>折合工时</th><th>时薪（元）</th><th>加班费（元）</th></tr></thead><tbody>'+sumRows+'</tbody></table>'
+    +'<table class="amount-table"><tr><td>预估加班费（大写）<br><span class="big">'+escapeHtml(rmbUpper(isNaN(hr)?0:amt))+'</span></td><td>合计金额（小写）<br><span class="big">'+(isNaN(hr)?'—':'¥'+fmtAmt(amt))+'</span></td></tr></table>'
+    +docNotes([
+      '本表依据用户登记的加班记录自动生成，时段与时长以登记数据为准。',
+      '折合工时 = 加班时长 × 对应倍率；加班费 = 折合工时 × 时薪，时薪按底薪 ÷ 21.75 ÷ 8 计算。',
+      '若单位执行不同的计薪口径，实际发放金额以单位薪酬制度及劳动合同约定为准。'
+    ]);
+  deliverDoc({
+    title:'加班记录表',
+    subtitle:monthCn(currentMonthKey)+' · 加班明细与折算',
+    fileName:'加班记录表_'+currentMonthKey,
+    landscape:false,
+    meta:['单据编号：JB-'+currentMonthKey.replace('-',''),'统计期间：'+monthCn(currentMonthKey),'制表日期：'+todayCn()],
+    body:body,
+    sign:['制表人','部门负责人','日期']
+  });
 }
 function exportOvertimeExcel(){
   var r=getOvertimeRecordsForMonth();
   if(!r.length){showToast('📭 本月暂无加班记录');return;}
-  var rows=[['日期','类型','时间段','加班小时数']];
-  r.forEach(function(x){rows.push([x.date,x.type,x.segments,x.hours.toFixed(1)]);});
-  rows.push(['合计','','',r.reduce(function(s,x){return s+x.hours;},0).toFixed(1)]);
-  exportToExcel('加班记录_'+currentMonthKey,currentMonthKey+' 加班记录',rows);
+  var s=getSettings();
+  var rec=(storage.history||{})[currentMonthKey];
+  var base=rec&&rec.baseSalary?rec.baseSalary:getNum('baseSalary');
+  var hr=getHourlyRate(base);
+  var ot=sumOvertimeHours(currentMonthKey);
+  var p=getDocProfile();
+  var rows=[];
+  rows.push({cells:['加班记录表'],style:3,mergeAll:true,height:30});
+  rows.push({cells:['单位：'+(p.company||'　')+'　姓名：'+(p.name||'　')+'　部门：'+(p.dept||'　')+'　期间：'+monthCn(currentMonthKey)+'　制表日期：'+todayCn()],style:4,mergeAll:true});
+  rows.push({cells:['序号','日期','星期','类型','加班时段','时长（小时）','倍率','折合工时（小时）','加班费（元）'],style:1});
+  var seq=1,conv=0,amt=0;
+  r.forEach(function(x){
+    var mul=x.type==='工作日'?s.multiplierWeekday:(x.type==='休息日'?s.multiplierWeekend:s.multiplierHoliday);
+    var ch=roundToCent(x.hours*mul),money=isNaN(hr)?NaN:roundToCent(x.hours*mul*hr);
+    conv=roundToCent(conv+ch);
+    if(!isNaN(money))amt=roundToCent(amt+money);
+    rows.push([String(seq++),x.date,weekCn(x.date),x.type,x.segments,x.hours,mul,ch,isNaN(money)?'—':money]);
+  });
+  rows.push({cells:['合计','','','','',ot.total,'',conv,isNaN(hr)?'—':amt],style:5});
+  rows.push({cells:['分类统计'],style:7,mergeAll:true});
+  rows.push({cells:['类型','时长（小时）','倍率','折合工时（小时）','时薪（元）','加班费（元）'],style:1});
+  [['工作日',ot.weekday,s.multiplierWeekday],['休息日',ot.weekend,s.multiplierWeekend],['节假日',ot.holiday,s.multiplierHoliday]].forEach(function(t){
+    rows.push([t[0],t[1],t[2],roundToCent(t[1]*t[2]),isNaN(hr)?'—':hr,isNaN(hr)?'—':roundToCent(t[1]*t[2]*hr)]);
+  });
+  rows.push({cells:['说明：折合工时 = 加班时长 × 对应倍率；加班费 = 折合工时 × 时薪（底薪 ÷ 21.75 ÷ 8）。本表依据本地登记记录生成，仅供核对参考。'],style:6,mergeAll:true,height:36});
+  exportToExcel(docFileName('加班记录表_'+currentMonthKey,''),'加班记录表',rows,{freezeRows:3});
 }
 function exportOvertimeJSON(){
   if(!currentMonthKey){showToast('请选择月份');return;}
@@ -3141,8 +3624,29 @@ function exportSalaryExcel(){
   if(!currentMonthKey){showToast('请选择月份');return;}
   var r=(storage.history||{})[currentMonthKey];
   if(!r){showToast('该月暂无记录');return;}
-  var rows=[['项目','金额'],['月份',r.month],['底薪','¥'+formatNumber(r.baseSalary||0)],['加班费','¥'+formatNumber(r.totalOvertimePay||0)],['应发','¥'+formatNumber(r.grossPay||0)],['个税','¥'+formatNumber(r.tax||0)],['实发','¥'+formatNumber(r.netPay||0)]];
-  exportToExcel('工资条_'+r.month,r.month+' 工资条',rows);
+  var b=salaryBreakdown(r),p=getDocProfile(),rows=[],seq=1;
+  rows.push({cells:['工资条'],style:3,mergeAll:true,height:30});
+  rows.push({cells:['单位：'+(p.company||'　')+'　姓名：'+(p.name||'　')+'　部门：'+(p.dept||'　')+'　期间：'+monthCn(r.month)+'　制表日期：'+todayCn()],style:4,mergeAll:true});
+  rows.push({cells:['项目','计算说明','金额（元）'],style:1});
+  rows.push({cells:['一、应发项目'],style:7,mergeAll:true});
+  rows.push(['基本工资','月计薪天数 '+(r.workDaysPerMonth||b.s.workDaysPerMonth)+' 天，日工时 '+(r.workHoursPerDay||b.s.workHoursPerDay)+' 小时',b.base]);
+  rows.push(['加班费','工作日 '+fmtHours(b.ot.weekday)+'，休息日 '+fmtHours(b.ot.weekend)+'，节假日 '+fmtHours(b.ot.holiday),b.otp]);
+  rows.push(['其他收入','奖金、补贴等',b.other]);
+  b.adds.forEach(function(it){rows.push([it.name||'自定义增加项','自定义增加项',Number(it.amount)||0]);});
+  b.subs.forEach(function(it){rows.push([it.name||'自定义扣除项','自定义减少项',-(Number(it.amount)||0)]);});
+  rows.push({cells:['应发合计','',b.gross],style:5});
+  rows.push({cells:['二、扣减项目'],style:7,mergeAll:true});
+  rows.push(['社会保险','个人承担部分',Number(r.socialInsurance)||0]);
+  rows.push(['住房公积金','个人承担部分',Number(r.housingFund)||0]);
+  rows.push(['其他扣除','—',Number(r.otherDeduction)||0]);
+  rows.push(['个人所得税','按累计预扣法计算（详见下方计税信息）',Number(r.tax)||0]);
+  rows.push({cells:['扣减合计','',b.deductions],style:5});
+  rows.push({cells:['三、计税信息'],style:7,mergeAll:true});
+  rows.push({cells:['累计应纳税所得额','专项附加扣除明细','本期应预扣税额'],style:1});
+  rows.push([Number(r.cumulativeTaxable)||0,b.special.length?b.special.map(function(x){return x.name+' '+fmtAmt(x.amount);}).join('；'):'本月未登记',Number(r.tax)||0]);
+  rows.push({cells:['实发工资（大写）',rmbUpper(b.net),b.net],style:5});
+  rows.push({cells:['说明：本工资条依据用户登记的薪酬参数与加班记录自动生成，供核对参考；个税按累计预扣法计算，专项附加扣除按当月登记金额计入。'],style:6,mergeAll:true,height:36});
+  exportToExcel(docFileName('工资条_'+r.month,''),'工资条',rows,{freezeRows:3});
 }
 function exportBackup(){
   var hc=Object.keys(storage.history||{}).filter(function(k){return parseMonthKey(k)!==null;}).length;
@@ -3157,35 +3661,106 @@ function printSalarySlip(){
   if(!currentMonthKey){showToast('请选择月份');return;}
   var r=(storage.history||{})[currentMonthKey];
   if(!r){showToast('该月暂无记录');return;}
-  var html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>工资条</title><style>body{font-family:sans-serif;padding:24px;}table{width:100%;border-collapse:collapse;}td{padding:8px;border-bottom:1px solid #eee;}.net{font-size:20pt;font-weight:800;color:#00a884;text-align:center;padding:16px;}</style></head><body><h1>💰 '+r.month+' 工资条</h1><table><tr><td>底薪</td><td style="text-align:right;">¥'+formatNumber(r.baseSalary||0)+'</td></tr><tr><td>加班费</td><td style="text-align:right;">¥'+formatNumber(r.totalOvertimePay||0)+'</td></tr><tr><td>应发</td><td style="text-align:right;"><strong>¥'+formatNumber(r.grossPay||0)+'</strong></td></tr><tr><td>社保</td><td style="text-align:right;">-¥'+formatNumber(r.socialInsurance||0)+'</td></tr><tr><td>公积金</td><td style="text-align:right;">-¥'+formatNumber(r.housingFund||0)+'</td></tr><tr><td>个税</td><td style="text-align:right;">-¥'+formatNumber(r.tax||0)+'</td></tr></table><div class="net">实发 ¥'+formatNumber(r.netPay||0)+'</div></body></html>';
-  if(isMobileEnv())downloadAsDoc(html,'工资条_'+r.month);
-  else printHtml(html);
+  var b=salaryBreakdown(r),p=getDocProfile(),seq=1,addRows='',dedRows='',dq=1;
+  addRows+=docRow(seq++,'基本工资','月计薪天数 '+(r.workDaysPerMonth||b.s.workDaysPerMonth)+' 天，日工时 '+(r.workHoursPerDay||b.s.workHoursPerDay)+' 小时',b.base);
+  addRows+=docRow(seq++,'加班费','工作日 '+fmtHours(b.ot.weekday)+'　休息日 '+fmtHours(b.ot.weekend)+'　节假日 '+fmtHours(b.ot.holiday),b.otp);
+  addRows+=docRow(seq++,'其他收入','奖金、补贴等',b.other);
+  b.adds.forEach(function(it){addRows+=docRow(seq++,it.name||'自定义增加项','自定义增加项',it.amount);});
+  b.subs.forEach(function(it){addRows+='<tr><td class="c">'+(seq++)+'</td><td>'+escapeHtml(it.name||'自定义扣除项')+'</td><td>自定义减少项</td><td class="num">-'+fmtAmt(it.amount)+'</td></tr>';});
+  addRows+='<tr class="total"><td colspan="3">应发合计</td><td class="num">'+fmtAmt(b.gross)+'</td></tr>';
+  dedRows+=docRow(dq++,'社会保险','个人承担部分',r.socialInsurance||0);
+  dedRows+=docRow(dq++,'住房公积金','个人承担部分',r.housingFund||0);
+  dedRows+=docRow(dq++,'其他扣除','—',r.otherDeduction||0);
+  dedRows+=docRow(dq++,'个人所得税','按累计预扣法计算，详见下方计税信息',r.tax||0);
+  dedRows+='<tr class="total"><td colspan="3">扣减合计</td><td class="num">'+fmtAmt(b.deductions)+'</td></tr>';
+  var body=docInfo([
+    ['姓名',p.name||'　','部门',p.dept||'　'],
+    ['岗位',p.job||'　','计税方式','累计预扣法']
+  ])
+    +'<div class="section-h">一、应发项目</div>'
+    +'<table class="data-table"><thead><tr><th style="width:10%">序号</th><th style="width:24%">项目</th><th>计算说明</th><th style="width:18%">金额（元）</th></tr></thead><tbody>'+addRows+'</tbody></table>'
+    +'<div class="section-h">二、扣减项目</div>'
+    +'<table class="data-table"><thead><tr><th style="width:10%">序号</th><th style="width:24%">项目</th><th>计算说明</th><th style="width:18%">金额（元）</th></tr></thead><tbody>'+dedRows+'</tbody></table>'
+    +'<div class="tax-line"><b>计税信息：</b>累计应纳税所得额 ¥'+fmtAmt(r.cumulativeTaxable||0)+'；专项附加扣除 ¥'+fmtAmt(b.specialTotal)+(b.special.length?'（'+b.special.map(function(x){return x.name+' '+fmtAmt(x.amount);}).join('；')+'）':'')+'；适用税率 '+taxRateOf(r.cumulativeTaxable)+'；本期应预扣税额 ¥'+fmtAmt(r.tax||0)+'。</div>'
+    +'<table class="amount-table"><tr><td>实发工资（大写）<br><span class="big">'+escapeHtml(rmbUpper(b.net))+'</span></td><td>实发金额（小写）<br><span class="big">¥'+fmtAmt(b.net)+'</span></td></tr></table>'
+    +docNotes([
+      '本工资条依据用户登记的薪酬参数与加班记录自动生成，供个人核对使用，不作为用人单位正式发放凭证。',
+      '个人所得税按累计预扣法计算；专项附加扣除按当月登记金额计入，年度内如有调整以实际申报为准。',
+      '如对上述金额有异议，请自收到本工资条之日起 7 日内向人力资源部门提出复核。'
+    ]);
+  deliverDoc({
+    title:'工资条',
+    subtitle:monthCn(r.month)+' · 薪酬明细',
+    fileName:'工资条_'+r.month,
+    meta:['单据编号：GZ-'+r.month.replace('-',''),'工资期间：'+monthCn(r.month),'制表日期：'+todayCn()],
+    body:body,
+    sign:['员工签字','制表人','日期']
+  });
 }
 function printYearlyReport(){
-  var y=String(currentAnnualYear),recs=storage.history||{};
+  var y=String(currentAnnualYear),recs=storage.history||{},p=getDocProfile();
   var ks=Object.keys(recs).filter(function(k){return k.startsWith(y+'-')&&parseMonthKey(k);}).sort();
   if(!ks.length){showToast('暂无数据');return;}
-  var sB=0,sO=0,sG=0,sT=0,sN=0,sOd=0,rows='';
-  ks.forEach(function(k){
-    var r=recs[k];
-    sB+=r.baseSalary||0;sO+=r.totalOvertimePay||0;sG+=r.grossPay||0;
-    sT+=r.tax||0;sN+=r.netPay||0;sOd+=r.overtimeDiff||0;
-    rows+='<tr><td>'+k.slice(5)+'月</td><td>¥'+formatNumber(r.baseSalary||0)+'</td><td>¥'+formatNumber(r.totalOvertimePay||0)+'</td><td>¥'+formatNumber(r.grossPay||0)+'</td><td>¥'+formatNumber(r.tax||0)+'</td><td>¥'+formatNumber(r.overtimeDiff||0)+'</td><td>¥'+formatNumber(r.netPay||0)+'</td></tr>';
+  var sums={base:0,ot:0,other:0,gross:0,si:0,hf:0,od:0,special:0,tax:0,net:0,diff:0},rows='',cnt=0;
+  for(var m=1;m<=12;m++){
+    var mk=y+'-'+String(m).padStart(2,'0'),r=recs[mk];
+    if(!r){rows+='<tr><td class="c">'+m+' 月</td><td class="c" colspan="11">—</td></tr>';continue;}
+    cnt++;
+    var sd=deductionTotal(r);
+    sums.base+=r.baseSalary||0;sums.ot+=r.totalOvertimePay||0;sums.other+=r.otherIncome||0;
+    sums.gross+=r.grossPay||0;sums.si+=r.socialInsurance||0;sums.hf+=r.housingFund||0;
+    sums.od+=r.otherDeduction||0;sums.special+=sd;sums.tax+=r.tax||0;sums.net+=r.netPay||0;sums.diff+=r.overtimeDiff||0;
+    rows+='<tr><td class="c">'+m+' 月</td><td class="num">'+fmtAmt(r.baseSalary)+'</td><td class="num">'+fmtAmt(r.totalOvertimePay)+'</td><td class="num">'+fmtAmt(r.otherIncome)+'</td><td class="num">'+fmtAmt(r.grossPay)+'</td><td class="num">'+fmtAmt(r.socialInsurance)+'</td><td class="num">'+fmtAmt(r.housingFund)+'</td><td class="num">'+fmtAmt(r.otherDeduction)+'</td><td class="num">'+fmtAmt(sd)+'</td><td class="num">'+fmtAmt(r.tax)+'</td><td class="num">'+fmtAmt(r.netPay)+'</td><td class="num">'+fmtAmt(r.overtimeDiff)+'</td></tr>';
+  }
+  rows+='<tr class="total"><td class="c">合计</td><td class="num">'+fmtAmt(sums.base)+'</td><td class="num">'+fmtAmt(sums.ot)+'</td><td class="num">'+fmtAmt(sums.other)+'</td><td class="num">'+fmtAmt(sums.gross)+'</td><td class="num">'+fmtAmt(sums.si)+'</td><td class="num">'+fmtAmt(sums.hf)+'</td><td class="num">'+fmtAmt(sums.od)+'</td><td class="num">'+fmtAmt(sums.special)+'</td><td class="num">'+fmtAmt(sums.tax)+'</td><td class="num">'+fmtAmt(sums.net)+'</td><td class="num">'+fmtAmt(sums.diff)+'</td></tr>';
+  var avg=cnt?sums.net/cnt:0;
+  var stats='<table class="data-table"><thead><tr><th>全年应发</th><th>全年实发</th><th>全年个税</th><th>月均实发</th><th>加班费差额合计</th></tr></thead><tbody><tr><td class="num">'+fmtAmt(sums.gross)+'</td><td class="num">'+fmtAmt(sums.net)+'</td><td class="num">'+fmtAmt(sums.tax)+'</td><td class="num">'+fmtAmt(avg)+'</td><td class="num">'+fmtAmt(sums.diff)+'</td></tr></tbody></table>';
+  var body=docInfo([
+    ['姓名',p.name||'　','部门',p.dept||'　'],
+    ['岗位',p.job||'　','统计年度',y+' 年度'],
+    ['已记录月份',cnt+' 个月','币种','人民币']
+  ])
+    +'<div class="section-h">一、月度明细</div>'
+    +'<table class="data-table"><thead><tr><th style="width:8%">月份</th><th>底薪</th><th>加班费</th><th>其他收入</th><th>应发</th><th>社保</th><th>公积金</th><th>其他扣除</th><th>专项附加</th><th>个税</th><th>实发</th><th>加班差额</th></tr></thead><tbody>'+rows+'</tbody></table>'
+    +'<div class="keep"><div class="section-h">二、年度汇总</div>'
+    +stats
+    +'<table class="amount-table"><tr><td>全年实发工资（大写）<br><span class="big">'+escapeHtml(rmbUpper(sums.net))+'</span></td><td>全年实发（小写）<br><span class="big">¥'+fmtAmt(sums.net)+'</span></td></tr></table>'
+    +docNotes([
+      '本表汇总本年度已保存的工资记录，未记录月份以「—」表示，不参与合计。',
+      '各月金额以对应月份工资条为准；加班费差额为法定 21.75 口径与单位口径之间的差额。',
+      '本表供个人核对与年度收支参考，不作为纳税申报或收入证明使用。'
+    ])+'</div>';
+  deliverDoc({
+    title:'年度薪酬汇总表',
+    subtitle:y+' 年度 · 1—12 月',
+    fileName:'年度薪酬汇总表_'+y,
+    landscape:true,
+    meta:['单据编号：ND-'+y,'统计年度：'+y+' 年','制表日期：'+todayCn()],
+    body:body,
+    sign:['制表人','审核人','日期']
   });
-  var html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>年度报表</title><style>body{font-family:sans-serif;padding:20px;}table{width:100%;border-collapse:collapse;font-size:9pt;}th{background:#5b4cdb;color:#fff;padding:8px;}td{padding:7px;text-align:right;border-bottom:1px solid #eee;}td:first-child{text-align:center;}</style></head><body><h1>📊 '+y+' 年度工资报表</h1><p>底薪 ¥'+formatNumber(sB)+' | 加班费 ¥'+formatNumber(sO)+' | 应发 ¥'+formatNumber(sG)+' | 个税 ¥'+formatNumber(sT)+' | 实发 ¥'+formatNumber(sN)+' | 加班费差额 ¥'+formatNumber(sOd)+'</p><table><thead><tr><th>月份</th><th>底薪</th><th>加班费</th><th>应发</th><th>个税</th><th>加班差额</th><th>实发</th></tr></thead><tbody>'+rows+'<tr style="font-weight:700;background:#f0f2f8;"><td>合计</td><td>¥'+formatNumber(sB)+'</td><td>¥'+formatNumber(sO)+'</td><td>¥'+formatNumber(sG)+'</td><td>¥'+formatNumber(sT)+'</td><td>¥'+formatNumber(sOd)+'</td><td>¥'+formatNumber(sN)+'</td></tr></tbody></table></body></html>';
-  if(isMobileEnv())downloadAsDoc(html,'年度报表_'+y);
-  else printHtml(html);
 }
 function exportYearlyExcel(){
-  var y=currentAnnualYear,recs=storage.history||{};
+  var y=String(currentAnnualYear),recs=storage.history||{},p=getDocProfile();
   var ks=Object.keys(recs).filter(function(k){return k.startsWith(y+'-')&&parseMonthKey(k);}).sort();
   if(!ks.length){showToast('暂无数据');return;}
-  var rows=[['月份','底薪','加班费','其他','应发','社保','公积金','个税','加班差额','实发']];
-  ks.forEach(function(k){
-    var r=recs[k];
-    rows.push([k.slice(5)+'月','¥'+formatNumber(r.baseSalary||0),'¥'+formatNumber(r.totalOvertimePay||0),'¥'+formatNumber(r.otherIncome||0),'¥'+formatNumber(r.grossPay||0),'¥'+formatNumber(r.socialInsurance||0),'¥'+formatNumber(r.housingFund||0),'¥'+formatNumber(r.tax||0),'¥'+formatNumber(r.overtimeDiff||0),'¥'+formatNumber(r.netPay||0)]);
-  });
-  exportToExcel(y+'年度工资报表',y+' 年度工资报表',rows);
+  var rows=[],sums={base:0,ot:0,other:0,gross:0,si:0,hf:0,od:0,special:0,tax:0,net:0,diff:0};
+  rows.push({cells:['年度薪酬汇总表'],style:3,mergeAll:true,height:30});
+  rows.push({cells:['单位：'+(p.company||'　')+'　姓名：'+(p.name||'　')+'　部门：'+(p.dept||'　')+'　年度：'+y+'　制表日期：'+todayCn()],style:4,mergeAll:true});
+  rows.push({cells:['月份','底薪','加班费','其他收入','应发','社保','公积金','其他扣除','专项附加','个税','实发','加班费差额'],style:1});
+  for(var m=1;m<=12;m++){
+    var mk=y+'-'+String(m).padStart(2,'0'),r=recs[mk];
+    if(!r){rows.push([m+' 月','—','—','—','—','—','—','—','—','—','—','—']);continue;}
+    var sd=deductionTotal(r);
+    sums.base+=r.baseSalary||0;sums.ot+=r.totalOvertimePay||0;sums.other+=r.otherIncome||0;
+    sums.gross+=r.grossPay||0;sums.si+=r.socialInsurance||0;sums.hf+=r.housingFund||0;
+    sums.od+=r.otherDeduction||0;sums.special+=sd;sums.tax+=r.tax||0;sums.net+=r.netPay||0;sums.diff+=r.overtimeDiff||0;
+    rows.push([m+' 月',Number(r.baseSalary)||0,Number(r.totalOvertimePay)||0,Number(r.otherIncome)||0,Number(r.grossPay)||0,Number(r.socialInsurance)||0,Number(r.housingFund)||0,Number(r.otherDeduction)||0,sd,Number(r.tax)||0,Number(r.netPay)||0,Number(r.overtimeDiff)||0]);
+  }
+  rows.push({cells:['合计',sums.base,sums.ot,sums.other,sums.gross,sums.si,sums.hf,sums.od,sums.special,sums.tax,sums.net,sums.diff],style:5});
+  rows.push({cells:['全年实发工资（大写）：'+rmbUpper(Number(sums.net.toFixed(2)))],style:5,mergeAll:true});
+  rows.push({cells:['说明：本表汇总本年度已保存的工资记录，未记录月份以「—」表示且不参与合计；加班费差额为法定 21.75 口径与单位口径之差，仅供个人核对参考。'],style:6,mergeAll:true,height:36});
+  exportToExcel(docFileName('年度薪酬汇总表_'+y,''),'年度薪酬汇总表',rows,{freezeRows:3,landscape:true});
 }
 function exportYearlyJSON(){
   var y=currentAnnualYear,recs=storage.history||{};
@@ -3196,24 +3771,77 @@ function exportYearlyJSON(){
   downloadBlob(new Blob([JSON.stringify(data,null,2)],{type:'application/json;charset=utf-8'}),'年度报表_'+y+'.json');
 }
 function exportOvertimeAppeal(){
-  var recs=storage.history||{};
+  var recs=storage.history||{},p=getDocProfile();
   var ks=Object.keys(recs).filter(function(k){return parseMonthKey(k);}).sort();
   if(!ks.length){showToast('暂无数据');return;}
-  var td=0,tl=0,tc=0,rows='';
+  var td=0,tl=0,tc=0,rows='',first='',last='';
   ks.forEach(function(k){
     var r=recs[k];
     tl+=r.legalOvertimePay||0;tc+=r.companyOvertimePay||0;td+=r.overtimeDiff||0;
-    rows+='<tr><td>'+k+'</td><td>¥'+formatNumber(r.legalHourlyRate||0)+'</td><td>¥'+formatNumber(r.companyHourlyRate||0)+'</td><td>¥'+formatNumber(r.legalOvertimePay||0)+'</td><td>¥'+formatNumber(r.companyOvertimePay||0)+'</td><td style="color:#e74c3c;">¥'+formatNumber(r.overtimeDiff||0)+'</td></tr>';
+    if(!first)first=k;last=k;
+    rows+='<tr><td class="c">'+k+'</td><td class="num">'+fmtAmt(r.legalHourlyRate)+'</td><td class="num">'+fmtAmt(r.companyHourlyRate)+'</td><td class="num">'+fmtAmt(r.legalOvertimePay)+'</td><td class="num">'+fmtAmt(r.companyOvertimePay)+'</td><td class="num">'+fmtAmt(r.overtimeDiff)+'</td></tr>';
   });
-  var html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>加班费差额说明</title><style>body{font-family:sans-serif;padding:32px;line-height:1.8;}h1{color:#5b4cdb;}table{width:100%;border-collapse:collapse;font-size:10pt;}th{background:#5b4cdb;color:#fff;padding:8px;}td{padding:6px;text-align:right;border-bottom:1px solid #eee;}td:first-child{text-align:center;}.total{background:#f0f2f8;font-weight:700;}.box{background:#fff8f0;border-left:4px solid #e74c3c;padding:12px 16px;margin:16px 0;}</style></head><body><h1>⚖️ 加班费差额说明</h1><p>依据《劳动法》第44条及劳社部发〔2008〕3号，月计薪天数为 <strong>21.75 天</strong>。</p><div class="box"><strong>计算公式</strong><br>法定时薪 = 底薪 ÷ 21.75 ÷ 8<br>工作日 × 1.5 · 休息日 × 2.0 · 节假日 × 3.0</div><table><thead><tr><th>月份</th><th>法定时薪</th><th>公司时薪</th><th>法定应得</th><th>公司口径</th><th>差额</th></tr></thead><tbody>'+rows+'<tr class="total"><td>合计</td><td>—</td><td>—</td><td>¥'+formatNumber(tl)+'</td><td>¥'+formatNumber(tc)+'</td><td style="color:#e74c3c;">¥'+formatNumber(td)+'</td></tr></tbody></table><div class="box" style="border-left-color:#e74c3c;"><strong>结论</strong><br>公司累计少发加班费 <strong style="color:#e74c3c;font-size:14pt;">¥'+formatNumber(td)+'</strong></div></body></html>';
-  if(isMobileEnv())downloadAsDoc(html,'加班费差额说明_'+getLocalDateString());
-  else printHtml(html);
+  if(!(tl||tc||td)){showToast('暂无加班费差额数据，请先计算含加班的月份');return;}
+  var lr=recs[last]||{};
+  var base=Number(lr.baseSalary)||0,companyDays=Number(lr.companyWorkDays)||getCompanyWorkDays()||21.75;
+  var legalRate=calcHourlyRateByDays(base,21.75),companyRate=calcHourlyRateByDays(base,companyDays);
+  var legalDay=base>0?roundToCent(base/21.75):NaN,companyDay=base>0?roundToCent(base/companyDays):NaN;
+  var period=(first===last?monthCn(first):monthCn(first)+'至'+monthCn(last));
+  var body='<div class="letter-head">致：'+(p.company?escapeHtml(p.company):'＿＿＿＿＿＿＿＿')+' 人力资源部 / 财务部</div>'
+    +'<p class="para">本人'+(p.name?escapeHtml(p.name):'＿＿＿')+(p.dept||p.job?'，现任'+escapeHtml((p.dept||'')+(p.job||'')):'')+'。现就 '+escapeHtml(period)+' 期间加班费的计算口径差异说明如下，请予核实。</p>'
+    +'<div class="section-h">一、计算依据</div>'
+    +'<ol class="list-lite">'
+    +'<li>《中华人民共和国劳动法》第四十四条：安排劳动者延长工作时间的，支付不低于工资的百分之一百五十的工资报酬；休息日安排工作又不能安排补休的，支付不低于百分之二百的工资报酬；法定休假日安排工作的，支付不低于百分之三百的工资报酬。</li>'
+    +'<li>《关于职工全年月平均工作时间和工资折算问题的通知》（劳社部发〔2008〕3号）：月计薪天数为 21.75 天。</li>'
+    +'</ol>'
+    +'<div class="section-h">二、计算口径对比</div>'
+    +'<table class="data-table"><thead><tr><th style="width:24%">项目</th><th>法定口径</th><th>单位口径</th></tr></thead><tbody>'
+    +'<tr><td class="c">月计薪天数</td><td class="num">21.75 天</td><td class="num">'+companyDays+' 天</td></tr>'
+    +'<tr><td class="c">日工资</td><td class="num">'+(isNaN(legalDay)?'—':fmtAmt(legalDay))+' 元</td><td class="num">'+(isNaN(companyDay)?'—':fmtAmt(companyDay))+' 元</td></tr>'
+    +'<tr><td class="c">小时工资</td><td class="num">'+fmtAmt(legalRate)+' 元</td><td class="num">'+fmtAmt(companyRate)+' 元</td></tr>'
+    +'</tbody></table>'
+    +'<div class="section-h">三、分月差额明细</div>'
+    +'<table class="data-table"><thead><tr><th style="width:12%">月份</th><th>法定时薪</th><th>单位时薪</th><th>法定应得</th><th>单位口径</th><th>差额</th></tr></thead><tbody>'+rows
+    +'<tr class="total"><td class="c">合计</td><td class="c">—</td><td class="c">—</td><td class="num">'+fmtAmt(tl)+'</td><td class="num">'+fmtAmt(tc)+'</td><td class="num">'+fmtAmt(td)+'</td></tr></tbody></table>'
+    +'<table class="amount-table"><tr><td>差额合计（大写）<br><span class="big">'+escapeHtml(rmbUpper(td))+'</span></td><td>差额（小写）<br><span class="big">¥'+fmtAmt(td)+'</span></td></tr></table>'
+    +'<p class="para">根据上述计算，'+escapeHtml(period)+'期间按法定口径应得加班费合计人民币 ¥'+fmtAmt(tl)+'，按单位口径计算为 ¥'+fmtAmt(tc)+'，差额为 ¥'+fmtAmt(td)+'。请贵单位自收到本说明之日起 15 日内予以核实，并补发上述差额。</p>'
+    +'<p class="para" style="text-indent:0;margin-top:3mm;"><b>附件：</b>1. 加班记录明细表（'+escapeHtml(period)+'）；2. 相关月份工资条；3. 劳动合同及薪酬制度相关条款。</p>'
+    +'<p style="margin-top:4mm;">此致</p><p style="margin-left:2em;font-weight:700;">敬礼</p>';
+  deliverDoc({
+    title:'关于加班费差额的说明',
+    subtitle:'法定计薪口径与单位计薪口径对比',
+    fileName:'加班费差额说明_'+first+(last!==first?'_'+last:''),
+    meta:['单据编号：CT-'+getLocalDateString().replace(/-/g,''),'涉及期间：'+period,'制表日期：'+todayCn()],
+    body:body,
+    sign:['申请人（签字）','日期','联系电话']
+  });
 }
 function copySalarySlip(){
   if(!currentMonthKey){showToast('请选择月份');return;}
   var r=(storage.history||{})[currentMonthKey];
   if(!r){showToast('该月暂无记录');return;}
-  var t='【'+r.month+'工资条】\n底薪：¥'+formatNumber(r.baseSalary||0)+'\n加班费：¥'+formatNumber(r.totalOvertimePay||0)+'\n应发：¥'+formatNumber(r.grossPay||0)+'\n社保：¥'+formatNumber(r.socialInsurance||0)+'\n公积金：¥'+formatNumber(r.housingFund||0)+'\n个税：¥'+formatNumber(r.tax||0)+'\n实发：¥'+formatNumber(r.netPay||0)+'\n--- 加班费对比 ---\n法定应得：¥'+formatNumber(r.legalOvertimePay||0)+'\n公司口径：¥'+formatNumber(r.companyOvertimePay||0)+'\n差额：¥'+formatNumber(r.overtimeDiff||0);
+  var b=salaryBreakdown(r),p=getDocProfile(),lines=[];
+  lines.push('【工资条】'+monthCn(r.month));
+  lines.push('单位：'+(p.company||'—')+'　姓名：'+(p.name||'—')+'　部门：'+(p.dept||'—'));
+  lines.push('单据编号：GZ-'+r.month.replace('-','')+'　制表日期：'+todayCn());
+  lines.push('────────────────────────');
+  lines.push('一、应发项目');
+  lines.push('基本工资：¥'+fmtAmt(b.base));
+  lines.push('加班费：¥'+fmtAmt(b.otp)+'（工作日 '+fmtHours(b.ot.weekday)+' / 休息日 '+fmtHours(b.ot.weekend)+' / 节假日 '+fmtHours(b.ot.holiday)+'）');
+  lines.push('其他收入：¥'+fmtAmt(b.other));
+  b.adds.forEach(function(it){lines.push((it.name||'自定义增加项')+'：¥'+fmtAmt(it.amount));});
+  b.subs.forEach(function(it){lines.push((it.name||'自定义扣除项')+'：-¥'+fmtAmt(it.amount));});
+  lines.push('应发合计：¥'+fmtAmt(b.gross));
+  lines.push('二、扣减项目');
+  lines.push('社会保险：¥'+fmtAmt(r.socialInsurance||0));
+  lines.push('住房公积金：¥'+fmtAmt(r.housingFund||0));
+  lines.push('其他扣除：¥'+fmtAmt(r.otherDeduction||0));
+  lines.push('个人所得税：¥'+fmtAmt(r.tax||0)+'（累计应纳税所得额 ¥'+fmtAmt(r.cumulativeTaxable||0)+'，专项附加扣除 ¥'+fmtAmt(b.specialTotal)+'，税率 '+taxRateOf(r.cumulativeTaxable)+'）');
+  lines.push('扣减合计：¥'+fmtAmt(b.deductions));
+  lines.push('────────────────────────');
+  lines.push('实发工资：¥'+fmtAmt(b.net));
+  lines.push('大写：'+rmbUpper(b.net));
+  var t=lines.join('\n');
   if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(function(){showToast('✅ 已复制');}).catch(function(){fallbackCopy(t);});
   else fallbackCopy(t);
 }
@@ -3228,6 +3856,7 @@ function openExportCenter(){
   var o=$('exportCenterOverlay');if(!o)return;
   var m=$('exportCenterMonth');
   if(m){var p=parseMonthKey(currentMonthKey);m.textContent=p?(p.year+'年'+p.month+'月'):currentMonthKey;}
+  fillDocProfileInputs();
   o.classList.add('active');
 }
 function closeExportCenter(){var o=$('exportCenterOverlay');if(o)o.classList.remove('active');}
@@ -4991,6 +5620,8 @@ function initApp(){
   on('btnOpenExportCenter','click',openExportCenter);
   on('btnOpenExportCenterFromOT','click',openExportCenter);
   on('exportCenterCloseBtn','click',closeExportCenter);
+  ['docCompany','docName','docDept','docJob'].forEach(function(id){on(id,'input',saveDocProfile);});
+  fillDocProfileInputs();
   var eco=$('exportCenterOverlay');
   if(eco)eco.addEventListener('click',function(e){if(e.target===this)closeExportCenter();});
   var ecb=$('exportCenterBody');
